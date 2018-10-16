@@ -10,11 +10,17 @@ import UIKit
 
 class MainVC: UIViewController {
 
+    // navigation bar outlets
+    @IBOutlet weak var navigationBarView: UIView!
+    @IBOutlet weak var navigationLogoImageView: UIImageView!
+    @IBOutlet weak var navigationCreditsImageView: UIImageView!
+    @IBOutlet weak var navigationCreditsLabel: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let url = Environment().configuration(PlistKey.backgroundColor)
         print(url)
-        // Do any additional setup after loading the view.
     }
     
 
