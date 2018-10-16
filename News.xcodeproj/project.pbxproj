@@ -12,6 +12,10 @@
 		848538BF2176460B0048C8D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848538BD2176460B0048C8D3 /* Main.storyboard */; };
 		848538C12176460E0048C8D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 848538C02176460E0048C8D3 /* Assets.xcassets */; };
 		848538C42176460E0048C8D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848538C22176460E0048C8D3 /* LaunchScreen.storyboard */; };
+		848538CC21764DE60048C8D3 /* RootVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848538CB21764DE60048C8D3 /* RootVC.swift */; };
+		848538CE21764F160048C8D3 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848538CD21764F160048C8D3 /* MainVC.swift */; };
+		848538D021764F9E0048C8D3 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848538CF21764F9E0048C8D3 /* Extensions.swift */; };
+		848538D2217656C10048C8D3 /* Enviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848538D1217656C10048C8D3 /* Enviroment.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +26,11 @@
 		848538C02176460E0048C8D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		848538C32176460E0048C8D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		848538C52176460E0048C8D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		848538CB21764DE60048C8D3 /* RootVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootVC.swift; sourceTree = "<group>"; };
+		848538CD21764F160048C8D3 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
+		848538CF21764F9E0048C8D3 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		848538D1217656C10048C8D3 /* Enviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enviroment.swift; sourceTree = "<group>"; };
+		848538D3217657370048C8D3 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +69,11 @@
 				848538C02176460E0048C8D3 /* Assets.xcassets */,
 				848538C22176460E0048C8D3 /* LaunchScreen.storyboard */,
 				848538C52176460E0048C8D3 /* Info.plist */,
+				848538CB21764DE60048C8D3 /* RootVC.swift */,
+				848538CD21764F160048C8D3 /* MainVC.swift */,
+				848538CF21764F9E0048C8D3 /* Extensions.swift */,
+				848538D1217656C10048C8D3 /* Enviroment.swift */,
+				848538D3217657370048C8D3 /* Config.xcconfig */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -135,6 +149,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				848538D021764F9E0048C8D3 /* Extensions.swift in Sources */,
+				848538CC21764DE60048C8D3 /* RootVC.swift in Sources */,
+				848538D2217656C10048C8D3 /* Enviroment.swift in Sources */,
+				848538CE21764F160048C8D3 /* MainVC.swift in Sources */,
 				848538BC2176460B0048C8D3 /* ViewController.swift in Sources */,
 				848538BA2176460B0048C8D3 /* AppDelegate.swift in Sources */,
 			);
@@ -164,6 +182,7 @@
 /* Begin XCBuildConfiguration section */
 		848538C62176460E0048C8D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848538D3217657370048C8D3 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -225,6 +244,7 @@
 		};
 		848538C72176460E0048C8D3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848538D3217657370048C8D3 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -280,16 +300,18 @@
 		};
 		848538C92176460E0048C8D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848538D3217657370048C8D3 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4L97XUQKZV;
 				INFOPLIST_FILE = News/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = touchart.News;
+				PRODUCT_BUNDLE_IDENTIFIER = tomaspecuch.News;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -298,16 +320,18 @@
 		};
 		848538CA2176460E0048C8D3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 848538D3217657370048C8D3 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4L97XUQKZV;
 				INFOPLIST_FILE = News/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = touchart.News;
+				PRODUCT_BUNDLE_IDENTIFIER = tomaspecuch.News;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
