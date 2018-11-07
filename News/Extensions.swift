@@ -28,5 +28,15 @@ extension UIViewController {
         
         child.didMove(toParent: p)
     }
+}
+
+extension UIView {
     
+    func addShadow() {
+        self.layer.cornerRadius = 5
+        self.layer.shadowOpacity = 0.2
+        self.layer.shadowOffset = CGSize(width: 0.0, height: 5.0)
+        self.layer.shadowRadius = 10
+        self.layer.shadowColor = UIColor.black.cgColor
+    }
 }

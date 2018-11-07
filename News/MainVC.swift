@@ -22,8 +22,12 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let url = Environment().configuration(PlistKey.backgroundColor)
-        print(url)
+        
+        //checks wheter is user logged in
+        if API.shared.isLoggedIn() == false {
+            let loginVC = storyboard?.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
+            self.present(loginVC , animated: false, completion: nil)
+        }
         
         self.setupVC()
     }
@@ -45,6 +49,14 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //do nothing if the first cell was pressed
+        if indexPath.row == 0 { return}
+        
+        let vc = storyboard?.instantiateViewController(withIdentifier: "ArticleDetailVC") as? ArticleDetailVC
+        self.navigationController?.pushViewController(vc!, animated: true)
+    }
+    
     // MARK: - Other
     
     func setupVC() {
@@ -55,6 +67,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // moves tableview starting position so it doesnt start under navigation bar
         tableView.contentInset = UIEdgeInsets(top: navigationBarView.bounds.origin.y + navigationBarView.bounds.size.height, left: 0, bottom: 0, right: 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
+        
     }
 
 }

@@ -12,7 +12,7 @@ class RootVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+                
         // initiate and push main view controller
         let vc = storyboard?.instantiateViewController(withIdentifier: "MainVC") as? MainVC
         addChildVC(vc!)
