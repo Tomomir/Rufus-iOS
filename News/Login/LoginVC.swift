@@ -27,6 +27,7 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         
         if let auth = authUI {
             auth.delegate = self
@@ -67,8 +68,8 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
 
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         print("did sign in")
-        // initiate and push main view controller
-        self.dismiss(animated: true, completion: nil)
+        //self.dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     func sign(_ signIn: GIDSignIn!, present viewController: UIViewController!) {

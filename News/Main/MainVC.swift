@@ -23,12 +23,6 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //checks wheter is user logged in
-        if API.shared.isLoggedIn() == false {
-            let loginVC = storyboard?.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
-            self.present(loginVC , animated: false, completion: nil)
-        }
-        
         self.setupVC()
     }
     

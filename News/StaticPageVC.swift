@@ -16,28 +16,45 @@ class StaticPageVC: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     
+    @IBOutlet weak var contentTextView: UITextView!
+    @IBOutlet weak var contentTextViewHeightConts: NSLayoutConstraint!
+    
     @IBOutlet weak var acceptButton: UIButton!
+    
+    var data: StaticPageData? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        self.fillData()
     }
     
     // MARK: - Actions
     
     @IBAction func acceptAction(_ sender: Any) {
+        //TODO: mark page as accepted
         
+        navigationController?.popViewController(animated: true)
     }
     
-    /*
-    // MARK: - Navigation
+    
+    // MARK: - Other
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func fillData() {
+        guard let dataStruct = data else { return }
+        self.titleLabel.text = dataStruct.title
+        self.subtitleLabel.text = dataStruct.subTitle
+        
+        let text = API.shared.convertToDictionary(text: dataStruct.text)
+        let blocks = text!["blocks"] as! [[String : Any]]
+        var finalText: String = ""
+        
+        for block in blocks {
+            finalText.append(block["text"] as! String)
+            finalText.append("\n\n")
+        }
+        contentTextView.text = finalText
+        contentTextViewHeightConts.constant = contentTextView.contentSize.height
     }
-    */
 
 }

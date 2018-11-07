@@ -565,29 +565,11 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel leo sodales sem
         <!--Static PageVC-->
         <scene sceneID="YHF-YA-4c9">
             <objects>
-                <viewController id="SUH-3V-wkN" customClass="StaticPageVC" customModule="News" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StaticPageVC" id="SUH-3V-wkN" customClass="StaticPageVC" customModule="News" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8fA-S5-VGP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zKr-en-hx1">
-                                <rect key="frame" x="0.0" y="44" width="375" height="50"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="A9d-bU-wkV">
-                                        <rect key="frame" x="112.66666666666669" y="0.0" width="150" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="A9d-bU-wkV" secondAttribute="height" multiplier="3:1" id="vXy-z9-kTx"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="A9d-bU-wkV" firstAttribute="centerX" secondItem="zKr-en-hx1" secondAttribute="centerX" id="3jq-kl-RFe"/>
-                                    <constraint firstAttribute="bottom" secondItem="A9d-bU-wkV" secondAttribute="bottom" id="MH3-na-vCa"/>
-                                    <constraint firstAttribute="height" constant="50" id="uwd-Bb-bQD"/>
-                                    <constraint firstItem="A9d-bU-wkV" firstAttribute="top" secondItem="zKr-en-hx1" secondAttribute="top" id="yAb-6L-tOS"/>
-                                </constraints>
-                            </view>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q2q-O6-760">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="94"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="kVZ-4X-xxU">
@@ -614,7 +596,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel leo sodales sem
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="XH2-mQ-o2U">
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XH2-mQ-o2U">
                                                 <rect key="frame" x="15" y="209.66666666666663" width="345" height="423"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -675,6 +657,24 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel leo sodales sem
                                     <constraint firstAttribute="bottom" secondItem="who-mD-Mbi" secondAttribute="bottom" id="xLF-yO-GAe"/>
                                 </constraints>
                             </scrollView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zKr-en-hx1">
+                                <rect key="frame" x="0.0" y="44" width="375" height="50"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="A9d-bU-wkV">
+                                        <rect key="frame" x="112.66666666666669" y="0.0" width="150" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="A9d-bU-wkV" secondAttribute="height" multiplier="3:1" id="vXy-z9-kTx"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.41568627450000001" green="0.80000000000000004" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="A9d-bU-wkV" firstAttribute="centerX" secondItem="zKr-en-hx1" secondAttribute="centerX" id="3jq-kl-RFe"/>
+                                    <constraint firstAttribute="bottom" secondItem="A9d-bU-wkV" secondAttribute="bottom" id="MH3-na-vCa"/>
+                                    <constraint firstAttribute="height" constant="50" id="uwd-Bb-bQD"/>
+                                    <constraint firstItem="A9d-bU-wkV" firstAttribute="top" secondItem="zKr-en-hx1" secondAttribute="top" id="yAb-6L-tOS"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -695,6 +695,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel leo sodales sem
                     </view>
                     <connections>
                         <outlet property="acceptButton" destination="NFR-Gu-yB2" id="ktl-rC-aue"/>
+                        <outlet property="contentTextView" destination="XH2-mQ-o2U" id="lG1-Qk-16h"/>
+                        <outlet property="contentTextViewHeightConts" destination="Oiu-Ud-p8I" id="Bmv-RH-Qk6"/>
                         <outlet property="logoImageView" destination="A9d-bU-wkV" id="Gea-bt-zPV"/>
                         <outlet property="navigationView" destination="zKr-en-hx1" id="Y5o-SD-hfL"/>
                         <outlet property="subtitleLabel" destination="bjh-am-R6P" id="jx7-Iz-Tim"/>
