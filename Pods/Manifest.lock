@@ -83,12 +83,14 @@ PODS:
   - GTMSessionFetcher/Core (1.2.0)
   - GTMSessionFetcher/Full (1.2.0):
     - GTMSessionFetcher/Core (= 1.2.0)
+  - JGProgressHUD (2.0.3)
   - leveldb-library (1.20)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - NavigationDrawer (1.0.0)
 
 DEPENDENCIES:
   - Firebase/Core
@@ -96,6 +98,8 @@ DEPENDENCIES:
   - FirebaseUI/Auth
   - FirebaseUI/Google
   - GoogleSignIn
+  - JGProgressHUD
+  - NavigationDrawer
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -113,8 +117,10 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMOAuth2
     - GTMSessionFetcher
+    - JGProgressHUD
     - leveldb-library
     - nanopb
+    - NavigationDrawer
 
 SPEC CHECKSUMS:
   Firebase: 383fa29aca93e371cab776b48a5c66544d3c2003
@@ -131,9 +137,11 @@ SPEC CHECKSUMS:
   GoogleUtilities: 760ccb53b7c7f40f9c02d8c241f76f841a7a6162
   GTMOAuth2: c77fe325e4acd453837e72d91e3b5f13116857b2
   GTMSessionFetcher: 0c4baf0a73acd0041bf9f71ea018deedab5ea84e
+  JGProgressHUD: 12b20a8f4ffe05258f8635c1ab92816e451f904d
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  NavigationDrawer: bc637c0a1700b04f8cd9a5e88b709f6793ca6ac6
 
-PODFILE CHECKSUM: 9a2a6f7a09745b9bd52c99b1b9a944974132182c
+PODFILE CHECKSUM: 46a6711483628544c94329891b384303fb3b4a95
 
 COCOAPODS: 1.5.0

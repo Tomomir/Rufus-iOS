@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import NavigationDrawer
 
 class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -15,16 +16,55 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var navigationLogoImageView: UIImageView!
     @IBOutlet weak var navigationCreditsImageView: UIImageView!
     @IBOutlet weak var navigationCreditsLabel: UILabel!
+    @IBOutlet weak var navigationCreditsButton: UIButton!
+    @IBOutlet weak var navigationHamburgerButton: UIButton!
     @IBOutlet weak var navigationBlurView: UIVisualEffectView!
     
     @IBOutlet weak var tableView: UITableView!
     
+    let interactor = Interactor()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.setupVC()
     }
+    
+    // MARK: - Actions
+    
+    @IBAction func creditsAction(_ sender: Any) {
+        
+        let vc = storyboard?.instantiateViewController(withIdentifier: "CreditsVC") as? CreditsVC
+        self.navigationController?.pushViewController(vc!, animated: true)
+
+    }
+    
+    @IBAction func hamburgerAction(_ sender: Any) {
+        performSegue(withIdentifier: "showSlidingMenu", sender: nil)
+
+    }
+    
+    @IBAction func edgePanGesture(_ sender: UIScreenEdgePanGestureRecognizer) {
+        let translation = sender.translation(in: view)
+        
+        let progress = MenuHelper.calculateProgress(translationInView: translation, viewBounds: view.bounds, direction: .Right)
+        
+        MenuHelper.mapGestureStateToInteractor(
+            gestureState: sender.state,
+            progress: progress,
+            interactor: interactor){
+                self.performSegue(withIdentifier: "showSlidingMenu", sender: nil)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destinationViewController = segue.destination as? HamburgerMenuVC {
+            destinationViewController.transitioningDelegate = self
+            destinationViewController.interactor = self.interactor
+        }
+    }
+
     
     // MARK: - UITableView delegate
     
@@ -64,4 +104,24 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     }
 
+}
+
+
+extension MainVC: UIViewControllerTransitioningDelegate {
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return PresentMenuAnimator()
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return DismissMenuAnimator()
+    }
+    
+    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return interactor.hasStarted ? interactor : nil
+    }
+    
+    func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        return interactor.hasStarted ? interactor : nil
+    }
 }

@@ -7,22 +7,32 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 class RootVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //checks wheter is user logged in
+        //shows activity indicatior
+        let hud = JGProgressHUD(style: .light)
+        hud.textLabel.text = "Loading"
+        hud.show(in: self.view)
+        hud.dismiss(afterDelay: 10.0)
         
+        //download essentials needed before starting
         API.shared.getFullStaticPageDict { [weak self] (result) in
             switch result {
             case .success(let pageArray):
+                hud.dismiss(animated: true)
                 var controllersArray = [UIViewController]()
+                
+                
                 
                 // initiate and adds main view controller
                 let mainVC = self?.storyboard?.instantiateViewController(withIdentifier: "MainVC") as! MainVC
                 controllersArray.append(mainVC)
+                let hambMenuVC = self?.storyboard?.instantiateViewController(withIdentifier: "HamburgerMenuVC") as! HamburgerMenuVC
                 
                 for pageData in pageArray {
                     let pageVC = self?.storyboard?.instantiateViewController(withIdentifier: "StaticPageVC") as! StaticPageVC

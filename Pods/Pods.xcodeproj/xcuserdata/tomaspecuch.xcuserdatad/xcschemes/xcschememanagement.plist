@@ -54,6 +54,21 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>JGProgressHUD-JGProgressHUD.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>JGProgressHUD.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>NavigationDrawer.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-News.xcscheme</key>
 		<dict>
 			<key>isShown</key>
