@@ -54,5 +54,18 @@
 	<string>$(background_color)</string>
 	<key>server_url</key>
 	<string>$(server_url)</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>fb1548249458654672</string>
+            </array>
+        </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>1548249458654672</string>
+    <key>FacebookDisplayName</key>
+    <string>Rufus</string>
 </dict>
 </plist>

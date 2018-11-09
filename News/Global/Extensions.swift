@@ -40,3 +40,62 @@ extension UIView {
         self.layer.shadowColor = UIColor.black.cgColor
     }
 }
+
+//allows to set borders and corner radius inside attribute inspector
+@IBDesignable extension UIView {
+    
+    @IBInspectable var borderWidth: CGFloat {
+        set {
+            layer.borderWidth = newValue
+        }
+        get {
+            return layer.borderWidth
+        }
+    }
+    
+    @IBInspectable var cornerRadius: CGFloat {
+        set {
+            layer.cornerRadius = newValue
+        }
+        get {
+            return layer.cornerRadius
+        }
+    }
+    
+    @IBInspectable var borderColor: UIColor? {
+        set {
+            guard let uiColor = newValue else { return }
+            layer.borderColor = uiColor.cgColor
+        }
+        get {
+            guard let color = layer.borderColor else { return nil }
+            return UIColor(cgColor: color)
+        }
+    }
+}
+
+extension UIImageView {
+    
+    
+    //load image async from inaternet
+    func loadFromURL(photoUrl:String){
+        //NSURL
+        let url = URL(string: photoUrl)
+        //Request
+        let request = URLRequest(url:url!)
+        //Session
+        let session = URLSession.shared
+        //Data task
+        let datatask = session.dataTask(with:request) { (data:Data?, response:URLResponse?, error:Error?) -> Void in
+            if error != nil {
+                print(error?.localizedDescription ?? "no description")
+            }
+            DispatchQueue.main.async {
+                self.image = UIImage(data: data!)
+            }
+        }
+        datatask.resume()
+    }
+    
+    
+}

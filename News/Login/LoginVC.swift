@@ -10,14 +10,18 @@ import UIKit
 import FirebaseUI
 import Firebase
 import GoogleSignIn
+import FBSDKLoginKit
 
-class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
+
+class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUIDelegate, FBSDKLoginButtonDelegate {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var logoImageView: UIImageView!
     
     @IBOutlet weak var googleSignInButton: UIButton!
     @IBOutlet weak var googleSignInView: GIDSignInButton!
+    
+    @IBOutlet weak var fbLoginButton: FBSDKLoginButton!
     
     var authUI: FUIAuth? = FUIAuth.defaultAuthUI()
     
@@ -38,6 +42,8 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().delegate = self
         
+        fbLoginButton.delegate = self
+        fbLoginButton.readPermissions = ["public_profile", "email"]
     }
     
     // Actions
@@ -79,4 +85,29 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
     func sign(_ signIn: GIDSignIn!, dismiss viewController: UIViewController!) {
         print("sign disconnect")
     }
+    
+    // MARK: - Facebook Login delegate
+    
+    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+        if let error = error {
+            print(error.localizedDescription)
+            return
+        }
+        
+        let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+        
+        Auth.auth().signInAndRetrieveData(with: credential) { [weak self] (authResult, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            print("did sign in with facebook")
+            self?.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
+        print("did logout facebook")
+    }
+    
 }

@@ -13,5 +13,7 @@ target 'News' do
   pod 'GoogleSignIn'
   pod 'JGProgressHUD'
   pod 'NavigationDrawer'
+  pod 'FBSDKLoginKit'
+  
   
 end

@@ -32,7 +32,6 @@ class RootVC: UIViewController {
                 // initiate and adds main view controller
                 let mainVC = self?.storyboard?.instantiateViewController(withIdentifier: "MainVC") as! MainVC
                 controllersArray.append(mainVC)
-                let hambMenuVC = self?.storyboard?.instantiateViewController(withIdentifier: "HamburgerMenuVC") as! HamburgerMenuVC
                 
                 for pageData in pageArray {
                     let pageVC = self?.storyboard?.instantiateViewController(withIdentifier: "StaticPageVC") as! StaticPageVC
@@ -41,7 +40,7 @@ class RootVC: UIViewController {
                 }
                 
                 
-                if API.shared.isLoggedIn() == true {
+                if API.shared.isLoggedIn() == false {
                     let loginVC = self?.storyboard?.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
                     controllersArray.append(loginVC)
                 }

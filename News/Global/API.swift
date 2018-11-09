@@ -28,6 +28,7 @@ class API {
     var ref: DatabaseReference!
     
     private init() {
+        FirebaseApp.configure()
         ref = Database.database().reference()
     }
     
@@ -62,6 +63,19 @@ class API {
         } else {
             // No user is signed in.
             return false
+        }
+    }
+    
+    func getCategories(completion: ((Result<[String : Any]>) -> Void)?) {
+        _ = ref.child("categories").observeSingleEvent(of: .value, with: { (snapshot) in
+            if let value = snapshot.value as? [String : Any] {
+                completion?(.success(value))
+            } else {
+                //TODO: handle error
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+            
         }
     }
 

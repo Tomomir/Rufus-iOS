@@ -13,8 +13,11 @@
 		844D924B219356D2007CED37 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844D924A219356D2007CED37 /* CustomButton.swift */; };
 		845BD2612194453F00E7EC28 /* CreditsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845BD2602194453F00E7EC28 /* CreditsVC.swift */; };
 		845BD263219468D500E7EC28 /* HamburgerMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845BD262219468D500E7EC28 /* HamburgerMenuVC.swift */; };
+		845BD26621948F3F00E7EC28 /* HamburgerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845BD26521948F3F00E7EC28 /* HamburgerCell.swift */; };
 		845D08AA217A5C2E00C6676F /* ArticlesCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845D08A9217A5C2E00C6676F /* ArticlesCollectionCell.swift */; };
 		845D08AC217A5DC900C6676F /* ArticleCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845D08AB217A5DC900C6676F /* ArticleCollectionCell.swift */; };
+		8460B8F82195DAD300B0A71F /* CategoriesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8460B8F72195DAD200B0A71F /* CategoriesDataSource.swift */; };
+		8460B8FA2195DBEC00B0A71F /* CategoryCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8460B8F92195DBEC00B0A71F /* CategoryCollectionCell.swift */; };
 		8467C161217A54F200F43001 /* ArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8467C160217A54F200F43001 /* ArticleCell.swift */; };
 		848538BA2176460B0048C8D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848538B92176460B0048C8D3 /* AppDelegate.swift */; };
 		848538BF2176460B0048C8D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848538BD2176460B0048C8D3 /* Main.storyboard */; };
@@ -38,8 +41,11 @@
 		844D924A219356D2007CED37 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		845BD2602194453F00E7EC28 /* CreditsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsVC.swift; sourceTree = "<group>"; };
 		845BD262219468D500E7EC28 /* HamburgerMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamburgerMenuVC.swift; sourceTree = "<group>"; };
+		845BD26521948F3F00E7EC28 /* HamburgerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamburgerCell.swift; sourceTree = "<group>"; };
 		845D08A9217A5C2E00C6676F /* ArticlesCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesCollectionCell.swift; sourceTree = "<group>"; };
 		845D08AB217A5DC900C6676F /* ArticleCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCollectionCell.swift; sourceTree = "<group>"; };
+		8460B8F72195DAD200B0A71F /* CategoriesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesDataSource.swift; sourceTree = "<group>"; };
+		8460B8F92195DBEC00B0A71F /* CategoryCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionCell.swift; sourceTree = "<group>"; };
 		8467C160217A54F200F43001 /* ArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCell.swift; sourceTree = "<group>"; };
 		848538B62176460B0048C8D3 /* News.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = News.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		848538B92176460B0048C8D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +91,8 @@
 				8467C160217A54F200F43001 /* ArticleCell.swift */,
 				845D08A9217A5C2E00C6676F /* ArticlesCollectionCell.swift */,
 				845D08AB217A5DC900C6676F /* ArticleCollectionCell.swift */,
+				8460B8F72195DAD200B0A71F /* CategoriesDataSource.swift */,
+				8460B8F92195DBEC00B0A71F /* CategoryCollectionCell.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -123,6 +131,15 @@
 			path = Credits;
 			sourceTree = "<group>";
 		};
+		845BD26421948F1200E7EC28 /* Hamburger Menu */ = {
+			isa = PBXGroup;
+			children = (
+				845BD262219468D500E7EC28 /* HamburgerMenuVC.swift */,
+				845BD26521948F3F00E7EC28 /* HamburgerCell.swift */,
+			);
+			path = "Hamburger Menu";
+			sourceTree = "<group>";
+		};
 		848538AD2176460A0048C8D3 = {
 			isa = PBXGroup;
 			children = (
@@ -144,6 +161,7 @@
 		848538B82176460B0048C8D3 /* News */ = {
 			isa = PBXGroup;
 			children = (
+				845BD26421948F1200E7EC28 /* Hamburger Menu */,
 				844D924821935664007CED37 /* Custom Classes */,
 				844D92472193565A007CED37 /* Global */,
 				844D9249219356B1007CED37 /* Login */,
@@ -159,7 +177,6 @@
 				848538D3217657370048C8D3 /* Config.xcconfig */,
 				840F45B2217CA99900F10B91 /* ArticleDetailVC.swift */,
 				84050F862191DB35008E074F /* StaticPageVC.swift */,
-				845BD262219468D500E7EC28 /* HamburgerMenuVC.swift */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -250,6 +267,9 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-News/Pods-News-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
@@ -261,6 +281,9 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
@@ -331,12 +354,15 @@
 				848538D2217656C10048C8D3 /* Enviroment.swift in Sources */,
 				840F45B3217CA99900F10B91 /* ArticleDetailVC.swift in Sources */,
 				845D08AC217A5DC900C6676F /* ArticleCollectionCell.swift in Sources */,
+				8460B8FA2195DBEC00B0A71F /* CategoryCollectionCell.swift in Sources */,
 				848538CE21764F160048C8D3 /* MainVC.swift in Sources */,
 				845BD263219468D500E7EC28 /* HamburgerMenuVC.swift in Sources */,
+				845BD26621948F3F00E7EC28 /* HamburgerCell.swift in Sources */,
 				8467C161217A54F200F43001 /* ArticleCell.swift in Sources */,
 				845BD2612194453F00E7EC28 /* CreditsVC.swift in Sources */,
 				84050F852191A065008E074F /* API.swift in Sources */,
 				848538BA2176460B0048C8D3 /* AppDelegate.swift in Sources */,
+				8460B8F82195DAD300B0A71F /* CategoriesDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,6 +443,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -471,6 +498,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";

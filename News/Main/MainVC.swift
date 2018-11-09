@@ -21,8 +21,10 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var navigationBlurView: UIVisualEffectView!
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var categoryCollectionView: UICollectionView!
     
     let interactor = Interactor()
+    let categoryDataSource: CategoryDataSource = CategoryDataSource.shared
 
     
     override func viewDidLoad() {
@@ -99,9 +101,15 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.rowHeight = UITableView.automaticDimension
         
         // moves tableview starting position so it doesnt start under navigation bar
-        tableView.contentInset = UIEdgeInsets(top: navigationBarView.bounds.origin.y + navigationBarView.bounds.size.height, left: 0, bottom: 0, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: navigationBarView.bounds.origin.y + navigationBarView.bounds.size.height + 10, left: 0, bottom: 0, right: 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
+     
+//        let appDelegate = (UIApplication.shared.delegate as! AppDelegate)
+//        appDelegate.window?.rootViewController = self
         
+        categoryDataSource.collectionView = categoryCollectionView
+        categoryCollectionView.dataSource = categoryDataSource
+        categoryCollectionView.delegate = categoryDataSource
     }
 
 }
