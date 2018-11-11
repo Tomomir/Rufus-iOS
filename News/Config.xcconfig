@@ -12,3 +12,5 @@
 
 server_url                   = www.google.com
 background_color             = #ffffff
+navigation_bar_blur_alpha    = 1
+navigation_bar_color         = #000000

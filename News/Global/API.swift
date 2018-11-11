@@ -29,6 +29,7 @@ class API {
     
     private init() {
         FirebaseApp.configure()
+        Database.database().isPersistenceEnabled = true
         ref = Database.database().reference()
     }
     
@@ -38,6 +39,19 @@ class API {
             let value = snapshot.value as? NSDictionary
             let values = value?.allValues
             let dict = self.convertToDictionary(text: values?.first as! String)
+            
+        }) { (error) in
+            print(error.localizedDescription)
+            
+        }
+    }
+    
+    func getNews(completion: ((Result<[String : Any]>) -> Void)?) {
+        ref.child("posts").queryLimited(toLast: 3).observeSingleEvent(of: .value, with: { (snapshot) in
+            // Get user value
+            let value = snapshot.value as? NSDictionary
+           // let values = value?.allValues
+            //let dict = self.convertToDictionary(text: values?.first as! String)
             
         }) { (error) in
             print(error.localizedDescription)

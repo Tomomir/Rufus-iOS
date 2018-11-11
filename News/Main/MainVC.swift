@@ -13,6 +13,7 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // navigation bar outlets
     @IBOutlet weak var navigationBarView: UIView!
+    @IBOutlet weak var navigationBarBlurColorView: UIView!
     @IBOutlet weak var navigationLogoImageView: UIImageView!
     @IBOutlet weak var navigationCreditsImageView: UIImageView!
     @IBOutlet weak var navigationCreditsLabel: UILabel!
@@ -95,7 +96,10 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - Other
     
-    func setupVC() {
+    private func setupVC() {
+        // set values from config file
+        self.configurate()
+        
         // allows us to have different cell heights without defiing exact height for every cell
         tableView.estimatedRowHeight = 299
         tableView.rowHeight = UITableView.automaticDimension
@@ -110,6 +114,32 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         categoryDataSource.collectionView = categoryCollectionView
         categoryCollectionView.dataSource = categoryDataSource
         categoryCollectionView.delegate = categoryDataSource
+        if let flowLayout = categoryCollectionView.collectionViewLayout as? UICollectionViewFlowLayout,
+            let collectionView = categoryCollectionView {
+            flowLayout.estimatedItemSize = CGSize(width: 40, height: 35)
+        }
+        API.shared.getNews { (result) in
+            
+        }
+    }
+    
+    private func configurate() {
+//        if let navigationBarAlpha = Environment().configuration(.navigationBarBlurAlpha) as? String {
+//            //self.navigationBarBlurColorView.alpha = CGFloat(navigationBarAlpha)
+//            print(navigationBarAlpha)
+//        }
+//        if let navigationBarColor = Environment().configuration(.navigationBarColor) as? Int {
+//            self.navigationBarBlurColorView.backgroundColor = UIColor(rgb: navigationBarColor)
+//        }
+//        if let server = Environment().configuration(.serverURL) {
+//            print(server)
+//        }
+        let server_url = Environment().configuration(PlistKey.serverURL)
+        print(server_url)
+        
+        print(Environment().configuration(PlistKey.serverURL))
+        print(Environment().configuration(.navigationBarBlurAlpha))
+         print(Environment().configuration(.navigationBarColor))
     }
 
 }

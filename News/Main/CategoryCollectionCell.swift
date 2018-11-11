@@ -10,11 +10,30 @@ import UIKit
 
 class CategoryCollectionCell: UICollectionViewCell {
     
+    @IBOutlet weak var cellContainerView: UIView!
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var cellContainerViewHeightConst: NSLayoutConstraint!
     
     @IBOutlet weak var chosenIndicatorView: UIView!
     
     var isChosen: Bool = false
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        //self.contentView.translatesAutoresizingMaskIntoConstraints = false
+        self.cellContainerView.translatesAutoresizingMaskIntoConstraints = false
+        
+    }
+    
+//    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+//        setNeedsLayout()
+//        layoutIfNeeded()
+//        let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
+//        var frame = layoutAttributes.frame
+//        frame.size.height = ceil(size.height)
+//        layoutAttributes.frame = frame
+//        return layoutAttributes
+//    }
     
     func setChosen(chosen: Bool, animated: Bool) {
         switch chosen {

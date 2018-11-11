@@ -11,6 +11,8 @@ import Foundation
 public enum PlistKey {
     case serverURL
     case backgroundColor
+    case navigationBarBlurAlpha
+    case navigationBarColor
     
     func value() -> String {
         switch self {
@@ -18,8 +20,11 @@ public enum PlistKey {
             return "server_url"
         case .backgroundColor:
             return "background_color"
+        case .navigationBarBlurAlpha:
+            return "navigation_bar_blur_alpha"
+        case .navigationBarColor:
+            return "navigation_bar_color"
         }
-
     }
 }
 public struct Environment {
@@ -39,6 +44,10 @@ public struct Environment {
             return infoDict[PlistKey.serverURL.value()] as! String
         case .backgroundColor:
             return infoDict[PlistKey.backgroundColor.value()] as! String
+        case .navigationBarBlurAlpha:
+            return infoDict[PlistKey.navigationBarBlurAlpha.value()] as! String
+        case .navigationBarColor:
+            return infoDict[PlistKey.navigationBarColor.value()] as! String
         }
     }
 }
