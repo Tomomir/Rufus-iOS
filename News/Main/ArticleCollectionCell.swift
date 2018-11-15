@@ -15,5 +15,10 @@ class ArticleCollectionCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     
-    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        let titleColor = Environment().configuration(.titleColor).hexStringToUIColor()
+        titleLabel.textColor = titleColor
+    }
 }

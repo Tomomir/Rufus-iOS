@@ -13,6 +13,9 @@ public enum PlistKey {
     case backgroundColor
     case navigationBarBlurAlpha
     case navigationBarColor
+    case navigationBarUseBlur
+    case titleColor
+    case initialPostFetchCount
     
     func value() -> String {
         switch self {
@@ -24,6 +27,12 @@ public enum PlistKey {
             return "navigation_bar_blur_alpha"
         case .navigationBarColor:
             return "navigation_bar_color"
+        case .navigationBarUseBlur:
+            return "navigation_bar_use_blur"
+        case .titleColor:
+            return "title_color"
+        case .initialPostFetchCount:
+            return "initial_post_fetch_count"
         }
     }
 }
@@ -48,6 +57,12 @@ public struct Environment {
             return infoDict[PlistKey.navigationBarBlurAlpha.value()] as! String
         case .navigationBarColor:
             return infoDict[PlistKey.navigationBarColor.value()] as! String
+        case .navigationBarUseBlur:
+            return infoDict[PlistKey.navigationBarUseBlur.value()] as! String
+        case .titleColor:
+            return infoDict[PlistKey.titleColor.value()] as! String
+        case .initialPostFetchCount:
+            return infoDict[PlistKey.initialPostFetchCount.value()] as! String
         }
     }
 }

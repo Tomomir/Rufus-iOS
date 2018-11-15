@@ -23,6 +23,9 @@ class CategoryCollectionCell: UICollectionViewCell {
         //self.contentView.translatesAutoresizingMaskIntoConstraints = false
         self.cellContainerView.translatesAutoresizingMaskIntoConstraints = false
         
+        let titleColor = Environment().configuration(.titleColor).hexStringToUIColor()
+        self.nameLabel.textColor = titleColor
+        self.chosenIndicatorView.backgroundColor = titleColor
     }
     
 //    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {

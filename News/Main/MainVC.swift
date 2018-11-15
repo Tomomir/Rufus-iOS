@@ -9,7 +9,7 @@
 import UIKit
 import NavigationDrawer
 
-class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MainVC: UIViewController, UITableViewDelegate {
     
     // navigation bar outlets
     @IBOutlet weak var navigationBarView: UIView!
@@ -25,13 +25,31 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var categoryCollectionView: UICollectionView!
     
     let interactor = Interactor()
-    let categoryDataSource: CategoryDataSource = CategoryDataSource.shared
-
+    private let refreshControl = UIRefreshControl()
+    var categoryDataSource: CategoryDataSource? = nil //CategoryDataSource.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.setupVC()
+        tableView.dataSource = ArticlesDataSource.shared
+        ArticlesDataSource.shared.tableView = tableView
+        
+        // allows us to have different cell heights without defiing exact height for every cell
+        tableView.estimatedRowHeight = 299
+        tableView.rowHeight = UITableView.automaticDimension
+        
+        // moves tableview starting position so it doesnt start under navigation bar
+        tableView.contentInset = UIEdgeInsets(top: navigationBarView.bounds.origin.y + navigationBarView.bounds.size.height + 10, left: 0, bottom: 0, right: 0)
+        tableView.scrollIndicatorInsets = tableView.contentInset
+        
+        //refresh controll
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(pullToRefreshAction), for: .valueChanged)
+        
+        
+        API.shared.observeUserLogin { [weak self] in
+            self?.setupVC()
+        }
     }
     
     // MARK: - Actions
@@ -61,85 +79,71 @@ class MainVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    @objc func pullToRefreshAction(_ sender: Any) {
+        API.shared.getArticles { [weak self] in
+            self?.refreshControl.endRefreshing()
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationViewController = segue.destination as? HamburgerMenuVC {
             destinationViewController.transitioningDelegate = self
             destinationViewController.interactor = self.interactor
+            destinationViewController.mainVC = self
         }
     }
-
     
     // MARK: - UITableView delegate
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
-            let firstCell = tableView.dequeueReusableCell(withIdentifier: "ArticlesCollectionCell", for: indexPath)
-            return firstCell
-        }
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ArticleCell", for: indexPath)
-        
-        return cell
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //do nothing if the first cell was pressed
-        if indexPath.row == 0 { return}
         
         let vc = storyboard?.instantiateViewController(withIdentifier: "ArticleDetailVC") as? ArticleDetailVC
+        vc?.articleData = ArticlesDataSource.shared.articlesToShow[indexPath.row]
         self.navigationController?.pushViewController(vc!, animated: true)
     }
+
     
     // MARK: - Other
     
     private func setupVC() {
         // set values from config file
         self.configurate()
+        self.categoryDataSource = CategoryDataSource.shared
         
-        // allows us to have different cell heights without defiing exact height for every cell
-        tableView.estimatedRowHeight = 299
-        tableView.rowHeight = UITableView.automaticDimension
-        
-        // moves tableview starting position so it doesnt start under navigation bar
-        tableView.contentInset = UIEdgeInsets(top: navigationBarView.bounds.origin.y + navigationBarView.bounds.size.height + 10, left: 0, bottom: 0, right: 0)
-        tableView.scrollIndicatorInsets = tableView.contentInset
-     
-//        let appDelegate = (UIApplication.shared.delegate as! AppDelegate)
-//        appDelegate.window?.rootViewController = self
-        
-        categoryDataSource.collectionView = categoryCollectionView
+        categoryDataSource?.collectionView = categoryCollectionView
         categoryCollectionView.dataSource = categoryDataSource
         categoryCollectionView.delegate = categoryDataSource
-        if let flowLayout = categoryCollectionView.collectionViewLayout as? UICollectionViewFlowLayout,
-            let collectionView = categoryCollectionView {
+        if let flowLayout = categoryCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.estimatedItemSize = CGSize(width: 40, height: 35)
-        }
-        API.shared.getNews { (result) in
-            
         }
     }
     
     private func configurate() {
-//        if let navigationBarAlpha = Environment().configuration(.navigationBarBlurAlpha) as? String {
-//            //self.navigationBarBlurColorView.alpha = CGFloat(navigationBarAlpha)
-//            print(navigationBarAlpha)
-//        }
-//        if let navigationBarColor = Environment().configuration(.navigationBarColor) as? Int {
-//            self.navigationBarBlurColorView.backgroundColor = UIColor(rgb: navigationBarColor)
-//        }
-//        if let server = Environment().configuration(.serverURL) {
-//            print(server)
-//        }
-        let server_url = Environment().configuration(PlistKey.serverURL)
-        print(server_url)
+
+        if let alpha = Environment().configuration(.navigationBarBlurAlpha).CGFloatValue() {
+            self.navigationBarBlurColorView.alpha = alpha
+        }
+        let color = Environment().configuration(.navigationBarColor).hexStringToUIColor()
+        self.navigationBarBlurColorView.backgroundColor = color
         
-        print(Environment().configuration(PlistKey.serverURL))
-        print(Environment().configuration(.navigationBarBlurAlpha))
-         print(Environment().configuration(.navigationBarColor))
+        if let useBlur = Environment().configuration(.navigationBarUseBlur).BoolValue() {
+           self.navigationBlurView.isHidden = !useBlur
+        }
+        
+        let titleColor = Environment().configuration(.titleColor).hexStringToUIColor()
+        if let myImage = UIImage(named: "menu-512") {
+            let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
+            navigationHamburgerButton.tintColor = titleColor
+            navigationHamburgerButton.setImage(tintableImage, for: .normal)
+        }
+        
+        self.navigationCreditsLabel.textColor = titleColor
+        
+    }
+    
+    func pushLoginVC() {
+        let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
+        navigationController?.pushViewController(loginVC, animated: true)
     }
 
 }

@@ -25,6 +25,7 @@ class HamburgerMenuVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     @IBOutlet weak var emailLabel: UILabel!
     
     var interactor:Interactor? = nil
+    var mainVC: MainVC? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,5 +81,29 @@ class HamburgerMenuVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        switch indexPath.row {
+        case HamburgerTableViewCellType.allArticles.rawValue:
+            break
+        case HamburgerTableViewCellType.purchasedArticles.rawValue:
+            break
+        case HamburgerTableViewCellType.savedArticles.rawValue:
+            break
+        case HamburgerTableViewCellType.readArticles.rawValue:
+            break
+        case HamburgerTableViewCellType.logout.rawValue:
+            API.shared.logout()
+            dismiss(animated: true) {
+                if let mainController = self.mainVC {
+                    mainController.pushLoginVC()
+                }
+            }
+        default:
+            break
+        }
     }
 }

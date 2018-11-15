@@ -28,24 +28,24 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
     
     override init() {
         super.init()
-        API.shared.getCategories { [weak self] (result) in
-            switch result {
-            case .failure(let error):
-                print(error)
-            
-            case .success(let categories):
-                
-                self?.categories.append(CategoryData(key: "all", name: "All"))
-                
-                for categoryKey in categories.keys {
-                    let key = categoryKey
-                    if let name = (categories[key] as! [String : String])["name"] {
-                        self?.categories.append(CategoryData(key: key, name: name))
-                    }
-                }
-                self?.collectionView?.reloadData()
-            }
-        }
+//        API.shared.getCategories { [weak self] (result) in
+//            switch result {
+//            case .failure(let error):
+//                print(error)
+//
+//            case .success(let categories):
+//
+//                self?.categories.append(CategoryData(key: "all", name: "All"))
+//
+//                for categoryKey in categories.keys {
+//                    let key = categoryKey
+//                    if let name = (categories[key] as! [String : String])["name"] {
+//                        self?.categories.append(CategoryData(key: key, name: name))
+//                    }
+//                }
+//                self?.collectionView?.reloadData()
+//            }
+//        }
     }
     
     // MARK: - UICollectionView delegate
@@ -73,6 +73,7 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
         cellToSelect.setChosen(chosen: true, animated: true)
         
         selectedCellIndex = indexPath.row
+        ArticlesDataSource.shared.setCategory(categoryKey: categories[selectedCellIndex].key)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -82,6 +83,21 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
                 categoryCell.setChosen(chosen: false, animated: false)
             }
         }
+    }
+    
+    // MARK: - Other
+    
+    func setCategories(categories: [String: Any]) {
+        self.categories.removeAll()
+        self.categories.append(CategoryData(key: "all", name: "All"))
+
+        for categoryKey in categories.keys {
+            let key = categoryKey
+            if let name = (categories[key] as! [String : String])["name"] {
+                self.categories.append(CategoryData(key: key, name: name))
+            }
+        }
+        self.collectionView?.reloadData()
     }
     
     

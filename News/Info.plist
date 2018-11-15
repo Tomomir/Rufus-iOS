@@ -24,9 +24,21 @@
 				<string>fb1548249458654672</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.83992737225-5blqpg8hbgksgnoto6nnapu2pa732n82</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>FacebookAppID</key>
+	<string>1548249458654672</string>
+	<key>FacebookDisplayName</key>
+	<string>Rufus</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -48,17 +60,19 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>FacebookAppID</key>
-	<string>1548249458654672</string>
-	<key>FacebookDisplayName</key>
-	<string>Rufus</string>
-	<key>server_url</key>
-	<string>$(server_url)</string>
 	<key>background_color</key>
 	<string>$(background_color)</string>
 	<key>navigation_bar_blur_alpha</key>
 	<string>$(navigation_bar_blur_alpha)</string>
 	<key>navigation_bar_color</key>
 	<string>$(navigation_bar_color)</string>
+	<key>navigation_bar_use_blur</key>
+	<string>$(navigation_bar_use_blur)</string>
+	<key>server_url</key>
+	<string>$(server_url)</string>
+	<key>title_color</key>
+	<string>$(title_color)</string>
+	<key>initial_post_fetch_count</key>
+	<string>$(initial_post_fetch_count)</string>
 </dict>
 </plist>

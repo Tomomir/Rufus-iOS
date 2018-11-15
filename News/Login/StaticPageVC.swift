@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import JGProgressHUD
 
 class StaticPageVC: UIViewController {
 
@@ -26,15 +28,40 @@ class StaticPageVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.fillData()
+        self.clearLabelsAndTextView()
+        let hud = JGProgressHUD(style: .light)
+        hud.textLabel.text = ""
+        hud.show(in: self.view)
+        hud.dismiss(afterDelay: 10.0)
+        
+        API.shared.getFullStaticPageDict { [weak self] (result) in
+            hud.dismiss()
+            switch result {
+            case .failure(let error):
+                // TODO: handle error
+                print(error)
+            case .success(let pageData):
+                if let firstPageData = pageData.first {
+                    self?.data = firstPageData
+                    self?.fillData()
+                } else {
+                    // TODO: handle error here
+                }
+            }
+        }
     }
     
     // MARK: - Actions
     
     @IBAction func acceptAction(_ sender: Any) {
         //TODO: mark page as accepted
-        
-        navigationController?.popViewController(animated: true)
+        if let userID = Auth.auth().currentUser?.uid {
+            API.shared.saveStaticPageAcceptance(userID: userID)
+            //navigationController?.popToRootViewController(animated: true)
+            self.loadEssentialsAndPopVC()
+        } else {
+            // TODO: handle error here
+        }
     }
     
     
@@ -55,6 +82,27 @@ class StaticPageVC: UIViewController {
         }
         contentTextView.text = finalText
         contentTextViewHeightConts.constant = contentTextView.contentSize.height
+    }
+    
+    func clearLabelsAndTextView() {
+        self.titleLabel.text = ""
+        self.subtitleLabel.text = ""
+        self.contentTextView.text = ""
+    }
+    
+    func loadEssentialsAndPopVC() {
+        let hud = JGProgressHUD(style: .light)
+        hud.textLabel.text = "Loading"
+        hud.show(in: self.view)
+        hud.dismiss(afterDelay: 10.0)
+        API.shared.loadAllEssentails { [weak self] (success) in
+            hud.dismiss()
+            if success {
+                self?.navigationController?.popToRootViewController(animated: true)
+            } else {
+                // TODO: handle error
+            }
+        }
     }
 
 }

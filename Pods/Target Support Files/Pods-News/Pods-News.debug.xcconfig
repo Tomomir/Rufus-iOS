@@ -10,3 +10,12 @@ PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_PODFILE_DIR_PATH = ${SRCROOT}/.
 PODS_ROOT = ${SRCROOT}/Pods
+
+//Cofing settings
+server_url                   = www.google.com
+initial_post_fetch_count     = 10
+background_color             = #000000
+navigation_bar_use_blur      = true
+navigation_bar_blur_alpha    = 0
+navigation_bar_color         = #FFFFFF
+title_color                  = #000000

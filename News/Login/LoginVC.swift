@@ -11,6 +11,7 @@ import FirebaseUI
 import Firebase
 import GoogleSignIn
 import FBSDKLoginKit
+import JGProgressHUD
 
 
 class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUIDelegate, FBSDKLoginButtonDelegate {
@@ -74,8 +75,23 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
 
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         print("did sign in")
-        //self.dismiss(animated: true, completion: nil)
-        navigationController?.popViewController(animated: true)
+        if let error = error {
+            print(error)
+            return
+        }
+        
+        guard let authentication = user.authentication else { return }
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken,
+                                                       accessToken: authentication.accessToken)
+        
+        Auth.auth().signInAndRetrieveData(with: credential) { [weak self] (authResult, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            // User is signed in
+            self?.checkStaticPage()
+        }
     }
     
     func sign(_ signIn: GIDSignIn!, present viewController: UIViewController!) {
@@ -102,7 +118,7 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
                 return
             }
             print("did sign in with facebook")
-            self?.navigationController?.popViewController(animated: true)
+            self?.checkStaticPage()
         }
     }
     
@@ -110,4 +126,29 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
         print("did logout facebook")
     }
     
+    func checkStaticPage() {
+        API.shared.didUserAcceptStaticPage { [weak self] (accepted) in
+            if accepted {
+                self?.loadEssentialsAndPopVC()
+            } else {
+                let pageVC = self?.storyboard?.instantiateViewController(withIdentifier: "StaticPageVC") as! StaticPageVC
+                self?.navigationController?.pushViewController(pageVC, animated: true)
+            }
+        }
+    }
+    
+    func loadEssentialsAndPopVC() {
+        let hud = JGProgressHUD(style: .light)
+        hud.textLabel.text = "Loading"
+        hud.show(in: self.view)
+        hud.dismiss(afterDelay: 10.0)
+        API.shared.loadAllEssentails { [weak self] (success) in
+            hud.dismiss()
+            if success {
+                self?.navigationController?.popViewController(animated: true)
+            } else {
+                // TODO: handle error
+            }
+        }
+    }
 }

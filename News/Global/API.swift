@@ -9,6 +9,7 @@
 import Foundation
 import Firebase
 import FirebaseDatabase
+import FBSDKLoginKit
 
 enum Result<T> {
     case success(T)
@@ -29,30 +30,88 @@ class API {
     
     private init() {
         FirebaseApp.configure()
-        Database.database().isPersistenceEnabled = true
+        //Database.database().isPersistenceEnabled = true
         ref = Database.database().reference()
     }
     
-    func getNews() {
-        let categories = ref.child("postContents").observeSingleEvent(of: .value, with: { (snapshot) in
-            // Get user value
-            let value = snapshot.value as? NSDictionary
-            let values = value?.allValues
-            let dict = self.convertToDictionary(text: values?.first as! String)
+    func loadAllEssentails(completion: ((_ success: Bool) -> Void)?) {
+        let group = DispatchGroup()
+
+        group.enter()
+        self.getCategories { (result) in
+            switch result {
+                case .failure(let error):
+                print(error)
+                case .success(let dict):
+                print(dict)
+                CategoryDataSource.shared.setCategories(categories: dict)
+            }
+            group.leave()
+        }
+        
+        group.enter()
+        self.getArticles { () in
             
+            group.leave()
+        }
+        
+        group.notify(queue: DispatchQueue.main, execute: {
+            print("All Essentials fetched")
+            completion?(true)
+        })
+    }
+    
+//    func getNews() {
+//        let categories = ref.child("postContents").observeSingleEvent(of: .value, with: { (snapshot) in
+//            // Get user value
+//            let value = snapshot.value as? NSDictionary
+//            let values = value?.allValues
+//            let dict = self.convertToDictionary(text: values?.first as! String)
+//
+//        }) { (error) in
+//            print(error.localizedDescription)
+//
+//        }
+//    }
+    
+    func getArticles(completion: (() -> Void)?) {
+        let postCount = Environment().configuration(.initialPostFetchCount).UIntValue()
+        
+        ref.child("posts").queryLimited(toLast: postCount).observeSingleEvent(of: .value, with: { (snapshot) in
+            // Get user value
+            if let value = snapshot.value as? NSDictionary {
+                var parsedArray = [ArticleDataStruct]()
+                
+                for key in value.allKeys {
+                    parsedArray.append(ArticleDataStruct(dict: value[key] as! [String : Any], key: key as! String))
+                }
+                ArticlesDataSource.shared.setInitialArticles(articles: parsedArray)
+                completion?()
+            }
         }) { (error) in
             print(error.localizedDescription)
             
         }
     }
     
-    func getNews(completion: ((Result<[String : Any]>) -> Void)?) {
-        ref.child("posts").queryLimited(toLast: 3).observeSingleEvent(of: .value, with: { (snapshot) in
-            // Get user value
-            let value = snapshot.value as? NSDictionary
-           // let values = value?.allValues
-            //let dict = self.convertToDictionary(text: values?.first as! String)
+    func getArticles(categoryKey: String, batchSize: UInt, completion: (() -> Void)?) {
+        let postCount = Environment().configuration(.initialPostFetchCount).UIntValue()
+        
+        let ref1 = ref.child("posts").queryLimited(toLast: 15)
+        let query = ref1.queryOrdered(byChild: "category").queryEqual(toValue: categoryKey)
+        query.observe(.value, with: { (snapshot) in
             
+            //.queryEqual(toValue: "published", childKey: "status").observeSingleEvent(of: .value, with: { (snapshot) in
+            // Get user value
+            if let value = snapshot.value as? NSDictionary {
+                var parsedArray = [ArticleDataStruct]()
+                
+                for key in value.allKeys {
+                    parsedArray.append(ArticleDataStruct(dict: value[key] as! [String : Any], key: key as! String))
+                }
+                ArticlesDataSource.shared.setInitialArticles(articles: parsedArray)
+                completion?()
+            }
         }) { (error) in
             print(error.localizedDescription)
             
@@ -151,7 +210,99 @@ class API {
         }
     }
     
-//    func getCategories(completion: ((Result<Array>) -> Void)?) {
-//        
-//    }
+    func saveStaticPageAcceptance(userID: String) {
+        ref.child("user/\(userID)/").setValue(["staticPage": true])
+    }
+    
+    func logout() {
+        try! Auth.auth().signOut()
+        FBSDKAccessToken.setCurrent(nil)
+    }
+    
+    func observeUserLogin(completition: (() -> Void)?) {
+        let handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+            completition?()
+        }
+    }
+
+    func didUserAcceptStaticPage(completition: ((Bool) -> Void)?) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            completition?(false)
+            return
+            // TODO: handle error
+        }
+        ref.child("user/\(userID)/staticPage/").observeSingleEvent(of: .value, with: { (snapshot) in
+            if let value = snapshot.value as? Bool {
+                completition?(value)
+            } else {
+                //TODO: handle error
+                completition?(false)
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+            completition?(false)
+        }
+    }
+    
+    func markArticleAsRead(articleKey: String) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+            // TODO: handle error
+        }
+        
+        ref.child("user/\(userID)/readArticles/\(articleKey)").setValue(Date().timeIntervalSince1970)
+    }
+    
+    // MARK: - Saved article management
+    
+    func isSavedArticle(articleKey: String, completition: ((Bool) -> Void)?) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            completition?(false)
+            return
+            // TODO: handle error
+        }
+        ref.child("user/\(userID)/savedArticles/\(articleKey)/").observeSingleEvent(of: .value, with: { (snapshot) in
+            if let _ = snapshot.value as? Double {
+                completition?(true)
+            } else {
+                completition?(false)
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+            //completition?(false)
+        }
+    }
+    
+    func saveArticle(articleKey: String, completition: ((Bool) -> Void)?) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+            // TODO: handle error
+        }
+        
+        ref.child("user/\(userID)/savedArticles/\(articleKey)").setValue(Date().timeIntervalSince1970) { (error, ref) in
+            if let errorValue = error {
+                print(errorValue)
+                completition?(false)
+            } else {
+                completition?(true)
+            }
+        }
+    }
+    
+    func deleteSavedArticle(articleKey: String, completition: ((Bool) -> Void)?) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+            // TODO: handle error
+        }
+        
+        ref.child("user/\(userID)/savedArticles/\(articleKey)").removeValue() { (error, ref) in
+            if let errorValue = error {
+                print(errorValue)
+                completition?(false)
+            } else {
+                completition?(true)
+            }
+        }
+    }
+    
 }
