@@ -80,7 +80,9 @@ class MainVC: UIViewController, UITableViewDelegate {
     }
     
     @objc func pullToRefreshAction(_ sender: Any) {
-        refreshControl.endRefreshing()
+        API.shared.getArticles(isInitialLoad: false) { [weak self] in
+            self?.refreshControl.endRefreshing()
+        }
 //        API.shared.getArticles { [weak self] in
 //            self?.refreshControl.endRefreshing()
 //            if let table = self?.tableView {

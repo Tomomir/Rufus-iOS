@@ -86,7 +86,7 @@ class API {
 //        }
 //    }
     
-    func getArticles(completion: (() -> Void)?) {
+    func getArticles(isInitialLoad: Bool = true, completion: (() -> Void)?) {
         let postCount = Environment().configuration(.initialPostFetchCount).UIntValue()
         
         ref.child("posts").queryLimited(toLast: postCount).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -97,7 +97,11 @@ class API {
                 for key in value.allKeys {
                     parsedArray.append(ArticleDataStruct(dict: value[key] as! [String : Any], key: key as! String))
                 }
-                ArticlesDataSource.shared.setInitialArticles(articles: parsedArray)
+                if isInitialLoad {
+                    ArticlesDataSource.shared.setInitialArticles(articles: parsedArray)
+                } else {
+                    ArticlesDataSource.shared.updateArticles(articles: parsedArray)
+                }
                 completion?()
             }
         }) { (error) in

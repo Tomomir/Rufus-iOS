@@ -8,8 +8,9 @@
 
 import Foundation
 import UIKit
+import DeepDiff
 
-struct ArticleDataStruct {
+struct ArticleDataStruct: Hashable {
     let author: String
     let category: String
     let featured: Bool
@@ -39,6 +40,12 @@ struct ArticleDataStruct {
         text = nil
         self.key = key
     }
+    
+    // MARK: - Hashable protocol
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(key)
+    }
 }
 
 
@@ -54,12 +61,18 @@ class ArticlesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
     var selectedCategoryKey = "all"
     
     func setInitialArticles(articles: [ArticleDataStruct]) {
-        self.allArticles = articles
-        self.articlesToShow = articles
+        allArticles = articles
+        articlesToShow = articles
+    }
+    
+    func updateArticles(articles: [ArticleDataStruct]) {
+        allArticles = articles
+        self.setCategory(categoryKey: selectedCategoryKey)
     }
     
     func setCategory(categoryKey: String) {
-        guard let table = tableView else { return }
+        selectedCategoryKey = categoryKey
+        let oldArticles = articlesToShow
         
         if categoryKey == "all" {
             articlesToShow = allArticles
@@ -73,8 +86,10 @@ class ArticlesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
             }
             articlesToShow = filteredArticles
         }
-        UIView.transition(with: table, duration: 0.2, options: .transitionCrossDissolve, animations: {table.reloadData()}, completion: nil)
-
+        let changes = diff(old: oldArticles, new: articlesToShow)
+        tableView?.reload(changes: changes)
+        //UIView.transition(with: table, duration: 0.2, options: .transitionCrossDissolve, animations: {table.reloadData()}, completion: nil)
+        
     }
     
     // MARK: - UITableView datasource

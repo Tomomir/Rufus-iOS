@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "News/Global/API.swift"
-            timestampString = "563984652.180071"
+            filePath = "News/Global/Extensions.swift"
+            timestampString = "564054511.886218"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
-            landmarkName = "getArticles(categoryKey:batchSize:completion:)"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
+            landmarkName = "UIntValue()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

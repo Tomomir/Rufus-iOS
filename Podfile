@@ -14,6 +14,5 @@ target 'News' do
   pod 'JGProgressHUD'
   pod 'NavigationDrawer'
   pod 'FBSDKLoginKit'
-  
-  
+  pod 'DeepDiff'
 end
