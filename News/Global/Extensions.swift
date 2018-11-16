@@ -32,6 +32,8 @@ extension UIViewController {
 
 extension UIView {
     
+    
+    /// adds shadow to a view
     func addShadow() {
         self.layer.cornerRadius = 5
         self.layer.shadowOpacity = 0.2
@@ -41,7 +43,7 @@ extension UIView {
     }
 }
 
-//allows to set borders and corner radius inside attribute inspector
+// Allows to set borders and corner radius inside attribute inspector
 @IBDesignable extension UIView {
     
     @IBInspectable var borderWidth: CGFloat {
@@ -77,7 +79,10 @@ extension UIView {
 extension UIImageView {
     
     
-    //load image async from inaternet
+    
+    /// Load image direclty to a ImageView
+    ///
+    /// - Parameter photoUrl: URL of the image
     func loadFromURL(photoUrl:String){
         //NSURL
         let url = URL(string: photoUrl)
@@ -100,7 +105,7 @@ extension UIImageView {
     
 }
 
-//allows to init UIColor using hex color
+// Allows to init UIColor using hex color
 extension UIColor {
     
     convenience init(red: Int, green: Int, blue: Int) {
@@ -120,9 +125,12 @@ extension UIColor {
     }
 }
 
-// Convert String to CGFloat 
 extension String {
+
     
+    /// Converts String to a CGFloat value
+    ///
+    /// - Returns: CGFloat value, nil if String cannot be converted
     func CGFloatValue() -> CGFloat? {
         guard let doubleValue = Double(self) else {
             return nil
@@ -131,6 +139,10 @@ extension String {
         return CGFloat(doubleValue)
     }
     
+    
+    /// Converts String to a UIColor, String has to be in hex format (e.g. #FFFFFF)
+    ///
+    /// - Returns: UIColor
     func hexStringToUIColor() -> UIColor {
         var cString:String = self.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         
@@ -153,6 +165,10 @@ extension String {
         )
     }
     
+    
+    /// Converts String to a Bool value
+    ///
+    /// - Returns: Bool value, nil if String is in a wrong format
     func BoolValue() -> Bool? {
         switch self {
         case "True", "true", "yes", "1":
@@ -164,6 +180,10 @@ extension String {
         }
     }
     
+    
+    /// Converts String to a UInt value, String has to be in UInt format
+    ///
+    /// - Returns: UInt value
     func UIntValue() -> UInt {
         if let number = UInt(self) {
             return number
@@ -174,53 +194,15 @@ extension String {
 }
 
 extension Date {
+    
+    
+    /// Converts the Date to a String
+    ///
+    /// - Returns: String representation of the date
     func toFormattedString() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd. MMM yyyy"
         
         return formatter.string(from: self)
-    }
-}
-
-class LoadingButton: UIButton {
-    var originalButtonText: String?
-    var activityIndicator: UIActivityIndicatorView!
-    
-    func showLoading() {
-        originalButtonText = self.titleLabel?.text
-        self.setTitle("", for: .normal)
-        
-        if (activityIndicator == nil) {
-            activityIndicator = createActivityIndicator()
-        }
-        
-        showSpinning()
-    }
-    
-    func hideLoading() {
-        self.setTitle(originalButtonText, for: .normal)
-        activityIndicator.stopAnimating()
-    }
-    
-    private func createActivityIndicator() -> UIActivityIndicatorView {
-        let activityIndicator = UIActivityIndicatorView()
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.color = .lightGray
-        return activityIndicator
-    }
-    
-    private func showSpinning() {
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(activityIndicator)
-        centerActivityIndicatorInButton()
-        activityIndicator.startAnimating()
-    }
-    
-    private func centerActivityIndicatorInButton() {
-        let xCenterConstraint = NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: activityIndicator, attribute: .centerX, multiplier: 1, constant: 0)
-        self.addConstraint(xCenterConstraint)
-        
-        let yCenterConstraint = NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: activityIndicator, attribute: .centerY, multiplier: 1, constant: 0)
-        self.addConstraint(yCenterConstraint)
     }
 }

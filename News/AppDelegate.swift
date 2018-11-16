@@ -18,8 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        let buttonAppearance = CustomButton.appearance()
-        buttonAppearance.backgroundColor = UIColor.red
+        //let buttonAppearance = CustomButton.appearance()
+        //buttonAppearance.backgroundColor = UIColor.red
         
         //facebook login initialization code
         FBSDKApplicationDelegate.sharedInstance()?.application(application, didFinishLaunchingWithOptions: launchOptions)

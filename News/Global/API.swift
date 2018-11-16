@@ -50,6 +50,18 @@ class API {
         }
         
         group.enter()
+        self.getCategoryKeys { (result) in
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let array):
+                print(array)
+                CategoryDataSource.shared.sortCategories(keysArray: array)
+            }
+            group.leave()
+        }
+        
+        group.enter()
         self.getArticles { () in
             
             group.leave()
@@ -136,6 +148,19 @@ class API {
         } else {
             // No user is signed in.
             return false
+        }
+    }
+    
+    func getCategoryKeys(completion: ((Result<[String]>) -> Void)?) {
+        _ = ref.child("categoryKeys").observeSingleEvent(of: .value, with: { (snapshot) in
+            if let value = snapshot.value as? [String] {
+                completion?(.success(value))
+            } else {
+                //TODO: handle error
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+            
         }
     }
     

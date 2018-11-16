@@ -90,8 +90,8 @@ class ArticlesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
         //        }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ArticleCell", for: indexPath) as! ArticleCell
-        cell.titleLabel.text = ArticlesDataSource.shared.articlesToShow[indexPath.row].title
-        
+        cell.titleLabel.text = articlesToShow[indexPath.row].title
+        cell.subtitleLabel.text = articlesToShow[indexPath.row].subtitle
         return cell
     }
     

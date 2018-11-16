@@ -80,9 +80,13 @@ class MainVC: UIViewController, UITableViewDelegate {
     }
     
     @objc func pullToRefreshAction(_ sender: Any) {
-        API.shared.getArticles { [weak self] in
-            self?.refreshControl.endRefreshing()
-        }
+        refreshControl.endRefreshing()
+//        API.shared.getArticles { [weak self] in
+//            self?.refreshControl.endRefreshing()
+//            if let table = self?.tableView {
+//                UIView.transition(with: table, duration: 0.6, options: .transitionCrossDissolve, animations: {table.reloadData()}, completion: nil)
+//            }
+//        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -114,7 +118,7 @@ class MainVC: UIViewController, UITableViewDelegate {
         categoryCollectionView.dataSource = categoryDataSource
         categoryCollectionView.delegate = categoryDataSource
         if let flowLayout = categoryCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.estimatedItemSize = CGSize(width: 40, height: 35)
+            flowLayout.estimatedItemSize = CGSize(width: 80, height: 35)
         }
     }
     

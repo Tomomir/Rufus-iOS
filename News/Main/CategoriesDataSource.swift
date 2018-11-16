@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+//structure that represents single category
 struct CategoryData {
     let key: String
     let name: String
@@ -16,6 +17,7 @@ struct CategoryData {
 
 class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDelegate {
     
+    //singleton
     static var shared = CategoryDataSource()
 
     private var indexOfCellBeforeDragging = 0
@@ -23,30 +25,7 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
     private var categories = [CategoryData]()
     private var selectedCellIndex: Int = 0
     
-    
     var collectionView: UICollectionView?
-    
-    override init() {
-        super.init()
-//        API.shared.getCategories { [weak self] (result) in
-//            switch result {
-//            case .failure(let error):
-//                print(error)
-//
-//            case .success(let categories):
-//
-//                self?.categories.append(CategoryData(key: "all", name: "All"))
-//
-//                for categoryKey in categories.keys {
-//                    let key = categoryKey
-//                    if let name = (categories[key] as! [String : String])["name"] {
-//                        self?.categories.append(CategoryData(key: key, name: name))
-//                    }
-//                }
-//                self?.collectionView?.reloadData()
-//            }
-//        }
-    }
     
     // MARK: - UICollectionView delegate
     
@@ -87,9 +66,12 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
     
     // MARK: - Other
     
+    
+    /// Creates categories array from downloaded dictionary
+    ///
+    /// - Parameter categories: dictionary containing keys and name of the categories
     func setCategories(categories: [String: Any]) {
         self.categories.removeAll()
-        self.categories.append(CategoryData(key: "all", name: "All"))
 
         for categoryKey in categories.keys {
             let key = categoryKey
@@ -98,6 +80,24 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
             }
         }
         self.collectionView?.reloadData()
+    }
+    
+    
+    /// Sorts categories
+    ///
+    /// - Parameter keysArray: array of key according to which it sorts categories
+    func sortCategories(keysArray: [String]) {
+        var sortedCategories = [CategoryData]()
+        sortedCategories.append(CategoryData(key: "all", name: "All"))
+        
+        for key in keysArray {
+            for category in categories {
+                if key == category.key {
+                    sortedCategories.append(category)
+                }
+            }
+        }
+        categories = sortedCategories
     }
     
     

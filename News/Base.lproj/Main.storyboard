@@ -343,9 +343,19 @@
                                                         <constraint firstAttribute="height" constant="1" id="QH7-qr-glv"/>
                                                     </constraints>
                                                 </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rTv-Hx-pXH">
+                                                    <rect key="frame" x="20" y="57" width="178" height="76"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="uv4-gm-RIW" firstAttribute="leading" secondItem="rTv-Hx-pXH" secondAttribute="trailing" constant="32" id="51T-aD-Pq2"/>
                                                 <constraint firstItem="n5o-nD-Zax" firstAttribute="leading" secondItem="Vn8-eG-IHn" secondAttribute="leading" constant="20" id="5JV-zX-4EP"/>
+                                                <constraint firstItem="rTv-Hx-pXH" firstAttribute="leading" secondItem="Vn8-eG-IHn" secondAttribute="leading" constant="20" id="F1j-Yn-1zw"/>
+                                                <constraint firstItem="rTv-Hx-pXH" firstAttribute="top" secondItem="n5o-nD-Zax" secondAttribute="bottom" constant="7.6666666666666643" id="FwM-Lm-Hlk"/>
+                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="rTv-Hx-pXH" secondAttribute="bottom" constant="22" id="S4u-Qs-O7F"/>
                                                 <constraint firstItem="uv4-gm-RIW" firstAttribute="top" secondItem="Vn8-eG-IHn" secondAttribute="top" constant="10" id="SIc-IQ-LdT"/>
                                                 <constraint firstAttribute="bottom" secondItem="uv4-gm-RIW" secondAttribute="bottom" constant="10" id="YF5-HC-f3O"/>
                                                 <constraint firstItem="xCf-lV-TJh" firstAttribute="leading" secondItem="Vn8-eG-IHn" secondAttribute="leading" id="eES-Y4-uep"/>
@@ -357,6 +367,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="subtitleLabel" destination="rTv-Hx-pXH" id="Ite-Hb-1qV"/>
                                             <outlet property="titleLabel" destination="n5o-nD-Zax" id="mS2-K7-U1G"/>
                                         </connections>
                                     </tableViewCell>
