@@ -22,10 +22,11 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
 
     private var indexOfCellBeforeDragging = 0
     
-    private var categories = [CategoryData]()
+    var categories = [CategoryData]()
     private var selectedCellIndex: Int = 0
     
     var collectionView: UICollectionView?
+    var mainVC: MainVC?
     
     // MARK: - UICollectionView delegate
     
@@ -43,7 +44,7 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // if selecting selected cell do nothing
         if indexPath.row == selectedCellIndex { return }
-
+        
         let cellToSelect = collectionView.cellForItem(at: indexPath) as! CategoryCollectionCell
         if let cellToDeselect = collectionView.cellForItem(at: IndexPath(row: selectedCellIndex, section: 0)) as? CategoryCollectionCell {
             cellToDeselect.setChosen(chosen: false, animated: true)
@@ -51,8 +52,8 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
         }
         cellToSelect.setChosen(chosen: true, animated: true)
         
+        mainVC?.selectCategoryAtIndex(newIndex: indexPath.row, oldIndex: selectedCellIndex)
         selectedCellIndex = indexPath.row
-        ArticlesDataSource.shared.setCategory(categoryKey: categories[selectedCellIndex].key)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -66,6 +67,27 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
     
     // MARK: - Other
     
+    func selectCategory(categoryKey: String) {
+        for (index,category) in categories.enumerated() {
+            if category.key == categoryKey {
+                selectCategoryAtIndex(index: index)
+            }
+        }
+    }
+    
+    func selectCategoryAtIndex(index: Int) {
+        // if selecting selected cell do nothing
+        if index == selectedCellIndex { return }
+        
+        if let cellToSelect = collectionView?.cellForItem(at: IndexPath(row: index, section: 0)) as? CategoryCollectionCell {
+            cellToSelect.setChosen(chosen: true, animated: true)
+        }
+        if let cellToDeselect = collectionView?.cellForItem(at: IndexPath(row: selectedCellIndex, section: 0)) as? CategoryCollectionCell {
+            cellToDeselect.setChosen(chosen: false, animated: true)
+        }
+        
+        selectedCellIndex = index
+    }
     
     /// Creates categories array from downloaded dictionary
     ///
@@ -79,7 +101,6 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
                 self.categories.append(CategoryData(key: key, name: name))
             }
         }
-        self.collectionView?.reloadData()
     }
     
     
@@ -98,7 +119,8 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
             }
         }
         categories = sortedCategories
+        self.collectionView?.reloadData()
+//        mainVC?.setCategoryPages(categories: sortedCategories)
     }
-    
     
 }

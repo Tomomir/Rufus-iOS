@@ -61,11 +61,11 @@ class API {
             group.leave()
         }
         
-        group.enter()
-        self.getArticles { () in
-            
-            group.leave()
-        }
+//        group.enter()
+//        self.getArticles { () in
+//            
+//            group.leave()
+//        }
         
         group.notify(queue: DispatchQueue.main, execute: {
             print("All Essentials fetched")
@@ -98,9 +98,13 @@ class API {
                     parsedArray.append(ArticleDataStruct(dict: value[key] as! [String : Any], key: key as! String))
                 }
                 if isInitialLoad {
-                    ArticlesDataSource.shared.setInitialArticles(articles: parsedArray)
+                    let nc = NotificationCenter.default
+                    nc.post(name: Notification.Name("articles_inital_loaded"), object: ["articles" :parsedArray])
+                    //ArticlesDataSource.shared.setInitialArticles(articles: parsedArray)
                 } else {
-                    ArticlesDataSource.shared.updateArticles(articles: parsedArray)
+                    let nc = NotificationCenter.default
+                    nc.post(name: Notification.Name("articles_updated"), object: ["articles" :parsedArray])
+                    //ArticlesDataSource.shared.updateArticles(articles: parsedArray)
                 }
                 completion?()
             }
@@ -125,7 +129,7 @@ class API {
                 for key in value.allKeys {
                     parsedArray.append(ArticleDataStruct(dict: value[key] as! [String : Any], key: key as! String))
                 }
-                ArticlesDataSource.shared.setInitialArticles(articles: parsedArray)
+                //ArticlesDataSource.shared.setInitialArticles(articles: parsedArray)
                 completion?()
             }
         }) { (error) in

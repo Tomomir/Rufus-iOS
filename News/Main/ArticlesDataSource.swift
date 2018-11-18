@@ -60,14 +60,33 @@ class ArticlesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
     
     var selectedCategoryKey = "all"
     
-    func setInitialArticles(articles: [ArticleDataStruct]) {
-        allArticles = articles
-        articlesToShow = articles
+    override init() {
+        super.init()
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(setInitialArticles(notification:)), name: Notification.Name("articles_inital_loaded"), object: nil)
+        nc.addObserver(self, selector: #selector(updateArticles(notification:)), name: Notification.Name("articles_updated"), object: nil)
+
     }
     
-    func updateArticles(articles: [ArticleDataStruct]) {
-        allArticles = articles
-        self.setCategory(categoryKey: selectedCategoryKey)
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func setInitialArticles(notification: NSNotification) {
+        var dict = notification.object as! [String : Any]
+        if let articles = dict["articles"] as? [ArticleDataStruct] {
+            allArticles = articles
+            self.setCategory(categoryKey: selectedCategoryKey)
+        }
+    }
+    
+    @objc func updateArticles(notification: NSNotification) {
+        //var articles = Array(arrayLiteral: notification.object!) as! [ArticleDataStruct]
+        var dict = notification.object as! [String : Any]
+        if let articles = dict["articles"] as? [ArticleDataStruct] {
+            allArticles = articles
+            self.setCategory(categoryKey: selectedCategoryKey)
+        }
     }
     
     func setCategory(categoryKey: String) {
@@ -88,14 +107,14 @@ class ArticlesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
         }
         let changes = diff(old: oldArticles, new: articlesToShow)
         tableView?.reload(changes: changes)
-        //UIView.transition(with: table, duration: 0.2, options: .transitionCrossDissolve, animations: {table.reloadData()}, completion: nil)
+        
         
     }
     
     // MARK: - UITableView datasource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ArticlesDataSource.shared.articlesToShow.count
+        return articlesToShow.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

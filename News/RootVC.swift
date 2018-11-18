@@ -92,17 +92,18 @@ class RootVC: UIViewController {
     */
 
     func loadEssentialsAndPushVCs(viewControllers: [UIViewController]) {
-        let hud = JGProgressHUD(style: .light)
-        hud.textLabel.text = "Loading"
-        hud.show(in: self.view)
-        hud.dismiss(afterDelay: 10.0)
-        API.shared.loadAllEssentails { [weak self] (success) in
-            hud.dismiss()
-            if success {
-                self?.navigationController?.setViewControllers(viewControllers, animated: true)
-            } else {
-                // TODO: handle error
-            }
-        }
+//        let hud = JGProgressHUD(style: .light)
+//        hud.textLabel.text = "Loading"
+//        hud.show(in: self.view)
+//        hud.dismiss(afterDelay: 10.0)
+//        API.shared.loadAllEssentails { [weak self] (success) in
+//            hud.dismiss()
+//            if success {
+//                self?.navigationController?.setViewControllers(viewControllers, animated: true)
+//            } else {
+//                // TODO: handle error
+//            }
+//        }
+        self.navigationController?.setViewControllers(viewControllers, animated: true)
     }
 }

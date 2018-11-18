@@ -91,18 +91,19 @@ class StaticPageVC: UIViewController {
     }
     
     func loadEssentialsAndPopVC() {
-        let hud = JGProgressHUD(style: .light)
-        hud.textLabel.text = "Loading"
-        hud.show(in: self.view)
-        hud.dismiss(afterDelay: 10.0)
-        API.shared.loadAllEssentails { [weak self] (success) in
-            hud.dismiss()
-            if success {
-                self?.navigationController?.popToRootViewController(animated: true)
-            } else {
-                // TODO: handle error
-            }
-        }
+//        let hud = JGProgressHUD(style: .light)
+//        hud.textLabel.text = "Loading"
+//        hud.show(in: self.view)
+//        hud.dismiss(afterDelay: 10.0)
+//        API.shared.loadAllEssentails { [weak self] (success) in
+//            hud.dismiss()
+//            if success {
+//            } else {
+//                // TODO: handle error
+//            }
+//        }
+        self.navigationController?.popToRootViewController(animated: true)
+
     }
 
 }

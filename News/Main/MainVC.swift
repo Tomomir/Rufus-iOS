@@ -9,7 +9,7 @@
 import UIKit
 import NavigationDrawer
 
-class MainVC: UIViewController, UITableViewDelegate {
+class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     // navigation bar outlets
     @IBOutlet weak var navigationBarView: UIView!
@@ -21,35 +21,30 @@ class MainVC: UIViewController, UITableViewDelegate {
     @IBOutlet weak var navigationHamburgerButton: UIButton!
     @IBOutlet weak var navigationBlurView: UIVisualEffectView!
     
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var pagesContainerView: UIView!
     @IBOutlet weak var categoryCollectionView: UICollectionView!
     
-    let interactor = Interactor()
-    private let refreshControl = UIRefreshControl()
     var categoryDataSource: CategoryDataSource? = nil //CategoryDataSource.shared
+    let interactor = Interactor()
+    
+    let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+    var pages = [UIViewController]()
+    private var isInitialLoaded = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.dataSource = ArticlesDataSource.shared
-        ArticlesDataSource.shared.tableView = tableView
-        
-        // allows us to have different cell heights without defiing exact height for every cell
-        tableView.estimatedRowHeight = 299
-        tableView.rowHeight = UITableView.automaticDimension
-        
-        // moves tableview starting position so it doesnt start under navigation bar
-        tableView.contentInset = UIEdgeInsets(top: navigationBarView.bounds.origin.y + navigationBarView.bounds.size.height + 10, left: 0, bottom: 0, right: 0)
-        tableView.scrollIndicatorInsets = tableView.contentInset
-        
-        //refresh controll
-        tableView.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(pullToRefreshAction), for: .valueChanged)
-        
-        
-        API.shared.observeUserLogin { [weak self] in
-            self?.setupVC()
+        self.setupVC()
+
+        API.shared.loadAllEssentails { [weak self] (success) in
+            self?.isInitialLoaded = success
+            self?.setCategoryPages(categories: self?.categoryDataSource?.categories)
+            API.shared.getArticles(completion: {
+                
+            })
         }
+//        API.shared.observeUserLogin { [weak self] in
+//            //self?.setupVC()
+//        }
     }
     
     // MARK: - Actions
@@ -79,18 +74,6 @@ class MainVC: UIViewController, UITableViewDelegate {
         }
     }
     
-    @objc func pullToRefreshAction(_ sender: Any) {
-        API.shared.getArticles(isInitialLoad: false) { [weak self] in
-            self?.refreshControl.endRefreshing()
-        }
-//        API.shared.getArticles { [weak self] in
-//            self?.refreshControl.endRefreshing()
-//            if let table = self?.tableView {
-//                UIView.transition(with: table, duration: 0.6, options: .transitionCrossDissolve, animations: {table.reloadData()}, completion: nil)
-//            }
-//        }
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationViewController = segue.destination as? HamburgerMenuVC {
             destinationViewController.transitioningDelegate = self
@@ -99,13 +82,48 @@ class MainVC: UIViewController, UITableViewDelegate {
         }
     }
     
-    // MARK: - UITableView delegate
+    // MARK: - UIPageViewControllerDelegate
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let vc = storyboard?.instantiateViewController(withIdentifier: "ArticleDetailVC") as? ArticleDetailVC
-        vc?.articleData = ArticlesDataSource.shared.articlesToShow[indexPath.row]
-        self.navigationController?.pushViewController(vc!, animated: true)
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        if let index = pages.firstIndex(of: viewController) {
+            if index == 0 {
+                return nil
+            } else {
+                return pages[index - 1]
+            }
+        } else {
+            return nil
+        }
+
+
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        if let index = pages.firstIndex(of: viewController) {
+            if index == pages.count - 1 {
+                return nil
+            } else {
+                return pages[index + 1]
+            }
+        } else {
+            return nil
+        }
+
+
+    }
+    
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        for vc in previousViewControllers {
+            let index = pages.firstIndex(of: vc)
+            //print("\((vc as! CategoryPageVC).categoryName), index:\(index), realCategory: \(categoryDataSource?.categories[index ?? -1])")
+        }
+        if let firstVC = previousViewControllers[0] as? CategoryPageVC {
+            if let firstVCIndex = pages.firstIndex(of: firstVC) {
+                //print("\(firstVC.categoryName) completed: \(completed), index:\(firstVCIndex)")
+                //CategoryDataSource.shared.selectCategoryAtIndex(index: firstVCIndex)
+            }
+        }
     }
 
     
@@ -115,13 +133,15 @@ class MainVC: UIViewController, UITableViewDelegate {
         // set values from config file
         self.configurate()
         self.categoryDataSource = CategoryDataSource.shared
-        
         categoryDataSource?.collectionView = categoryCollectionView
+        categoryDataSource?.mainVC = self
         categoryCollectionView.dataSource = categoryDataSource
         categoryCollectionView.delegate = categoryDataSource
         if let flowLayout = categoryCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.estimatedItemSize = CGSize(width: 80, height: 35)
         }
+        
+        //self.setCategoryPages(categories: categoryDataSource?.categories)
     }
     
     private func configurate() {
@@ -145,6 +165,38 @@ class MainVC: UIViewController, UITableViewDelegate {
         
         self.navigationCreditsLabel.textColor = titleColor
         
+    }
+    
+    func selectCategoryAtIndex(newIndex: Int, oldIndex: Int) {
+        
+        pageViewController.setViewControllers([pages[newIndex]],
+                                              direction: newIndex > oldIndex ? .forward : .reverse,
+                                              animated: true,
+                                              completion: nil)
+    }
+    
+    func setCategoryPages(categories: [CategoryData]?) {
+        
+        for category in categories ?? [] {
+            let vc = storyboard?.instantiateViewController(withIdentifier: "CategoryPageVC") as! CategoryPageVC
+            vc.articleDataSource.selectedCategoryKey = category.key
+            vc.categoryName = category.name
+            vc.navigationBarView = navigationBarView
+            pages.append(vc)
+        }
+        
+        pageViewController.dataSource = self
+        pageViewController.delegate = self
+        pageViewController.setViewControllers([pages.first!], direction: .forward, animated: false, completion: nil)
+        pageViewController.view.frame = pagesContainerView.frame
+        
+        for page in pages {
+            print((page as! CategoryPageVC).categoryName)
+        }
+        
+        addChild(pageViewController)
+        pagesContainerView.addSubview(pageViewController.view)
+        pageViewController.didMove(toParent: self)
     }
     
     func pushLoginVC() {
