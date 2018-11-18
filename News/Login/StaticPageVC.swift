@@ -71,11 +71,11 @@ class StaticPageVC: UIViewController {
         guard let dataStruct = data else { return }
         self.titleLabel.text = dataStruct.title
         self.subtitleLabel.text = dataStruct.subTitle
-        
+
         let text = API.shared.convertToDictionary(text: dataStruct.text)
         let blocks = text!["blocks"] as! [[String : Any]]
         var finalText: String = ""
-        
+
         for block in blocks {
             finalText.append(block["text"] as! String)
             finalText.append("\n\n")

@@ -138,6 +138,19 @@ class API {
         }
     }
     
+    func getArticleContent(articleKey: String, completion: ((String) -> Void)?) {
+        ref.child("postContentsHTML/\(articleKey)").observeSingleEvent(of: .value, with: { (snapshot) in
+            // Get user value
+            if let value = snapshot.value as? String {
+                completion?(value)
+            }
+
+        }) { (error) in
+            print(error.localizedDescription)
+
+        }
+    }
+    
     func convertToDictionary(text: String) -> [String: Any]? {
         if let data = text.data(using: .utf8) {
             do {
