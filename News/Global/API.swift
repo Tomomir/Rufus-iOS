@@ -257,7 +257,7 @@ class API {
     }
     
     func saveStaticPageAcceptance(userID: String) {
-        ref.child("user/\(userID)/").setValue(["staticPage": true])
+        ref.child("users/\(userID)/").setValue(["staticPage": true])
     }
     
     func logout() {
