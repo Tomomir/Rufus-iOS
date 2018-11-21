@@ -21,6 +21,7 @@ enum HamburgerTableViewCellType: Int {
 
 class HamburgerMenuVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var topBackgroundView: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var emailLabel: UILabel!
     
@@ -29,6 +30,9 @@ class HamburgerMenuVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
         if let user = Auth.auth().currentUser {
             emailLabel.text = user.email
             if let imageUrl = user.photoURL {
@@ -105,5 +109,13 @@ class HamburgerMenuVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         default:
             break
         }
+    }
+    
+    // MARK: - Other
+    
+    /// sets values from config file
+    func configurate() {
+        let topBackgroundColor = Environment().configuration(.hamburgerMenuColor).hexStringToUIColor()
+        self.topBackgroundView.backgroundColor = topBackgroundColor
     }
 }

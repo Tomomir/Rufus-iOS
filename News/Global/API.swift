@@ -87,7 +87,7 @@ class API {
 //    }
     
     func getArticles(isInitialLoad: Bool = true, completion: (() -> Void)?) {
-        let postCount = Environment().configuration(.initialPostFetchCount).UIntValue()
+        let postCount = UInt(1000)
         
         ref.child("posts").queryLimited(toLast: postCount).observeSingleEvent(of: .value, with: { (snapshot) in
             // Get user value
@@ -115,7 +115,7 @@ class API {
     }
     
     func getArticles(categoryKey: String, batchSize: UInt, completion: (() -> Void)?) {
-        let postCount = Environment().configuration(.initialPostFetchCount).UIntValue()
+        let postCount = 1000
         
         let ref1 = ref.child("posts").queryLimited(toLast: 15)
         let query = ref1.queryOrdered(byChild: "category").queryEqual(toValue: categoryKey)

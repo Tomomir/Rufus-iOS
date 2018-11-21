@@ -9,18 +9,19 @@
 import Foundation
 
 public enum PlistKey {
-    case serverURL
     case backgroundColor
     case navigationBarBlurAlpha
     case navigationBarColor
     case navigationBarUseBlur
     case titleColor
-    case initialPostFetchCount
+    case hamburgerMenuColor
+    case buttonColor
+    case textFontSize
+    case titleFontSize
+    case subtitleFontSize
     
     func value() -> String {
         switch self {
-        case .serverURL:
-            return "server_url"
         case .backgroundColor:
             return "background_color"
         case .navigationBarBlurAlpha:
@@ -31,8 +32,16 @@ public enum PlistKey {
             return "navigation_bar_use_blur"
         case .titleColor:
             return "title_color"
-        case .initialPostFetchCount:
-            return "initial_post_fetch_count"
+        case .hamburgerMenuColor:
+            return "hamburger_menu_color"
+        case .buttonColor:
+            return "button_color"
+        case .textFontSize:
+            return "text_font_size"
+        case .titleFontSize:
+            return "title_font_size"
+        case .subtitleFontSize:
+            return "subtitle_font_size"
         }
     }
 }
@@ -49,8 +58,6 @@ public struct Environment {
     }
     public func configuration(_ key: PlistKey) -> String {
         switch key {
-        case .serverURL:
-            return infoDict[PlistKey.serverURL.value()] as! String
         case .backgroundColor:
             return infoDict[PlistKey.backgroundColor.value()] as! String
         case .navigationBarBlurAlpha:
@@ -61,8 +68,16 @@ public struct Environment {
             return infoDict[PlistKey.navigationBarUseBlur.value()] as! String
         case .titleColor:
             return infoDict[PlistKey.titleColor.value()] as! String
-        case .initialPostFetchCount:
-            return infoDict[PlistKey.initialPostFetchCount.value()] as! String
+        case .hamburgerMenuColor:
+            return infoDict[PlistKey.hamburgerMenuColor.value()] as! String
+        case .buttonColor:
+            return infoDict[PlistKey.buttonColor.value()] as! String
+        case .textFontSize:
+            return infoDict[PlistKey.textFontSize.value()] as! String
+        case .titleFontSize:
+            return infoDict[PlistKey.titleFontSize.value()] as! String
+        case .subtitleFontSize:
+            return infoDict[PlistKey.subtitleFontSize.value()] as! String
         }
     }
 }

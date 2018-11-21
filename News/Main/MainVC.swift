@@ -130,7 +130,6 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
     // MARK: - Other
     
     private func setupVC() {
-        // set values from config file
         self.configurate()
         self.categoryDataSource = CategoryDataSource.shared
         categoryDataSource?.collectionView = categoryCollectionView
@@ -144,6 +143,8 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
         //self.setCategoryPages(categories: categoryDataSource?.categories)
     }
     
+    
+    /// sets values from config file
     private func configurate() {
 
         if let alpha = Environment().configuration(.navigationBarBlurAlpha).CGFloatValue() {

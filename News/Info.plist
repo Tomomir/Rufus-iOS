@@ -61,18 +61,26 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>background_color</key>
-	<string>$(background_color)</string>
+	<string>$(BACKGROUND_COLOR)</string>
+	<key>text_color</key>
+	<string>$(TEXT_COLOR)</string>
 	<key>navigation_bar_blur_alpha</key>
-	<string>$(navigation_bar_blur_alpha)</string>
+	<string>$(NAVIGATION_BAR_BLUR_ALPHA)</string>
 	<key>navigation_bar_color</key>
-	<string>$(navigation_bar_color)</string>
+	<string>$(NAVIGATION_BAR_COLOR)</string>
 	<key>navigation_bar_use_blur</key>
-	<string>$(navigation_bar_use_blur)</string>
-	<key>server_url</key>
-	<string>$(server_url)</string>
+	<string>$(NAVIGATION_BAR_USE_BLUR)</string>
 	<key>title_color</key>
-	<string>$(title_color)</string>
-	<key>initial_post_fetch_count</key>
-	<string>$(initial_post_fetch_count)</string>
+	<string>$(TITLE_COLOR)</string>
+	<key>hamburger_menu_color</key>
+	<string>$(HAMBURGER_MENU_COLOR)</string>
+	<key>button_color</key>
+	<string>$(BUTTON_COLOR)</string>
+	<key>title_font_size</key>
+	<string>$(TITLE_FONT_SIZE)</string>
+	<key>text_font_size</key>
+	<string>$(TEXT_FONT_SIZE)</string>
+	<key>subtitle_font_size</key>
+	<string>$(SUBTITLE_FONT_SIZE)</string>
 </dict>
 </plist>

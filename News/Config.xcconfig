@@ -9,8 +9,17 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
+#include "Pods/Target Support Files/Pods-News/Pods-News.debug.xcconfig"
 
-server_url                   = www.google.com
-background_color             = #ffffff
-navigation_bar_blur_alpha    = 1
-navigation_bar_color         = #000000
+BACKGROUND_COLOR             = #000000
+NAVIGATION_BAR_USE_BLUR      = true
+NAVIGATION_BAR_BLUR_ALPHA    = 0
+NAVIGATION_BAR_COLOR         = #FFFFFF
+HAMBURGER_MENU_COLOR         = #46B2F7
+TITLE_COLOR                  = #000000
+TEXT_COLOR                   = #000000
+BUTTON_COLOR                 = #46B2F7
+//TEXT_FONT
+TITLE_FONT_SIZE              = 21
+SUBTITLE_FONT_SIZE           = 18
+TEXT_FONT_SIZE               = 17
