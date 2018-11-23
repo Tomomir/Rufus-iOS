@@ -90,7 +90,7 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
                 return
             }
             // User is signed in
-            self?.checkStaticPage()
+            self?.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -110,46 +110,24 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
             return
         }
         
-        let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
-        
-        Auth.auth().signInAndRetrieveData(with: credential) { [weak self] (authResult, error) in
-            if let error = error {
-                print(error)
-                return
+        if let token = FBSDKAccessToken.current() {
+            let credential = FacebookAuthProvider.credential(withAccessToken: token.tokenString)
+            
+            Auth.auth().signInAndRetrieveData(with: credential) { [weak self] (authResult, error) in
+                if let error = error {
+                    print(error)
+                    return
+                }
+                print("did sign in with facebook")
+                self?.navigationController?.popViewController(animated: true)
             }
-            print("did sign in with facebook")
-            self?.checkStaticPage()
         }
+        
+
     }
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         print("did logout facebook")
     }
     
-    func checkStaticPage() {
-        API.shared.didUserAcceptStaticPage { [weak self] (accepted) in
-            if accepted {
-                self?.loadEssentialsAndPopVC()
-            } else {
-                let pageVC = self?.storyboard?.instantiateViewController(withIdentifier: "StaticPageVC") as! StaticPageVC
-                self?.navigationController?.pushViewController(pageVC, animated: true)
-            }
-        }
-    }
-    
-    func loadEssentialsAndPopVC() {
-//        let hud = JGProgressHUD(style: .light)
-//        hud.textLabel.text = "Loading"
-//        hud.show(in: self.view)
-//        hud.dismiss(afterDelay: 10.0)
-//        API.shared.loadAllEssentails { [weak self] (success) in
-//            hud.dismiss()
-//            if success {
-//            } else {
-//                // TODO: handle error
-//            }
-//        }
-        self.navigationController?.popViewController(animated: true)
-
-    }
 }

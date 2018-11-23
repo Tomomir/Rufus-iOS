@@ -86,7 +86,7 @@ class API {
 //        }
 //    }
     
-    func getArticles(isInitialLoad: Bool = true, completion: (() -> Void)?) {
+    func getArticles(isInitialLoad: Bool = true, completion: ((Bool) -> Void)?) {
         let postCount = UInt(1000)
         
         ref.child("posts").queryLimited(toLast: postCount).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -100,17 +100,16 @@ class API {
                 if isInitialLoad {
                     let nc = NotificationCenter.default
                     nc.post(name: Notification.Name("articles_inital_loaded"), object: ["articles" :parsedArray])
-                    //ArticlesDataSource.shared.setInitialArticles(articles: parsedArray)
                 } else {
                     let nc = NotificationCenter.default
                     nc.post(name: Notification.Name("articles_updated"), object: ["articles" :parsedArray])
-                    //ArticlesDataSource.shared.updateArticles(articles: parsedArray)
                 }
-                completion?()
+                let isSuccess = parsedArray.count == 0 ? false : true
+                completion?(isSuccess)
             }
         }) { (error) in
             print(error.localizedDescription)
-            
+            completion?(false)
         }
     }
     
@@ -186,6 +185,8 @@ class API {
     }
     
     func getCategories(completion: ((Result<[String : Any]>) -> Void)?) {
+        
+        
         _ = ref.child("categories").observeSingleEvent(of: .value, with: { (snapshot) in
             if let value = snapshot.value as? [String : Any] {
                 completion?(.success(value))
@@ -349,6 +350,17 @@ class API {
                 completition?(true)
             }
         }
+    }
+    
+    func isOnline(completition: ((Bool) -> Void)?) {
+        ref.child(".info/connected").observe(.value, with: { snapshot in
+            if let connected = snapshot.value as? Bool {
+                completition?(connected)
+            } else {
+                completition?(false)
+            }
+        })
+
     }
     
 }

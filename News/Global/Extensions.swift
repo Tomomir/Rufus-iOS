@@ -94,9 +94,10 @@ extension UIImageView {
         let datatask = session.dataTask(with:request) { (data:Data?, response:URLResponse?, error:Error?) -> Void in
             if error != nil {
                 print(error?.localizedDescription ?? "no description")
-            }
-            DispatchQueue.main.async {
-                self.image = UIImage(data: data!)
+            } else {
+                DispatchQueue.main.async {
+                    self.image = UIImage(data: data!)
+                }
             }
         }
         datatask.resume()

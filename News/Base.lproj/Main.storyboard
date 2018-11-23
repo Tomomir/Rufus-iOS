@@ -38,8 +38,18 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="filler" rowHeight="27" id="Xut-db-0Hg">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="27"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Xut-db-0Hg" id="CbK-ge-uaO">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="27"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ArticlesCollectionCell" rowHeight="272" id="erE-VW-jTn" customClass="ArticlesCollectionCell" customModule="News" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="272"/>
+                                        <rect key="frame" x="0.0" y="55" width="375" height="272"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="erE-VW-jTn" id="dpa-dS-rY8">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="272"/>
@@ -149,16 +159,6 @@
                                             <outlet property="collectionView" destination="vpy-Sb-LE7" id="cRS-1p-R9Q"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="filler" rowHeight="27" id="Xut-db-0Hg">
-                                        <rect key="frame" x="0.0" y="300" width="375" height="27"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Xut-db-0Hg" id="CbK-ge-uaO">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="27"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ArticleCell" rowHeight="155" id="tro-Xq-8Jw" customClass="ArticleCell" customModule="News" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="327" width="375" height="155"/>
                                         <autoresizingMask key="autoresizingMask"/>
@@ -214,13 +214,43 @@
                                             <outlet property="titleLabel" destination="n5o-nD-Zax" id="mS2-K7-U1G"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="200" id="Rsj-55-n0D">
-                                        <rect key="frame" x="0.0" y="482" width="375" height="200"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReloadButtonCell" rowHeight="188" id="2GL-nD-goU" customClass="ReloadButtonCell" customModule="News" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="482" width="375" height="188"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rsj-55-n0D" id="INB-mT-hWc">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2GL-nD-goU" id="x9K-dr-PAE">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="188"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Could not load the page" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mHz-Xq-hoX">
+                                                    <rect key="frame" x="95.666666666666686" y="100" width="184" height="13"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.78400000000000003" green="0.78400000000000003" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fF1-Du-hTg">
+                                                    <rect key="frame" x="141.66666666666666" y="123" width="92" height="45"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="45" id="vdV-fx-0Qj"/>
+                                                    </constraints>
+                                                    <state key="normal" title="reload button">
+                                                        <color key="titleColor" red="0.78400000000000003" green="0.78400000000000003" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="reloadButtonPressed:" destination="2GL-nD-goU" eventType="touchUpInside" id="wi1-IY-Gu3"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="fF1-Du-hTg" firstAttribute="top" secondItem="mHz-Xq-hoX" secondAttribute="bottom" constant="10" id="3YI-AF-fC0"/>
+                                                <constraint firstItem="mHz-Xq-hoX" firstAttribute="centerX" secondItem="x9K-dr-PAE" secondAttribute="centerX" id="DQn-pH-aeN"/>
+                                                <constraint firstItem="fF1-Du-hTg" firstAttribute="centerX" secondItem="x9K-dr-PAE" secondAttribute="centerX" id="YGm-qk-VI2"/>
+                                                <constraint firstAttribute="bottom" secondItem="fF1-Du-hTg" secondAttribute="bottom" constant="20" id="lvr-7u-UGb"/>
+                                                <constraint firstItem="mHz-Xq-hoX" firstAttribute="top" secondItem="x9K-dr-PAE" secondAttribute="top" constant="100" id="qm5-5c-z9r"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="reloadButton" destination="fF1-Du-hTg" id="hnP-yz-NbV"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>

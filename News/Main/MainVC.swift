@@ -8,6 +8,7 @@
 
 import UIKit
 import NavigationDrawer
+import JGProgressHUD
 
 class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
@@ -29,19 +30,22 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
     
     let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
     var pages = [UIViewController]()
+    
     private var isInitialLoaded = false
+    private var warningLabel: UILabel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupVC()
-
-        API.shared.loadAllEssentails { [weak self] (success) in
-            self?.isInitialLoaded = success
-            self?.setCategoryPages(categories: self?.categoryDataSource?.categories)
-            API.shared.getArticles(completion: {
-                
-            })
+        API.shared.isOnline { [weak self] (isOnline) in
+            if isOnline {
+                self?.loadEssentails(showLoading: true)
+            } else {
+                self?.loadEssentails(showLoading: false)
+                self?.showIsOfflineWarning()
+            }
         }
+
 //        API.shared.observeUserLogin { [weak self] in
 //            //self?.setupVC()
 //        }
@@ -128,6 +132,41 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
 
     
     // MARK: - Other
+    
+    func showIsOfflineWarning() {
+        warningLabel = UILabel(frame: CGRect(x: (self.view.frame.width / 2) - 120, y: (self.view.frame.height / 2) - 35, width: 240, height: 70))
+        warningLabel?.textColor = Environment().configuration(.warningTextColor).hexStringToUIColor()
+        warningLabel?.numberOfLines = 0
+        warningLabel?.textAlignment = .center
+        warningLabel?.text = "It appears you are offline. Data will load when you come back online."
+        self.view.addSubview(warningLabel!)
+    }
+    
+    func hideWarningLabel() {
+        if let label = warningLabel {
+            label.removeFromSuperview()
+            self.warningLabel = nil
+        }
+    }
+    
+    func loadEssentails(showLoading: Bool) {
+        // shows loading indicator
+        let hud = JGProgressHUD(style: .light)
+        if showLoading {
+            hud.textLabel.text = ""
+            hud.show(in: self.view)
+            hud.dismiss(afterDelay: 10.0)
+        }
+        
+        API.shared.loadAllEssentails { [weak self] (success) in
+            self?.isInitialLoaded = success
+            self?.setCategoryPages(categories: self?.categoryDataSource?.categories)
+            API.shared.getArticles(completion: { _ in
+                hud.dismiss()
+                self?.hideWarningLabel()
+            })
+        }
+    }
     
     private func setupVC() {
         self.configurate()

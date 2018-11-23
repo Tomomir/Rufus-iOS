@@ -46,7 +46,7 @@ class CategoryPageVC: UIViewController, UITableViewDelegate {
     }
     
     @objc func pullToRefreshAction(_ sender: Any) {
-        API.shared.getArticles(isInitialLoad: false) { [weak self] in
+        API.shared.getArticles(isInitialLoad: false) { [weak self] success in
             self?.refreshControl.endRefreshing()
         }
         //        API.shared.getArticles { [weak self] in

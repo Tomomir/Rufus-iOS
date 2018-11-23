@@ -82,5 +82,7 @@
 	<string>$(TEXT_FONT_SIZE)</string>
 	<key>subtitle_font_size</key>
 	<string>$(SUBTITLE_FONT_SIZE)</string>
+	<key>warning_text_color</key>
+	<string>$(WARNING_TEXT_COLOR)</string>
 </dict>
 </plist>
