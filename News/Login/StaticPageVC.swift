@@ -110,7 +110,7 @@ class StaticPageVC: UIViewController, AcceptButtonDelegate, ReloadButtonDelegate
     
     /// loads text of all static pages from Firebase 
     func loadStaticPages() {
-        // shows loading indicator and hides tableview
+        // shows loading indicator
         let hud = JGProgressHUD(style: .light)
         hud.textLabel.text = ""
         hud.show(in: self.view)
