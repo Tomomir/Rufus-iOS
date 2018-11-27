@@ -26,7 +26,6 @@ class RootVC: UIViewController {
         } else {
             self.navigationController?.setViewControllers(controllersArray, animated: true)
         }
-        
     }
     
     

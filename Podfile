@@ -15,5 +15,7 @@ target 'News' do
   pod 'NavigationDrawer'
   pod 'FBSDKLoginKit'
   pod 'DeepDiff'
-
+  pod 'RealmSwift'
+  pod 'ObjectMapper', '~> 3.4'
+  
 end

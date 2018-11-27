@@ -102,6 +102,12 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - NavigationDrawer (1.0.0)
+  - ObjectMapper (3.4.1)
+  - Realm (3.11.2):
+    - Realm/Headers (= 3.11.2)
+  - Realm/Headers (3.11.2)
+  - RealmSwift (3.11.2):
+    - Realm (= 3.11.2)
 
 DEPENDENCIES:
   - DeepDiff
@@ -113,6 +119,8 @@ DEPENDENCIES:
   - GoogleSignIn
   - JGProgressHUD
   - NavigationDrawer
+  - ObjectMapper (~> 3.4)
+  - RealmSwift
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -138,6 +146,9 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - NavigationDrawer
+    - ObjectMapper
+    - Realm
+    - RealmSwift
 
 SPEC CHECKSUMS:
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
@@ -162,7 +173,10 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   NavigationDrawer: bc637c0a1700b04f8cd9a5e88b709f6793ca6ac6
+  ObjectMapper: 5311bd50ca732930959e7ca1a2de43ab823a5ced
+  Realm: 864477d028db77f7c5a0cba64a4892ad53db128a
+  RealmSwift: 12b8262fc08020b47de4fd88eb3d5c9425b34ec7
 
-PODFILE CHECKSUM: 85b29347be59d86e530f643ac5da1b10aadf42af
+PODFILE CHECKSUM: 57402da75ec3661ee5fff2523f644fcc199e558d
 
 COCOAPODS: 1.5.0

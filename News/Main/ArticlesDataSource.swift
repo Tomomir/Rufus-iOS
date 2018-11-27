@@ -46,6 +46,20 @@ struct ArticleDataStruct: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(key)
     }
+    
+    // MARK: - Other
+    
+    func getAsDict() -> [String: Any] {
+        var dict = [String : Any]()
+        
+        dict["category"] = self.category
+        dict["publishTime"] = publishTime?.timeIntervalSince1970
+        dict["title"] = self.title
+        dict["subtitle"] = self.subtitle
+        dict["key"] = self.key
+        
+        return dict
+    }
 }
 
 
