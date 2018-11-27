@@ -24,3 +24,4 @@ TITLE_FONT_SIZE              = 21
 SUBTITLE_FONT_SIZE           = 18
 TEXT_FONT_SIZE               = 17
 WARNING_TEXT_COLOR           = #C5C5CA
+CREDITS_FOR_PURCHASE         = 10

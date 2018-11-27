@@ -23,7 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //facebook login initialization code
         FBSDKApplicationDelegate.sharedInstance()?.application(application, didFinishLaunchingWithOptions: launchOptions)
-        
+        IAPHandler.shared.fetchAvailableProducts()
+
         return true
     }
     

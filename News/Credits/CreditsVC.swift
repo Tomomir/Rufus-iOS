@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 class CreditsVC: UIViewController {
 
@@ -15,19 +16,21 @@ class CreditsVC: UIViewController {
     @IBOutlet weak var navigationBackButton: UIButton!
     @IBOutlet weak var purchaseButton: UIButton!
     
+    private var progressHUD: JGProgressHUD?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        IAPHandler.shared.fetchAvailableProducts()
-        IAPHandler.shared.purchaseStatusBlock = {[weak self] (type) in
-            guard let strongSelf = self else{ return }
+        IAPHandler.shared.purchaseStatusBlock = { [weak self] (type) in
+            self?.hideLoading()
             if type == .purchased {
-                let alertView = UIAlertController(title: "", message: type.message(), preferredStyle: .alert)
-                let action = UIAlertAction(title: "OK", style: .default, handler: { (alert) in
-                    
-                })
-                alertView.addAction(action)
-                strongSelf.present(alertView, animated: true, completion: nil)
+                API.shared.addCredits(completition: { (success) in
+                    switch success {
+                    case true:
+                        print("credits added")
+                    case false:
+                        print("credits failed to add")
+                    }
+                })  
             }
         }
     }
@@ -39,6 +42,24 @@ class CreditsVC: UIViewController {
     }
     
     @IBAction func purchaseAction(_ sender: Any) {
-        IAPHandler.shared.purchaseMyProduct(index: 0)
+        if IAPHandler.shared.areProductLoaded() {
+            self.showLoading()
+            IAPHandler.shared.purchaseMyProduct(index: 0)
+        }
+        
+    }
+    
+    // MARK: - Other
+    
+    func showLoading() {
+        progressHUD = JGProgressHUD(style: .light)
+        progressHUD?.textLabel.text = ""
+        progressHUD?.show(in: self.view)
+    }
+    
+    func hideLoading() {
+        if let hud = progressHUD {
+            hud.dismiss()
+        }
     }
 }

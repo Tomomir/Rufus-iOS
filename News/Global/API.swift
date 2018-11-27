@@ -27,6 +27,13 @@ class API {
     
     static var shared = API()
     var ref: DatabaseReference!
+    private var creditsLoaded = false
+    var numberOfCredits = 0 {
+        didSet {
+            let nc = NotificationCenter.default
+            nc.post(name: Notification.Name("credits_updated"), object: nil)
+        }
+    }
     
     private init() {
         FirebaseApp.configure()
@@ -61,11 +68,11 @@ class API {
             group.leave()
         }
         
-//        group.enter()
-//        self.getArticles { () in
-//            
-//            group.leave()
-//        }
+        group.enter()
+        self.getCredits() { [weak self] (result) in
+            self?.creditsLoaded = true 
+            group.leave()
+        }
         
         group.notify(queue: DispatchQueue.main, execute: {
             print("All Essentials fetched")
@@ -363,4 +370,56 @@ class API {
 
     }
     
+    func getCredits(completition: ((Bool) -> Void)?) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+            // TODO: handle error
+        }
+        ref.child("user/\(userID)/credits/").observeSingleEvent(of: .value, with: { [weak self] (snapshot) in
+            if let credits = snapshot.value as? Int {
+                self?.numberOfCredits = credits
+                completition?(true)
+            } else {
+                // TODO: handle error
+                completition?(false)
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+            //completition?(false)
+        }
+    }
+    
+    func substractCredit(completition: ((Bool) -> Void)?) {
+        if creditsLoaded == false { return }
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+            // TODO: handle error
+        }
+        ref.child("user/\(userID)/credits/").setValue((numberOfCredits - 1)) { (error, ref) in
+            if let errorValue = error {
+                print(errorValue)
+                completition?(false)
+            } else {
+                completition?(true)
+            }
+        }
+    }
+    
+    func addCredits(completition: ((Bool) -> Void)?) {
+        if creditsLoaded == false { return }
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+            // TODO: handle error
+        }
+        let newCreditsValue = numberOfCredits.advanced(by: Int(Environment().configuration(.creditsForPurchase).UIntValue()))
+        ref.child("user/\(userID)/credits/").setValue(newCreditsValue) { [weak self] (error, ref) in
+            if let errorValue = error {
+                print(errorValue)
+                completition?(false)
+            } else {
+                completition?(true)
+                self?.numberOfCredits = newCreditsValue
+            }
+        }
+    }
 }

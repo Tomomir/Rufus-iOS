@@ -20,6 +20,7 @@ public enum PlistKey {
     case titleFontSize
     case subtitleFontSize
     case warningTextColor
+    case creditsForPurchase
     
     func value() -> String {
         switch self {
@@ -45,6 +46,8 @@ public enum PlistKey {
             return "subtitle_font_size"
         case .warningTextColor:
             return "warning_text_color"
+        case .creditsForPurchase:
+            return "credits_for_purchase"
         }
     }
 }
@@ -83,6 +86,8 @@ public struct Environment {
             return infoDict[PlistKey.subtitleFontSize.value()] as! String
         case .warningTextColor:
             return infoDict[PlistKey.warningTextColor.value()] as! String
+        case .creditsForPurchase:
+            return infoDict[PlistKey.creditsForPurchase.value()] as! String
         }
     }
 }

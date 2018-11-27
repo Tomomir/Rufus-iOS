@@ -34,6 +34,10 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
     private var isInitialLoaded = false
     private var warningLabel: UILabel?
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupVC()
@@ -45,10 +49,15 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
                 self?.showIsOfflineWarning()
             }
         }
-
+        self.observeCreditsChange()
 //        API.shared.observeUserLogin { [weak self] in
 //            //self?.setupVC()
 //        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.updateCredits()
     }
     
     // MARK: - Actions
@@ -244,6 +253,20 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
         navigationController?.pushViewController(loginVC, animated: true)
     }
 
+    func observeCreditsChange() {
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(updateCredits(notification:)), name: Notification.Name("credits_updated"), object: nil)
+    }
+    
+    @objc func updateCredits(notification: NSNotification) {
+        let credits = API.shared.numberOfCredits
+        self.navigationCreditsLabel.text = "\(credits) Credits"
+    }
+    
+    func updateCredits() {
+        let credits = API.shared.numberOfCredits
+        self.navigationCreditsLabel.text = "\(credits) Credits"
+    }
 }
 
 

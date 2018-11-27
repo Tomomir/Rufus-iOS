@@ -13,12 +13,15 @@ enum IAPHandlerAlertType{
     case disabled
     case restored
     case purchased
+    case failed
     
     func message() -> String{
         switch self {
         case .disabled: return "Purchases are disabled in your device."
         case .restored: return "You've successfully restored your purchase."
         case .purchased: return "You've successfully bought this purchase."
+        case .failed: return "Transaction failed."
+        
         }
     }
 }
@@ -27,7 +30,7 @@ enum IAPHandlerAlertType{
 class IAPHandler: NSObject {
     static let shared = IAPHandler()
     
-    let CONSUMABLE_PURCHASE_PRODUCT_ID = "testpurchase"
+    let CONSUMABLE_PURCHASE_PRODUCT_ID = "news.10.credits"
     let NON_CONSUMABLE_PURCHASE_PRODUCT_ID = "non.consumable"
     
     fileprivate var productID = ""
@@ -73,6 +76,14 @@ class IAPHandler: NSObject {
         productsRequest.delegate = self
         productsRequest.start()
     }
+    
+    func areProductLoaded() -> Bool {
+        if iapProducts.count > 0 {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 extension IAPHandler: SKProductsRequestDelegate, SKPaymentTransactionObserver{
@@ -109,6 +120,7 @@ extension IAPHandler: SKProductsRequestDelegate, SKPaymentTransactionObserver{
                     
                 case .failed:
                     print("failed")
+                    purchaseStatusBlock?(.failed)
                     SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
                     break
                 case .restored:
