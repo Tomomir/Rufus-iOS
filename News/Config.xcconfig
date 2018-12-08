@@ -5,23 +5,42 @@
 //  Created by Tomas Pecuch on 16/10/2018.
 //  Copyright © 2018 Touch Art. All rights reserved.
 //
-
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
 #include "Pods/Target Support Files/Pods-News/Pods-News.debug.xcconfig"
 
+// background color of all the pages
 BACKGROUND_COLOR             = #000000
+// determines the usage of blur effect on navigation bar
 NAVIGATION_BAR_USE_BLUR      = true
+// 0 means max blur 1 is minimum blur
 NAVIGATION_BAR_BLUR_ALPHA    = 0
+// color of the navigation bar
 NAVIGATION_BAR_COLOR         = #FFFFFF
+// color of the top part of the hamburger menu
 HAMBURGER_MENU_COLOR         = #46B2F7
+// color of the title and subtitle in articles preview page,
+// static page (terms of usage etc.) and navigation bar text
 TITLE_COLOR                  = #000000
+// color of the text in static page (article text color can be set up inside Style.css)
 TEXT_COLOR                   = #000000
+// color of the buttons
 BUTTON_COLOR                 = #46B2F7
-//TEXT_FONT
-TITLE_FONT_SIZE              = 21
-SUBTITLE_FONT_SIZE           = 18
+// color of the image placeholders
+PLACEHOLDER_COLOR            = #46B2F7
+// font of all text inside the app, system font is used if left empty
+TEXT_FONT                    =
+// font size of the title in article preview page and static page
+TITLE_FONT_SIZE              = 17
+// font size of the subtitle in article preview page and static page
+SUBTITLE_FONT_SIZE           = 15
+// font size of text in static page (article text font size can be adjusted inside Style.css)
 TEXT_FONT_SIZE               = 17
+// color of the warning texts
 WARNING_TEXT_COLOR           = #C5C5CA
+// number of credits aquired by the purchase
 CREDITS_FOR_PURCHASE         = 10
+// free credits given to user at his first login
+// can be used for testing if no in-app purchase is set up
+STARTING_CREDITS    = 5

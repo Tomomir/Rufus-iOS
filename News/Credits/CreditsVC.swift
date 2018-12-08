@@ -15,11 +15,16 @@ class CreditsVC: UIViewController {
     @IBOutlet weak var navigationLogoImageView: UIImageView!
     @IBOutlet weak var navigationBackButton: UIButton!
     @IBOutlet weak var purchaseButton: UIButton!
+    @IBOutlet weak var creditsLabel: UILabel!
+    @IBOutlet weak var topLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var creditIconImageView: UIImageView!
     
     private var progressHUD: JGProgressHUD?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.configurate()
         IAPHandler.shared.purchaseStatusBlock = { [weak self] (type) in
             self?.hideLoading()
             if type == .purchased {
@@ -33,6 +38,13 @@ class CreditsVC: UIViewController {
                 })  
             }
         }
+        self.setCredits()
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(updateCredits(notification:)), name: Notification.Name("credits_updated"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Actions
@@ -50,6 +62,21 @@ class CreditsVC: UIViewController {
     }
     
     // MARK: - Other
+    
+    func configurate() {
+        let buttonColor = Environment().configuration(.buttonColor).hexStringToUIColor()
+        purchaseButton.backgroundColor = buttonColor
+    }
+    
+    func setCredits() {
+        let credits = CreditsDataSource.shared.numberOfCredits
+        self.creditsLabel.text = "\(credits)"
+    }
+    
+    @objc func updateCredits(notification: NSNotification) {
+        let credits = CreditsDataSource.shared.numberOfCredits
+        creditsLabel.text = "\(credits)"
+    }
     
     func showLoading() {
         progressHUD = JGProgressHUD(style: .light)

@@ -22,7 +22,10 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
     @IBOutlet weak var googleSignInButton: UIButton!
     @IBOutlet weak var googleSignInView: GIDSignInButton!
     
-    @IBOutlet weak var fbLoginButton: FBSDKLoginButton!
+    //@IBOutlet weak var fbLoginButton: FBSDKLoginButton!
+    @IBOutlet weak var fbCustomButton: UIButton!
+    var fbLoginButton = FBSDKLoginButton()
+    @IBOutlet weak var staticPagesButton: UIButton!
     
     var authUI: FUIAuth? = FUIAuth.defaultAuthUI()
     
@@ -32,7 +35,9 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        let appName = Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String
+        titleLabel.text = "Welcome to \(appName)"
         
         if let auth = authUI {
             auth.delegate = self
@@ -45,6 +50,12 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
         
         fbLoginButton.delegate = self
         fbLoginButton.readPermissions = ["public_profile", "email"]
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        AlertManager.shared.currentVC = self
     }
     
     // Actions
@@ -56,7 +67,14 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
         }
     }
     
-
+    @IBAction func fbLoginAction(_ sender: Any) {
+        fbLoginButton.sendActions(for: .touchUpInside)
+    }
+    
+    @IBAction func staticPagesAction(_ sender: Any) {
+        let staticPageVC = self.storyboard?.instantiateViewController(withIdentifier: "StaticPageVC") as! StaticPageVC
+        navigationController?.pushViewController(staticPageVC, animated: true)
+    }
     // FBAuthDelegate
 
     func application(_ app: UIApplication, open url: URL,

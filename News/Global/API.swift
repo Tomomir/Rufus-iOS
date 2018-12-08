@@ -27,13 +27,6 @@ class API {
     
     static var shared = API()
     var ref: DatabaseReference!
-    private var creditsLoaded = false
-    var numberOfCredits = 0 {
-        didSet {
-            let nc = NotificationCenter.default
-            nc.post(name: Notification.Name("credits_updated"), object: nil)
-        }
-    }
     
     private init() {
         FirebaseApp.configure()
@@ -69,8 +62,12 @@ class API {
         }
         
         group.enter()
-        self.getCredits() { [weak self] (result) in
-            self?.creditsLoaded = true 
+        self.getCredits() {
+            group.leave()
+        }
+        
+        group.enter()
+        CreditsDataSource.shared.getBoughtArticles {
             group.leave()
         }
         
@@ -94,9 +91,8 @@ class API {
 //    }
     
     func getArticles(isInitialLoad: Bool = true, completion: ((Bool) -> Void)?) {
-        let postCount = UInt(1000)
         
-        ref.child("posts").queryLimited(toLast: postCount).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("posts").queryOrdered(byChild: "status").queryEqual(toValue: "published").observeSingleEvent(of: .value, with: { (snapshot) in
             // Get user value
             if let value = snapshot.value as? NSDictionary {
                 var parsedArray = [ArticleDataStruct]()
@@ -121,9 +117,8 @@ class API {
     }
     
     func getArticles(categoryKey: String, batchSize: UInt, completion: (() -> Void)?) {
-        let postCount = 1000
         
-        let ref1 = ref.child("posts").queryLimited(toLast: 15)
+        let ref1 = ref.child("posts").queryLimited(toLast: 1000)
         let query = ref1.queryOrdered(byChild: "category").queryEqual(toValue: categoryKey)
         query.observe(.value, with: { (snapshot) in
             
@@ -220,7 +215,7 @@ class API {
     }
     
     func getStaticPageText(completion: ((Result<[String : Any]>) -> Void)?) {
-        _ = ref.child("pageContents").observeSingleEvent(of: .value, with: { (snapshot) in
+        _ = ref.child("pageContentsHTML").observeSingleEvent(of: .value, with: { (snapshot) in
             if let value = snapshot.value as? [String : Any] {
                 completion?(.success(value))
             } else {
@@ -228,7 +223,6 @@ class API {
             }
         }) { (error) in
             print(error.localizedDescription)
-            
         }
     }
     
@@ -359,6 +353,62 @@ class API {
         }
     }
     
+    func getReadArticles(completition: ((Result<[String : Any]>) -> Void)?) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            let error = NSError(domain:"No user logged in.", code:401, userInfo:nil)
+            completition?(.failure(error))
+            return
+        }
+        
+        ref.child("user/\(userID)/readArticles/").observeSingleEvent(of: .value, with: { (snapshot) in
+            if let articles = snapshot.value as? [String: Any] {
+                completition?(.success(articles))
+            } else {
+                completition?(.success([:]))
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+            completition?(.failure(error))
+        }
+    }
+    
+    func getBoughtArticles(completition: ((Result<[String : Any]>) -> Void)?) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            let error = NSError(domain:"No user logged in.", code:401, userInfo:nil)
+            completition?(.failure(error))
+            return
+        }
+        
+        ref.child("user/\(userID)/boughtArticles/").observeSingleEvent(of: .value, with: { (snapshot) in
+            if let articles = snapshot.value as? [String: Any] {
+                completition?(.success(articles))
+                let nc = NotificationCenter.default
+                nc.post(name: Notification.Name("bought_articles_loaded"), object: nil)
+            } else {
+                completition?(.success([:]))
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+            completition?(.failure(error))
+        }
+    }
+    
+    func saveBuoghtArticle(articleKey: String, completition: ((Bool) -> Void)?) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+            // TODO: handle error
+        }
+        
+        ref.child("user/\(userID)/boughtArticles/\(articleKey)").setValue(Date().timeIntervalSince1970) { (error, ref) in
+            if let errorValue = error {
+                print(errorValue)
+                completition?(false)
+            } else {
+                completition?(true)
+            }
+        }
+    }
+    
     func isOnline(completition: ((Bool) -> Void)?) {
         ref.child(".info/connected").observe(.value, with: { snapshot in
             if let connected = snapshot.value as? Bool {
@@ -370,18 +420,40 @@ class API {
 
     }
     
-    func getCredits(completition: ((Bool) -> Void)?) {
+    func observeOnline(completition: ((Bool) -> Void)?) {
+        
+    }
+    
+    func getAuthorName(authorID: String, completition: ((String) -> Void)?) {
+
+        ref.child("team/\(authorID)/name/").observeSingleEvent(of: .value, with: { snapshot in
+            if let name = snapshot.value as? String {
+                
+                completition?(name)
+            } else {
+                // TODO: handle error
+                completition?("")
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+            completition?("")
+        }
+    }
+    
+    func getCredits(completition: (() -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
             // TODO: handle error
         }
         ref.child("user/\(userID)/credits/").observeSingleEvent(of: .value, with: { [weak self] (snapshot) in
             if let credits = snapshot.value as? Int {
-                self?.numberOfCredits = credits
-                completition?(true)
+                CreditsDataSource.shared.numberOfCredits = credits
+                CreditsDataSource.shared.creditsAreLoaded = true
+                completition?()
             } else {
-                // TODO: handle error
-                completition?(false)
+                self?.setInitialCredits(completition: {
+                    completition?()
+                })
             }
         }) { (error) in
             print(error.localizedDescription)
@@ -390,36 +462,58 @@ class API {
     }
     
     func substractCredit(completition: ((Bool) -> Void)?) {
-        if creditsLoaded == false { return }
+        if CreditsDataSource.shared.creditsAreLoaded == false { return }
         guard let userID = Auth.auth().currentUser?.uid else {
             return
             // TODO: handle error
         }
-        ref.child("user/\(userID)/credits/").setValue((numberOfCredits - 1)) { (error, ref) in
+        
+        let newCreditsCount = CreditsDataSource.shared.numberOfCredits - 1
+        ref.child("user/\(userID)/credits/").setValue((newCreditsCount)) { (error, ref) in
             if let errorValue = error {
                 print(errorValue)
                 completition?(false)
             } else {
+                CreditsDataSource.shared.numberOfCredits = newCreditsCount
                 completition?(true)
             }
         }
     }
     
-    func addCredits(completition: ((Bool) -> Void)?) {
-        if creditsLoaded == false { return }
+    func setInitialCredits(completition: (() -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
             // TODO: handle error
         }
-        let newCreditsValue = numberOfCredits.advanced(by: Int(Environment().configuration(.creditsForPurchase).UIntValue()))
-        ref.child("user/\(userID)/credits/").setValue(newCreditsValue) { [weak self] (error, ref) in
+        let initialCredits = Environment().configuration(.startingCredits).UIntValue()
+        ref.child("user/\(userID)/credits/").setValue(Int(initialCredits)) { (error, ref) in
+            if let errorValue = error {
+                print(errorValue)
+                completition?()
+            } else {
+                CreditsDataSource.shared.numberOfCredits = Int(initialCredits)
+                CreditsDataSource.shared.creditsAreLoaded = true
+                completition?()
+            }
+        }
+    }
+    
+    func addCredits(completition: ((Bool) -> Void)?) {
+        if CreditsDataSource.shared.creditsAreLoaded == false { return }
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+            // TODO: handle error
+        }
+        let newCreditsValue = CreditsDataSource.shared.numberOfCredits.advanced(by: Int(Environment().configuration(.creditsForPurchase).UIntValue()))
+        ref.child("user/\(userID)/credits/").setValue(newCreditsValue) { (error, ref) in
             if let errorValue = error {
                 print(errorValue)
                 completition?(false)
             } else {
                 completition?(true)
-                self?.numberOfCredits = newCreditsValue
+                CreditsDataSource.shared.numberOfCredits = newCreditsValue
             }
         }
     }
 }
+

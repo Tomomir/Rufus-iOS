@@ -30,7 +30,7 @@ enum IAPHandlerAlertType{
 class IAPHandler: NSObject {
     static let shared = IAPHandler()
     
-    let CONSUMABLE_PURCHASE_PRODUCT_ID = "news.10.credits"
+    let CONSUMABLE_PURCHASE_PRODUCT_ID = "rufus.10.credits"
     let NON_CONSUMABLE_PURCHASE_PRODUCT_ID = "non.consumable"
     
     fileprivate var productID = ""

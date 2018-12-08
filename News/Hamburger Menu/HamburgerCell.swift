@@ -20,8 +20,15 @@ class HamburgerCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
+    func markSelected(selected: Bool) {
+        if selected {
+            cellTextLabel.textColor = Environment().configuration(.hamburgerMenuColor).hexStringToUIColor()
+            iconImageView.tintColor = Environment().configuration(.hamburgerMenuColor).hexStringToUIColor()
+        } else {
+            cellTextLabel.textColor = UIColor.black
+            iconImageView.tintColor = UIColor.black
+        }
+    }
 }

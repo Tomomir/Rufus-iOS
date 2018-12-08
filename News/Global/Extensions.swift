@@ -85,9 +85,9 @@ extension UIImageView {
     /// - Parameter photoUrl: URL of the image
     func loadFromURL(photoUrl:String){
         //NSURL
-        let url = URL(string: photoUrl)
+        guard let url = URL(string: photoUrl) else { return }
         //Request
-        let request = URLRequest(url:url!)
+        let request = URLRequest(url:url)
         //Session
         let session = URLSession.shared
         //Data task
@@ -219,5 +219,61 @@ extension Date {
         formatter.dateFormat = "dd. MMM yyyy"
         
         return formatter.string(from: self)
+    }
+}
+
+extension UILabel {
+    func textWidth() -> CGFloat {
+        return UILabel.textWidth(label: self)
+    }
+    
+    class func textWidth(label: UILabel) -> CGFloat {
+        return textWidth(label: label, text: label.text!)
+    }
+    
+    class func textWidth(label: UILabel, text: String) -> CGFloat {
+        return textWidth(font: label.font, text: text)
+    }
+    
+    class func textWidth(font: UIFont, text: String) -> CGFloat {
+        let myText = text as NSString
+        
+        let rect = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
+        let labelSize = myText.boundingRect(with: rect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
+        return ceil(labelSize.width)
+    }
+}
+
+extension UIImageView {
+    func downloaded(from url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFill) {
+        //contentMode = mode
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard
+                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                let data = data, error == nil,
+                let image = UIImage(data: data)
+                else { return }
+            DispatchQueue.main.async() {
+                self.image = image
+            }
+            }.resume()
+    }
+    func downloaded(from link: String, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
+        guard let url = URL(string: link) else { return }
+        downloaded(from: url, contentMode: mode)
+    }
+}
+
+extension UIFont {
+    func configFontOfSize(size: CGFloat) -> UIFont {
+        let fontName = Environment().configuration(.textFont)
+
+        if let font = UIFont(name: fontName, size: size) {
+            return font
+        } else {
+            return UIFont.systemFont(ofSize: size)
+        }
+        
     }
 }

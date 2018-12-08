@@ -14,13 +14,17 @@ public enum PlistKey {
     case navigationBarColor
     case navigationBarUseBlur
     case titleColor
+    case textColor
     case hamburgerMenuColor
     case buttonColor
+    case placeholderColor
     case textFontSize
     case titleFontSize
     case subtitleFontSize
     case warningTextColor
     case creditsForPurchase
+    case startingCredits
+    case textFont
     
     func value() -> String {
         switch self {
@@ -34,10 +38,14 @@ public enum PlistKey {
             return "navigation_bar_use_blur"
         case .titleColor:
             return "title_color"
+        case .textColor:
+            return "text_color"
         case .hamburgerMenuColor:
             return "hamburger_menu_color"
         case .buttonColor:
             return "button_color"
+        case .placeholderColor:
+            return "placeholder_color"
         case .textFontSize:
             return "text_font_size"
         case .titleFontSize:
@@ -48,6 +56,10 @@ public enum PlistKey {
             return "warning_text_color"
         case .creditsForPurchase:
             return "credits_for_purchase"
+        case .startingCredits:
+            return "starting_credits"
+        case .textFont:
+            return "text_font"
         }
     }
 }
@@ -74,10 +86,14 @@ public struct Environment {
             return infoDict[PlistKey.navigationBarUseBlur.value()] as! String
         case .titleColor:
             return infoDict[PlistKey.titleColor.value()] as! String
+        case .textColor:
+            return infoDict[PlistKey.textColor.value()] as! String
         case .hamburgerMenuColor:
             return infoDict[PlistKey.hamburgerMenuColor.value()] as! String
         case .buttonColor:
             return infoDict[PlistKey.buttonColor.value()] as! String
+        case .placeholderColor:
+            return infoDict[PlistKey.placeholderColor.value()] as! String
         case .textFontSize:
             return infoDict[PlistKey.textFontSize.value()] as! String
         case .titleFontSize:
@@ -88,6 +104,11 @@ public struct Environment {
             return infoDict[PlistKey.warningTextColor.value()] as! String
         case .creditsForPurchase:
             return infoDict[PlistKey.creditsForPurchase.value()] as! String
+        case .startingCredits:
+            return infoDict[PlistKey.startingCredits.value()] as! String
+        case .textFont:
+            return infoDict[PlistKey.textFont.value()] as! String
         }
     }
+    
 }

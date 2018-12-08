@@ -13,8 +13,9 @@ import Firebase
 enum HamburgerTableViewCellType: Int {
     case allArticles
     case purchasedArticles
-    case savedArticles
     case readArticles
+    case savedArticles
+    case staticPages
     case logout
     case cellsCount
 }
@@ -27,10 +28,11 @@ class HamburgerMenuVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     var interactor:Interactor? = nil
     var mainVC: MainVC? = nil
+    var selectedCellIndex: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.configurate()
         
         
         if let user = Auth.auth().currentUser {
@@ -39,7 +41,7 @@ class HamburgerMenuVC: UIViewController, UITableViewDelegate, UITableViewDataSou
                 profileImageView.loadFromURL(photoUrl: imageUrl.absoluteString)
             }
         }
-        // Do any additional setup after loading the view.
+        self.setSelectedCellIndex()
     }
     
     //Handle Gesture
@@ -72,33 +74,70 @@ class HamburgerMenuVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         switch indexPath.row {
         case HamburgerTableViewCellType.allArticles.rawValue:
             cell.cellTextLabel.text = "All"
+            cell.iconImageView.image = UIImage(named: "round_all_inbox_black_24pt")
         case HamburgerTableViewCellType.purchasedArticles.rawValue:
             cell.cellTextLabel.text = "Purchased"
+            cell.iconImageView.image = UIImage(named: "round_monetization_on_black_24pt")
         case HamburgerTableViewCellType.savedArticles.rawValue:
             cell.cellTextLabel.text = "Saved"
+            cell.iconImageView.image = UIImage(named: "round_save_alt_black_24pt")
         case HamburgerTableViewCellType.readArticles.rawValue:
             cell.cellTextLabel.text = "Already Read"
+            cell.iconImageView.image = UIImage(named: "round_history_black_24pt")
+        case HamburgerTableViewCellType.staticPages.rawValue:
+            cell.cellTextLabel.text = "Terms of use"
+            cell.iconImageView.image = UIImage(named: "round_description_black_24pt")
         case HamburgerTableViewCellType.logout.rawValue:
             cell.cellTextLabel.text = "Logout"
+            cell.iconImageView.image = UIImage(named: "baseline_exit_to_app_black_24pt")
         default:
             break
         }
-        
+
+        if selectedCellIndex == indexPath.row {
+            cell.markSelected(selected: true)
+        } else {
+            cell.markSelected(selected: false)
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        if let cell = tableView.cellForRow(at: indexPath) as? HamburgerCell {
+            cell.markSelected(selected: true)
+        }
+        if let cellToDeselect = tableView.cellForRow(at: IndexPath(row: selectedCellIndex, section: 0)) as? HamburgerCell {
+            cellToDeselect.markSelected(selected: false)
+        }
+        if indexPath.row <= HamburgerTableViewCellType.readArticles.rawValue {
+            selectedCellIndex = indexPath.row
+        }
+        
         
         switch indexPath.row {
         case HamburgerTableViewCellType.allArticles.rawValue:
-            break
+            self.dismiss(animated: true) {
+                self.mainVC?.setPagesMode(mode: .all)
+            }
         case HamburgerTableViewCellType.purchasedArticles.rawValue:
-            break
+            self.dismiss(animated: true) {
+                self.mainVC?.setPagesMode(mode: .paid)
+            }
         case HamburgerTableViewCellType.savedArticles.rawValue:
-            break
+            self.dismiss(animated: true) {
+                let savedVC = self.storyboard?.instantiateViewController(withIdentifier: "SavedArticlesVC") as! SavedArticlesVC
+                
+                self.mainVC!.navigationController?.pushViewController(savedVC, animated: true)
+            }
         case HamburgerTableViewCellType.readArticles.rawValue:
-            break
+            self.dismiss(animated: true) {
+                self.mainVC?.setPagesMode(mode: .read)
+            }
+        case HamburgerTableViewCellType.staticPages.rawValue:
+            self.dismiss(animated: true) {
+                let staticPageVC = self.storyboard?.instantiateViewController(withIdentifier: "StaticPageVC") as! StaticPageVC
+                self.mainVC!.navigationController?.pushViewController(staticPageVC, animated: true)
+            }
         case HamburgerTableViewCellType.logout.rawValue:
             API.shared.logout()
             dismiss(animated: true) {
@@ -116,6 +155,22 @@ class HamburgerMenuVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     /// sets values from config file
     func configurate() {
         let topBackgroundColor = Environment().configuration(.hamburgerMenuColor).hexStringToUIColor()
-        self.topBackgroundView.backgroundColor = topBackgroundColor
+        topBackgroundView.backgroundColor = topBackgroundColor
+        emailLabel.font = UIFont().configFontOfSize(size: emailLabel.font.pointSize)
+    }
+    
+    func setSelectedCellIndex() {
+        if let mainController = mainVC {
+            switch mainController.mode {
+            case .all:
+                selectedCellIndex = HamburgerTableViewCellType.allArticles.rawValue
+            case .paid:
+                selectedCellIndex = HamburgerTableViewCellType.purchasedArticles.rawValue
+            case .read:
+                selectedCellIndex = HamburgerTableViewCellType.readArticles.rawValue
+            default:
+                break
+            }
+        }
     }
 }

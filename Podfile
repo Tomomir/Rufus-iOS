@@ -7,8 +7,7 @@ target 'News' do
 
   # Pods for News
   pod 'Firebase/Core'
-  pod 'FirebaseUI/Auth'
-  pod 'FirebaseUI/Google'
+  pod 'FirebaseUI'
   pod 'Firebase/Database'
   pod 'GoogleSignIn'
   pod 'JGProgressHUD'

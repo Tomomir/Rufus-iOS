@@ -24,15 +24,18 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
     
     @IBOutlet weak var pagesContainerView: UIView!
     @IBOutlet weak var categoryCollectionView: UICollectionView!
+    @IBOutlet weak var noDataLabel: UILabel!
     
     var categoryDataSource: CategoryDataSource? = nil //CategoryDataSource.shared
     let interactor = Interactor()
     
     let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
     var pages = [UIViewController]()
+    var mode: ArticleDataMode = .all
     
     private var isInitialLoaded = false
     private var warningLabel: UILabel?
+    private var hud = JGProgressHUD(style: .light)
     
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -40,15 +43,17 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.configurate()
         self.setupVC()
-        API.shared.isOnline { [weak self] (isOnline) in
-            if isOnline {
-                self?.loadEssentails(showLoading: true)
-            } else {
-                self?.loadEssentails(showLoading: false)
-                self?.showIsOfflineWarning()
-            }
-        }
+//        API.shared.isOnline { [weak self] (isOnline) in
+//            if isOnline {
+//                self?.loadEssentails(showLoading: true)
+//            } else {
+//                self?.loadEssentails(showLoading: false)
+//                self?.showIsOfflineWarning()
+//            }
+//        }
+        self.loadEssentails(showLoading: true)
         self.observeCreditsChange()
 //        API.shared.observeUserLogin { [weak self] in
 //            //self?.setupVC()
@@ -58,6 +63,7 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.updateCredits()
+        AlertManager.shared.currentVC = self
     }
     
     // MARK: - Actions
@@ -71,7 +77,6 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
     
     @IBAction func hamburgerAction(_ sender: Any) {
         performSegue(withIdentifier: "showSlidingMenu", sender: nil)
-
     }
     
     @IBAction func edgePanGesture(_ sender: UIScreenEdgePanGestureRecognizer) {
@@ -160,18 +165,32 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
     
     func loadEssentails(showLoading: Bool) {
         // shows loading indicator
-        let hud = JGProgressHUD(style: .light)
-        if showLoading {
-            hud.textLabel.text = ""
-            hud.show(in: self.view)
-            hud.dismiss(afterDelay: 10.0)
+
+        API.shared.isOnline { [weak self] (isOnline) in
+            if self?.isInitialLoaded == true { return }
+            switch isOnline {
+            case false:
+                
+                UIView.animateKeyframes(withDuration: 0.2, delay: 3, options: [], animations: {
+                    self?.noDataLabel.alpha = 1
+                }, completion: nil)
+            case true:
+                self?.isInitialLoaded = true
+                self?.noDataLabel.isHidden = true
+                if showLoading {
+                    self?.hud.textLabel.text = ""
+                    self?.hud.show(in: (self?.view)!)
+                    self?.hud.dismiss(afterDelay: 10.0)
+                }
+            }
+            print("is online - \(isOnline)")
         }
         
         API.shared.loadAllEssentails { [weak self] (success) in
             self?.isInitialLoaded = success
             self?.setCategoryPages(categories: self?.categoryDataSource?.categories)
             API.shared.getArticles(completion: { _ in
-                hud.dismiss()
+                self?.hud.dismiss()
                 self?.hideWarningLabel()
             })
         }
@@ -184,9 +203,9 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
         categoryDataSource?.mainVC = self
         categoryCollectionView.dataSource = categoryDataSource
         categoryCollectionView.delegate = categoryDataSource
-        if let flowLayout = categoryCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.estimatedItemSize = CGSize(width: 80, height: 35)
-        }
+//        if let flowLayout = categoryCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+//            flowLayout.estimatedItemSize = CGSize(width: 80, height: 35)
+//        }
         
         //self.setCategoryPages(categories: categoryDataSource?.categories)
     }
@@ -214,6 +233,8 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
         
         self.navigationCreditsLabel.textColor = titleColor
         
+        noDataLabel.font = UIFont().configFontOfSize(size: noDataLabel.font.pointSize)
+        noDataLabel.textColor = Environment().configuration(.warningTextColor).hexStringToUIColor()
     }
     
     func selectCategoryAtIndex(newIndex: Int, oldIndex: Int) {
@@ -259,13 +280,36 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
     }
     
     @objc func updateCredits(notification: NSNotification) {
-        let credits = API.shared.numberOfCredits
-        self.navigationCreditsLabel.text = "\(credits) Credits"
+        let credits = CreditsDataSource.shared.numberOfCredits
+        self.navigationCreditsLabel.text = "\(credits)"
     }
     
     func updateCredits() {
-        let credits = API.shared.numberOfCredits
-        self.navigationCreditsLabel.text = "\(credits) Credits"
+        let credits = CreditsDataSource.shared.numberOfCredits
+        self.navigationCreditsLabel.text = "\(credits)"
+    }
+    
+    func setPagesMode(mode: ArticleDataMode) {
+        self.mode = mode
+        for page in pages {
+            if let vc = page as? CategoryPageVC {
+                vc.articleDataSource.setMode(mode: mode)
+                if mode == .all {
+                    
+                    vc.refreshControl = UIRefreshControl()
+                    if let table = vc.tableView {
+                        table.refreshControl = vc.refreshControl 
+                    }
+                    vc.refreshControl?.addTarget(vc, action: #selector(vc.pullToRefreshAction), for: .valueChanged)
+                } else {
+                    if let refresh = vc.refreshControl {
+                        refresh.removeFromSuperview()
+                        vc.refreshControl = nil
+                    }
+
+                }
+            }
+        }
     }
 }
 

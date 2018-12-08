@@ -11,8 +11,9 @@ import UIKit
 class CategoryPageVC: UIViewController, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var noArticlesLabel: UILabel!
     
-    private let refreshControl = UIRefreshControl()
+    var refreshControl : UIRefreshControl? = UIRefreshControl()
     var articleDataSource = ArticlesDataSource()
     var categoryName = ""
     var navigationBarView: UIView?
@@ -35,19 +36,22 @@ class CategoryPageVC: UIViewController, UITableViewDelegate {
         }
 
         //refresh controll
-        tableView.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(pullToRefreshAction), for: .valueChanged)
-        
+        refreshControl?.addTarget(self, action: #selector(pullToRefreshAction), for: .valueChanged)
+        articleDataSource.parent = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
         print("did appear \(categoryName)")
         CategoryDataSource.shared.selectCategory(categoryKey: articleDataSource.selectedCategoryKey)
+        tableView.refreshControl = refreshControl
+        if articleDataSource.selectedCategoryKey != "all" {
+            noArticlesLabel.isHidden = articleDataSource.articlesToShow.count != 0
+        }
     }
     
     @objc func pullToRefreshAction(_ sender: Any) {
         API.shared.getArticles(isInitialLoad: false) { [weak self] success in
-            self?.refreshControl.endRefreshing()
+            self?.refreshControl?.endRefreshing()
         }
         //        API.shared.getArticles { [weak self] in
         //            self?.refreshControl.endRefreshing()
@@ -61,8 +65,21 @@ class CategoryPageVC: UIViewController, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        let article = articleDataSource.articlesToShow[indexPath.row]
+        if article.paid == true {
+            if CreditsDataSource.shared.isArticleBought(articleKey: article.key) == false {
+                if DatabaseManager.shared.get(type: Article.self, id: article.key) == nil {
+                    AlertManager.shared.showBasicAlert(title: "Can't open artile", text: "You need to unlock it first.")
+                    return
+                }
+            }
+        }
+        
         let vc = storyboard?.instantiateViewController(withIdentifier: "ArticleDetailVC") as? ArticleDetailVC
         vc?.articleData = articleDataSource.articlesToShow[indexPath.row]
+        if self.articleDataSource.mode == .saved {
+            vc?.mode = .offline
+        }
         self.navigationController?.pushViewController(vc!, animated: true)
     }
 

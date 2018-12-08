@@ -2,6 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>starting_credits</key>
+	<string>$(STARTING_CREDITS)</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -76,6 +83,8 @@
 	<string>$(SUBTITLE_FONT_SIZE)</string>
 	<key>text_color</key>
 	<string>$(TEXT_COLOR)</string>
+	<key>placeholder_color</key>
+	<string>$(PLACEHOLDER_COLOR)</string>
 	<key>text_font_size</key>
 	<string>$(TEXT_FONT_SIZE)</string>
 	<key>title_color</key>
@@ -86,5 +95,7 @@
 	<string>$(WARNING_TEXT_COLOR)</string>
 	<key>credits_for_purchase</key>
 	<string>$(CREDITS_FOR_PURCHASE)</string>
+	<key>text_font</key>
+	<string>$(TEXT_FONT)</string>
 </dict>
 </plist>

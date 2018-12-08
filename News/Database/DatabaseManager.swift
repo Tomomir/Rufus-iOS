@@ -13,7 +13,7 @@ import ObjectMapper
 class DatabaseManager {
 
     static var shared = DatabaseManager()
-    let currentSchemaVersion: Int = 1
+    let currentSchemaVersion: Int = 5
     
     private init() {
         configureRealm()
