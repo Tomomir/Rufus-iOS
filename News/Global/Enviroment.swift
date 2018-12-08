@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// used for loading values from config file
 public enum PlistKey {
     case backgroundColor
     case navigationBarBlurAlpha
@@ -63,6 +64,8 @@ public enum PlistKey {
         }
     }
 }
+
+/// used for loading the values from config file
 public struct Environment {
     
     fileprivate var infoDict: [String: Any]  {

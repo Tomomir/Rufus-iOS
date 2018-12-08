@@ -45,19 +45,8 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
         super.viewDidLoad()
         self.configurate()
         self.setupVC()
-//        API.shared.isOnline { [weak self] (isOnline) in
-//            if isOnline {
-//                self?.loadEssentails(showLoading: true)
-//            } else {
-//                self?.loadEssentails(showLoading: false)
-//                self?.showIsOfflineWarning()
-//            }
-//        }
         self.loadEssentails(showLoading: true)
         self.observeCreditsChange()
-//        API.shared.observeUserLogin { [weak self] in
-//            //self?.setupVC()
-//        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -68,6 +57,10 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
     
     // MARK: - Actions
     
+    
+    /// called when credits button was pressed
+    ///
+    /// - Parameter sender: button which was pressed
     @IBAction func creditsAction(_ sender: Any) {
         
         let vc = storyboard?.instantiateViewController(withIdentifier: "CreditsVC") as? CreditsVC
@@ -75,10 +68,18 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
 
     }
     
+    
+    /// called when hamburger button was pressed
+    ///
+    /// - Parameter sender: button object which was pressed
     @IBAction func hamburgerAction(_ sender: Any) {
         performSegue(withIdentifier: "showSlidingMenu", sender: nil)
     }
     
+    
+    /// called when edge pan gesture was detected, shows hamburger vc if from left
+    ///
+    /// - Parameter sender: gesture recognizer object which detected the gesture
     @IBAction func edgePanGesture(_ sender: UIScreenEdgePanGestureRecognizer) {
         let translation = sender.translation(in: view)
         
@@ -132,6 +133,8 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
 
     // MARK: - Other
     
+    
+    /// shows waring that user is offline
     func showIsOfflineWarning() {
         warningLabel = UILabel(frame: CGRect(x: (self.view.frame.width / 2) - 120, y: (self.view.frame.height / 2) - 35, width: 240, height: 70))
         warningLabel?.textColor = Environment().configuration(.warningTextColor).hexStringToUIColor()
@@ -141,6 +144,7 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
         self.view.addSubview(warningLabel!)
     }
     
+    /// hides waring that user is offline
     func hideWarningLabel() {
         if let label = warningLabel {
             label.removeFromSuperview()
@@ -148,6 +152,10 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
         }
     }
     
+    
+    /// loads are needed esentials like credits and categories
+    ///
+    /// - Parameter showLoading: whether show loading ndicator or not
     func loadEssentails(showLoading: Bool) {
         // shows loading indicator
 
@@ -181,6 +189,8 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
         }
     }
     
+    
+    /// setup dataSources
     private func setupVC() {
         self.configurate()
         self.categoryDataSource = CategoryDataSource.shared
@@ -222,6 +232,12 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
         noDataLabel.textColor = Environment().configuration(.warningTextColor).hexStringToUIColor()
     }
     
+    
+    /// selects category and deselect old one
+    ///
+    /// - Parameters:
+    ///   - newIndex: new selected category index
+    ///   - oldIndex: old category index to deselect
     func selectCategoryAtIndex(newIndex: Int, oldIndex: Int) {
         
         pageViewController.setViewControllers([pages[newIndex]],
@@ -230,6 +246,10 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
                                               completion: nil)
     }
     
+    
+    /// instantiate pages of pageviewcontroller according to categories
+    ///
+    /// - Parameter categories: categories according to which instantiate pages
     func setCategoryPages(categories: [CategoryData]?) {
         
         for category in categories ?? [] {
@@ -254,26 +274,32 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
         pageViewController.didMove(toParent: self)
     }
     
+    
+    /// push login view controller
     func pushLoginVC() {
         let loginVC = self.storyboard?.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
         navigationController?.pushViewController(loginVC, animated: true)
     }
 
+    /// set notification observer for credit change
     func observeCreditsChange() {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(updateCredits(notification:)), name: Notification.Name("credits_updated"), object: nil)
     }
     
+    /// updates showing credits number
     @objc func updateCredits(notification: NSNotification) {
         let credits = CreditsDataSource.shared.numberOfCredits
         self.navigationCreditsLabel.text = "\(credits)"
     }
     
+    /// updates showing credits number
     func updateCredits() {
         let credits = CreditsDataSource.shared.numberOfCredits
         self.navigationCreditsLabel.text = "\(credits)"
     }
     
+    /// set page mode
     func setPagesMode(mode: ArticleDataMode) {
         self.mode = mode
         for page in pages {

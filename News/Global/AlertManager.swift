@@ -15,6 +15,12 @@ class AlertManager {
     static var shared = AlertManager()
     var currentVC: UIViewController?
 
+    
+    /// shows alert to the currently presented view
+    ///
+    /// - Parameters:
+    ///   - title: title of the alert
+    ///   - text: text of the alert
     func showBasicAlert(title: String, text: String) {
         guard let vc = currentVC else { return }
         

@@ -279,40 +279,17 @@ class API {
         }
     }
     
-    func saveStaticPageAcceptance(userID: String) {
-        ref.child("users/\(userID)/").setValue(["staticPage": true])
-    }
     
+    /// logs user out of the app
     func logout() {
         try! Auth.auth().signOut()
         FBSDKAccessToken.setCurrent(nil)
     }
     
-    func observeUserLogin(completion: (() -> Void)?) {
-        Auth.auth().addStateDidChangeListener { (auth, user) in
-            completion?()
-        }
-    }
-
-    func didUserAcceptStaticPage(completion: ((Bool) -> Void)?) {
-        guard let userID = Auth.auth().currentUser?.uid else {
-            completion?(false)
-            return
-            // TODO: handle error
-        }
-        ref.child("user/\(userID)/staticPage/").observeSingleEvent(of: .value, with: { (snapshot) in
-            if let value = snapshot.value as? Bool {
-                completion?(value)
-            } else {
-                //TODO: handle error
-                completion?(false)
-            }
-        }) { (error) in
-            print(error.localizedDescription)
-            completion?(false)
-        }
-    }
     
+    /// upload article key to the server under userID/readArticles
+    ///
+    /// - Parameter articleKey: article key to upload
     func markArticleAsRead(articleKey: String) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
@@ -322,58 +299,10 @@ class API {
         ref.child("user/\(userID)/readArticles/\(articleKey)").setValue(Date().timeIntervalSince1970)
     }
     
-    // MARK: - Saved article management
     
-    func isSavedArticle(articleKey: String, completion: ((Bool) -> Void)?) {
-        guard let userID = Auth.auth().currentUser?.uid else {
-            completion?(false)
-            return
-            // TODO: handle error
-        }
-        ref.child("user/\(userID)/savedArticles/\(articleKey)/").observeSingleEvent(of: .value, with: { (snapshot) in
-            if let _ = snapshot.value as? Double {
-                completion?(true)
-            } else {
-                completion?(false)
-            }
-        }) { (error) in
-            print(error.localizedDescription)
-            //completion?(false)
-        }
-    }
-    
-    func saveArticle(articleKey: String, completion: ((Bool) -> Void)?) {
-        guard let userID = Auth.auth().currentUser?.uid else {
-            return
-            // TODO: handle error
-        }
-        
-        ref.child("user/\(userID)/savedArticles/\(articleKey)").setValue(Date().timeIntervalSince1970) { (error, ref) in
-            if let errorValue = error {
-                print(errorValue)
-                completion?(false)
-            } else {
-                completion?(true)
-            }
-        }
-    }
-    
-    func deleteSavedArticle(articleKey: String, completion: ((Bool) -> Void)?) {
-        guard let userID = Auth.auth().currentUser?.uid else {
-            return
-            // TODO: handle error
-        }
-        
-        ref.child("user/\(userID)/savedArticles/\(articleKey)").removeValue() { (error, ref) in
-            if let errorValue = error {
-                print(errorValue)
-                completion?(false)
-            } else {
-                completion?(true)
-            }
-        }
-    }
-    
+    /// loads array of read article keys
+    ///
+    /// - Parameter completion: completion block ater the load is completed
     func getReadArticles(completion: ((Result<[String : Any]>) -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             let error = NSError(domain:"No user logged in.", code:401, userInfo:nil)
@@ -393,6 +322,10 @@ class API {
         }
     }
     
+    
+    /// loads bought article keys
+    ///
+    /// - Parameter completion: completion block ater the load is completed
     func getBoughtArticles(completion: ((Result<[String : Any]>) -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             let error = NSError(domain:"No user logged in.", code:401, userInfo:nil)
@@ -414,6 +347,12 @@ class API {
         }
     }
     
+    
+    /// upload article key to the server under userID/boughtArticles
+    ///
+    /// - Parameters:
+    ///   - articleKey: key of the bought article
+    ///   - completion: completion block ater the upload is completed
     func saveBuoghtArticle(articleKey: String, completion: ((Bool) -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
@@ -430,6 +369,10 @@ class API {
         }
     }
     
+    
+    /// checks if Firebase is online
+    ///
+    /// - Parameter completion: completion block containing bool value wheter Firebase is online
     func isOnline(completion: ((Bool) -> Void)?) {
         ref.child(".info/connected").observe(.value, with: { snapshot in
             if let connected = snapshot.value as? Bool {
@@ -441,10 +384,12 @@ class API {
 
     }
     
-    func observeOnline(completion: ((Bool) -> Void)?) {
-        
-    }
     
+    /// loads author name from the server
+    ///
+    /// - Parameters:
+    ///   - authorID: id of the author
+    ///   - completion: completion block ater the load is completed
     func getAuthorName(authorID: String, completion: ((String) -> Void)?) {
 
         ref.child("team/\(authorID)/name/").observeSingleEvent(of: .value, with: { snapshot in
@@ -461,6 +406,10 @@ class API {
         }
     }
     
+    
+    /// loads credits count
+    ///
+    /// - Parameter completion: completion block ater the load is completed
     func getCredits(completion: (() -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
@@ -482,6 +431,10 @@ class API {
         }
     }
     
+    
+    /// substracts 1 credit from the user account
+    ///
+    /// - Parameter completion: completion block ater the substraction is completed
     func substractCredit(completion: ((Bool) -> Void)?) {
         if CreditsDataSource.shared.creditsAreLoaded == false { return }
         guard let userID = Auth.auth().currentUser?.uid else {
@@ -501,6 +454,10 @@ class API {
         }
     }
     
+    
+    /// sets users credits to the initial value on the server
+    ///
+    /// - Parameter completion: completion block ater the upload is completed
     func setInitialCredits(completion: (() -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
@@ -519,6 +476,10 @@ class API {
         }
     }
     
+    
+    /// adds more credits to the user account
+    ///
+    /// - Parameter completion: completion block ater the upload is completed
     func addCredits(completion: ((Bool) -> Void)?) {
         if CreditsDataSource.shared.creditsAreLoaded == false { return }
         guard let userID = Auth.auth().currentUser?.uid else {

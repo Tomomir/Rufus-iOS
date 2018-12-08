@@ -24,16 +24,12 @@ class CategoryCollectionCell: UICollectionViewCell {
         self.cellContainerView.translatesAutoresizingMaskIntoConstraints = false
     }
     
-//    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-//        setNeedsLayout()
-//        layoutIfNeeded()
-//        let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
-//        var frame = layoutAttributes.frame
-//        frame.size.height = ceil(size.height)
-//        layoutAttributes.frame = frame
-//        return layoutAttributes
-//    }
     
+    /// sets UI of the category cell to given state
+    ///
+    /// - Parameters:
+    ///   - chosen: boolean wheter cell is chosen
+    ///   - animated: boolean wheter it should be animated
     func setChosen(chosen: Bool, animated: Bool) {
         switch chosen {
         case true:

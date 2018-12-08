@@ -36,6 +36,8 @@ class ArticleDetailVC: UIViewController, WKUIDelegate, WKNavigationDelegate, UIS
     
     var mode: ArticleDetailMode = .online
     
+    
+    /// instantiates webview object using needed javascript scripts
     lazy var webView:WKWebView = {
         //Javascript string
         let source = "window.onload=function () {window.webkit.messageHandlers.sizeNotification.postMessage({justLoaded:true,height: document.body.scrollHeight});};"
@@ -64,6 +66,7 @@ class ArticleDetailVC: UIViewController, WKUIDelegate, WKNavigationDelegate, UIS
     }()
     
     var articleData: ArticleDataStruct? = nil
+    
     var isSaved: Bool = false {
         didSet {
             if isSaved {
@@ -79,6 +82,7 @@ class ArticleDetailVC: UIViewController, WKUIDelegate, WKNavigationDelegate, UIS
         titleContainerView.addShadow()
         self.configurate()
         
+        // setup constraints of the webview which presents article HTML data
         textContainerView.addSubview(webView)
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addConstraint(NSLayoutConstraint(item: webView, attribute: .trailing, relatedBy: .equal, toItem: textContainerView, attribute: .trailing, multiplier: 1, constant: 0))
@@ -107,19 +111,28 @@ class ArticleDetailVC: UIViewController, WKUIDelegate, WKNavigationDelegate, UIS
     
     // MARK: - Actions
     
+    
+    /// called when back button is pressed
+    ///
+    /// - Parameter sender: back button object which was pressed
     @IBAction func backAction(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
     
+    /// called when save button is pressed
+    ///
+    /// - Parameter sender: save button object which was pressed
     @IBAction func saveAction(_ sender: Any) {
         guard let articleKey = articleData?.key else { return }
 
         switch isSaved {
         case true:
+            //deletes the article from local database
             DatabaseManager.shared.delete(Article.self, id: articleKey)
             ImageManager.shared.removeSavedImage(key: articleKey)
             self.isSaved = false
         case false:
+            //saves article to local database
             saveButton.setImage(nil, for: .normal)
             saveButton.showLoading()
             API.shared.getArticleContent(articleKey: articleKey) { [weak self] (content) in
@@ -139,28 +152,6 @@ class ArticleDetailVC: UIViewController, WKUIDelegate, WKNavigationDelegate, UIS
                 }
             }
         }
-        
-//        saveButton.showLoading()
-//        switch isSaved {
-//        case true:
-//            API.shared.deleteSavedArticle(articleKey: articleKey) { [weak self] (isSuccess) in
-//                DispatchQueue.main.async{
-//                    self?.saveButton.hideLoading()
-//                    if isSuccess {
-//                        self?.isSaved = false
-//                    }
-//                }
-//            }
-//        case false:
-//            API.shared.saveArticle(articleKey: articleKey) { [weak self] (isSuccess) in
-//                DispatchQueue.main.async{
-//                    self?.saveButton.hideLoading()
-//                    if isSuccess {
-//                        self?.isSaved = true
-//                    }
-//                }
-//            }
-//        }
     }
     
     // MARK: - UIScrollViewDelegate
@@ -204,6 +195,10 @@ class ArticleDetailVC: UIViewController, WKUIDelegate, WKNavigationDelegate, UIS
     }
     // MARK: - Other
     
+    
+    /// loads content of Style.css file
+    ///
+    /// - Returns: content of the file in string format
     func getCSSStringFromFile() -> String? {
         guard let path = Bundle.main.path(forResource: "Style", ofType: "css") else { return nil }
         let cssString = try! String(contentsOfFile: path).trimmingCharacters(in: .whitespacesAndNewlines)
@@ -211,6 +206,10 @@ class ArticleDetailVC: UIViewController, WKUIDelegate, WKNavigationDelegate, UIS
         return cssString
     }
     
+    
+    /// set saves icon according to wheter article is already saved or not
+    ///
+    /// - Parameter articleKey: key of the current article
     func setSaveIcon(articleKey: String) {
         if DatabaseManager.shared.get(type: Article.self, id: articleKey) != nil {
             isSaved = true
@@ -219,6 +218,7 @@ class ArticleDetailVC: UIViewController, WKUIDelegate, WKNavigationDelegate, UIS
         }
     }
     
+    /// sets values from config file
     func configurate() {
         titleLabel.textColor = Environment().configuration(.titleColor).hexStringToUIColor()
         subtitleLabel.textColor = Environment().configuration(.titleColor).hexStringToUIColor()
@@ -233,6 +233,7 @@ class ArticleDetailVC: UIViewController, WKUIDelegate, WKNavigationDelegate, UIS
         backgroundImageView.backgroundColor = Environment().configuration(.placeholderColor).hexStringToUIColor()
     }
     
+    /// loads article data from Realm or from the server
     func fillArticleData() {
         switch mode {
         case .online:
@@ -242,6 +243,8 @@ class ArticleDetailVC: UIViewController, WKUIDelegate, WKNavigationDelegate, UIS
         }
     }
     
+    
+    /// load and set article data from the local database
     func loadArticleData() {
         if let data = articleData {
             isSaved = true
@@ -284,6 +287,8 @@ class ArticleDetailVC: UIViewController, WKUIDelegate, WKNavigationDelegate, UIS
         }
     }
     
+    
+    /// load and set article data from the server
     func donwloadArticleData() {
         if let data = articleData {
 

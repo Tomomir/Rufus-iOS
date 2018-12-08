@@ -19,15 +19,13 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var logoImageView: UIImageView!
     
-    @IBOutlet weak var googleSignInButton: UIButton!
     @IBOutlet weak var googleSignInView: GIDSignInButton!
     
-    //@IBOutlet weak var fbLoginButton: FBSDKLoginButton!
     @IBOutlet weak var fbCustomButton: UIButton!
-    var fbLoginButton = FBSDKLoginButton()
     @IBOutlet weak var staticPagesButton: UIButton!
     
     var authUI: FUIAuth? = FUIAuth.defaultAuthUI()
+    var fbLoginButton = FBSDKLoginButton()
     
     let providers: [FUIAuthProvider] = [
         FUIGoogleAuth()
@@ -44,10 +42,12 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
             auth.providers = providers
         }
         
+        // instantiates google sign in button
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().delegate = self
         
+        // instantiates facebook sign in button
         fbLoginButton.delegate = self
         fbLoginButton.readPermissions = ["public_profile", "email"]
         
@@ -58,8 +58,12 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
         AlertManager.shared.currentVC = self
     }
     
-    // Actions
+    // MARK: - Actions
     
+    
+    /// called when google sign in button is pressed
+    ///
+    /// - Parameter sender: button which was pressed
     @IBAction func googleSignInAction(_ sender: Any) {
         if let auth = authUI {
             let authViewController = auth.authViewController()
@@ -67,16 +71,26 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
         }
     }
     
+    
+    /// called when facebook login button was pressed
+    ///
+    /// - Parameter sender: button which was pressed
     @IBAction func fbLoginAction(_ sender: Any) {
         fbLoginButton.sendActions(for: .touchUpInside)
     }
     
+    
+    /// called when static page button was pressed
+    ///
+    /// - Parameter sender: button which was pressed
     @IBAction func staticPagesAction(_ sender: Any) {
         let staticPageVC = self.storyboard?.instantiateViewController(withIdentifier: "StaticPageVC") as! StaticPageVC
         navigationController?.pushViewController(staticPageVC, animated: true)
     }
+    
     // FBAuthDelegate
 
+    /// asks the delegate to open a resource specified by a URL, and provides a dictionary of launch options
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
         let sourceApplication = options[UIApplication.OpenURLOptionsKey.sourceApplication] as! String?
@@ -87,10 +101,12 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
         return false
     }
     
+    // called when sign in to Firebase finished
     func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
         // handle user and error as necessary
     }
 
+    /// called when sign in with google occured
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         print("did sign in")
         if let error = error {
@@ -112,16 +128,19 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
         }
     }
     
+    // called when presenting google sign in viewController
     func sign(_ signIn: GIDSignIn!, present viewController: UIViewController!) {
         print("sign present")
     }
     
+    // called when dismissing google sing in viewController
     func sign(_ signIn: GIDSignIn!, dismiss viewController: UIViewController!) {
         print("sign disconnect")
     }
     
     // MARK: - Facebook Login delegate
     
+    /// called when facebook login finished
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         if let error = error {
             print(error.localizedDescription)
@@ -144,6 +163,7 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
 
     }
     
+    /// called when logging out from the facebook
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         print("did logout facebook")
     }

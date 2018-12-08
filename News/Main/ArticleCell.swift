@@ -57,6 +57,10 @@ class ArticleCell: UITableViewCell {
     
     // MARK: - Actions
     
+    
+    /// called when buy button was pressed
+    ///
+    /// - Parameter sender: buy button object which was pressed
     @IBAction func buyAction(_ sender: Any) {
         guard let articleKey = articleData?.key else { return }
         if CreditsDataSource.shared.numberOfCredits < 1 {
@@ -80,6 +84,9 @@ class ArticleCell: UITableViewCell {
         }
     }
     
+    /// called when save button was pressed
+    ///
+    /// - Parameter sender: save button object which was pressed
     @IBAction func saveAction(_ sender: Any) {
         guard let articleKey = articleData?.key else { return }
         
@@ -112,6 +119,12 @@ class ArticleCell: UITableViewCell {
         }
     }
     
+    
+    /// setup cell
+    ///
+    /// - Parameters:
+    ///   - articleData: data of the article to set up
+    ///   - isOfflineMode: bool value wheter cell is shown in offline mode
     func setData(articleData: ArticleDataStruct, isOfflineMode: Bool = false) {
         self.articleData = articleData
         titleLabel.text = articleData.title
@@ -172,6 +185,10 @@ class ArticleCell: UITableViewCell {
         articleImageView.backgroundColor = Environment().configuration(.placeholderColor).hexStringToUIColor()
     }
     
+    
+    /// sets buy button
+    ///
+    /// - Parameter state: state to which set the button
     func setBoughtState(state: ArticleCellBoughtState) {
         switch state {
         case .freeArticle:
@@ -188,6 +205,10 @@ class ArticleCell: UITableViewCell {
         boughtState = state
     }
     
+    
+    /// sets save button
+    ///
+    /// - Parameter state: state to which set save button
     func setSavedState(state: ArticleCellSavedState) {
         switch state {
         case .saved:
@@ -205,6 +226,10 @@ class ArticleCell: UITableViewCell {
         saveState = state
     }
     
+    
+    /// updates bought button according to notification received
+    ///
+    /// - Parameter notification: notification according to which update the button
     @objc func updateBoughtState(notification: NSNotification) {
         guard let data = articleData else { return }
         switch data.paid {

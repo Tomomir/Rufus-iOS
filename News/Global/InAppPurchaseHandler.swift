@@ -32,7 +32,9 @@ class IAPHandler: NSObject {
     //singleton
     static let shared = IAPHandler()
     
+    // ID of your consumable in-app purchase
     let CONSUMABLE_PURCHASE_PRODUCT_ID = "rufus.10.credits"
+    // present in case you want to add non-consumable purchase
     let NON_CONSUMABLE_PURCHASE_PRODUCT_ID = "non.consumable"
     
     fileprivate var productID = ""

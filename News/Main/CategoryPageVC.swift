@@ -49,16 +49,14 @@ class CategoryPageVC: UIViewController, UITableViewDelegate {
         }
     }
     
+    
+    /// called when reload gesture on the tableView is detected
+    ///
+    /// - Parameter sender: object that detected the action
     @objc func pullToRefreshAction(_ sender: Any) {
         API.shared.getArticles(isInitialLoad: false) { [weak self] success in
             self?.refreshControl?.endRefreshing()
         }
-        //        API.shared.getArticles { [weak self] in
-        //            self?.refreshControl.endRefreshing()
-        //            if let table = self?.tableView {
-        //                UIView.transition(with: table, duration: 0.6, options: .transitionCrossDissolve, animations: {table.reloadData()}, completion: nil)
-        //            }
-        //        }
     }
     
     // MARK: - UITableView delegate

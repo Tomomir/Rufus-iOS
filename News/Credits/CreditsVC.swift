@@ -49,10 +49,18 @@ class CreditsVC: UIViewController {
     
     // MARK: - Actions
     
+    
+    /// called when back button is pressed
+    ///
+    /// - Parameter sender: button object which was pressed
     @IBAction func backAction(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
     
+    
+    /// called when purchase button is pressed
+    ///
+    /// - Parameter sender: button object which was pressed
     @IBAction func purchaseAction(_ sender: Any) {
         if IAPHandler.shared.areProductLoaded() {
             self.showLoading()
@@ -63,27 +71,35 @@ class CreditsVC: UIViewController {
     
     // MARK: - Other
     
+    /// sets values from config file
     func configurate() {
         let buttonColor = Environment().configuration(.buttonColor).hexStringToUIColor()
         purchaseButton.backgroundColor = buttonColor
     }
     
+    /// sets current credit count
     func setCredits() {
         let credits = CreditsDataSource.shared.numberOfCredits
         self.creditsLabel.text = "\(credits)"
     }
     
+    
+    /// updates current credits count when notification arrives
+    ///
+    /// - Parameter notification: notification which indicates credit count change
     @objc func updateCredits(notification: NSNotification) {
         let credits = CreditsDataSource.shared.numberOfCredits
         creditsLabel.text = "\(credits)"
     }
     
+    /// shows loading indicator
     func showLoading() {
         progressHUD = JGProgressHUD(style: .light)
         progressHUD?.textLabel.text = ""
         progressHUD?.show(in: self.view)
     }
     
+    /// hides loading indicator
     func hideLoading() {
         if let hud = progressHUD {
             hud.dismiss()

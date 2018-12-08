@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
-class StaticPageVC: UIViewController, AcceptButtonDelegate, UITableViewDelegate, UITableViewDataSource {
+class StaticPageVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var navigationBarBlurColorView: UIView!
     @IBOutlet weak var navigationBlurView: UIVisualEffectView!
@@ -19,10 +19,10 @@ class StaticPageVC: UIViewController, AcceptButtonDelegate, UITableViewDelegate,
     @IBOutlet weak var navigationBackButton: UIButton!
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var errorLabel: UILabel!
     
     var data: StaticPageData? = nil
     var tableData = [StaticPageData]()
-    var loadingFailed: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,11 +46,8 @@ class StaticPageVC: UIViewController, AcceptButtonDelegate, UITableViewDelegate,
     // MARK: - UITableViewDelegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if loadingFailed {
-            return 1
-        } else {
-            return tableData.count == 0 ? 0 : tableData.count
-        }
+      
+        return tableData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -58,26 +55,6 @@ class StaticPageVC: UIViewController, AcceptButtonDelegate, UITableViewDelegate,
         let pageCell = tableView.dequeueReusableCell(withIdentifier: "StaticPageCell", for: indexPath) as! StaticPageCell
         pageCell.setData(pageData: tableData[indexPath.row])
         return pageCell
-    }
-    
-    // MARK: - AcceptButtonDelegate
-    
-    /// saves acceptance of the static pages and presents the main screen
-    func acceptButtonPressed() {
-        //TODO: mark page as accepted
-        if let userID = Auth.auth().currentUser?.uid {
-            API.shared.saveStaticPageAcceptance(userID: userID)
-            navigationController?.popToRootViewController(animated: true)
-        } else {
-            AlertManager.shared.showBasicAlert(title: "Error", text: "No user logged in.")
-        }
-    }
-    
-    // MARK: - ReloadButonDelegate
-    
-    /// reloads data when reload button is pressed
-    func reloadButtonPressed() {
-        self.loadStaticPages()
     }
     
     // MARK: - Other
@@ -107,6 +84,8 @@ class StaticPageVC: UIViewController, AcceptButtonDelegate, UITableViewDelegate,
         if let useBlur = Environment().configuration(.navigationBarUseBlur).BoolValue() {
             self.navigationBlurView.isHidden = !useBlur
         }
+        errorLabel.font = UIFont().configFontOfSize(size: errorLabel.font.pointSize)
+        errorLabel.textColor = Environment().configuration(.warningTextColor).hexStringToUIColor()
     }
     
     /// loads text of all static pages from Firebase 
@@ -115,18 +94,20 @@ class StaticPageVC: UIViewController, AcceptButtonDelegate, UITableViewDelegate,
         let hud = JGProgressHUD(style: .light)
         hud.textLabel.text = ""
         hud.show(in: self.view)
-        hud.dismiss(afterDelay: 10.0)
+        hud.dismiss(afterDelay: 7.0)
         self.tableView.isHidden = true //hides table so you only see loading indicatior
+        UIView.animateKeyframes(withDuration: 0.3, delay: 8, options: [], animations: { [weak self] in
+            self?.errorLabel.alpha = 1
+        }, completion: nil)
         
         API.shared.getFullStaticPageDict { [weak self] (result) in
             hud.dismiss()
+            self?.errorLabel.isHidden = true
             self?.tableView.isHidden = false
             switch result {
             case .failure(let error):
-                self?.loadingFailed = true
                 print(error)
             case .success(let pageData):
-                self?.loadingFailed = false
                 self?.tableData = pageData
             }
             self?.tableView.reloadData()

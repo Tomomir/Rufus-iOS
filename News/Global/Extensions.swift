@@ -43,39 +43,6 @@ extension UIView {
     }
 }
 
-// Allows to set borders and corner radius inside attribute inspector
-//@IBDesignable extension UIView {
-//
-//    @IBInspectable var borderWidth: CGFloat {
-//        set {
-//            layer.borderWidth = newValue
-//        }
-//        get {
-//            return layer.borderWidth
-//        }
-//    }
-//
-//    @IBInspectable var cornerRadius: CGFloat {
-//        set {
-//            layer.cornerRadius = newValue
-//        }
-//        get {
-//            return layer.cornerRadius
-//        }
-//    }
-//
-//    @IBInspectable var borderColor: UIColor? {
-//        set {
-//            guard let uiColor = newValue else { return }
-//            layer.borderColor = uiColor.cgColor
-//        }
-//        get {
-//            guard let color = layer.borderColor else { return nil }
-//            return UIColor(cgColor: color)
-//        }
-//    }
-//}
-
 extension UIImageView {
     
     
@@ -194,7 +161,9 @@ extension String {
     }
 }
 
+/// converts string containing HTML to the attributed string
 extension String {
+    
     var htmlToAttributedString: NSAttributedString? {
         guard let data = data(using: .utf8) else { return NSAttributedString() }
         do {
@@ -222,6 +191,8 @@ extension Date {
     }
 }
 
+
+/// extension used to determine label width according to the text it contains
 extension UILabel {
     func textWidth() -> CGFloat {
         return UILabel.textWidth(label: self)
@@ -244,6 +215,7 @@ extension UILabel {
     }
 }
 
+/// extension that allows to download image from url and set it to the imageview
 extension UIImageView {
     func downloaded(from url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFill) {
         //contentMode = mode
@@ -265,6 +237,7 @@ extension UIImageView {
     }
 }
 
+/// used for setting up the font size from the config file
 extension UIFont {
     func configFontOfSize(size: CGFloat) -> UIFont {
         let fontName = Environment().configuration(.textFont)
