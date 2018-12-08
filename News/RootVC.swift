@@ -16,9 +16,11 @@ class RootVC: UIViewController {
         
         var controllersArray = [UIViewController]()
         
+        // add main viewcontroller to the stack
         let mainVC = storyboard?.instantiateViewController(withIdentifier: "MainVC") as! MainVC
         controllersArray.append(mainVC)
 
+        // add also loginviewcontroller if not logged in
         if API.shared.isLoggedIn() == false {
             let loginVC = storyboard?.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
             controllersArray.append(loginVC)
@@ -27,32 +29,5 @@ class RootVC: UIViewController {
             self.navigationController?.setViewControllers(controllersArray, animated: true)
         }
     }
-    
-    
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    func loadEssentialsAndPushVCs(viewControllers: [UIViewController]) {
-//        let hud = JGProgressHUD(style: .light)
-//        hud.textLabel.text = "Loading"
-//        hud.show(in: self.view)
-//        hud.dismiss(afterDelay: 10.0)
-//        API.shared.loadAllEssentails { [weak self] (success) in
-//            hud.dismiss()
-//            if success {
-//                self?.navigationController?.setViewControllers(viewControllers, animated: true)
-//            } else {
-//                // TODO: handle error
-//            }
-//        }
-        self.navigationController?.setViewControllers(viewControllers, animated: true)
-    }
 }

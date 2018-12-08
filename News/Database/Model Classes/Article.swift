@@ -3,12 +3,14 @@
 //  News
 //
 //  Created by Tomas Pecuch on 24/11/2018.
-//  Copyright © 2018 Touch Art. All rights reserved.
+//  Copyright © 2018 Tomas Pecuch. All rights reserved.
 //
 
 import RealmSwift
 import ObjectMapper
 
+
+/// article object of realm database
 class Article: MapableObject {
     
     @objc dynamic var title: String = ""
@@ -21,14 +23,23 @@ class Article: MapableObject {
     @objc dynamic var data: String = ""
     @objc dynamic var author: String = ""
     
+    
+    /// returns object id
+    ///
+    /// - Returns: object id
     override static func primaryKey() -> String {
         return "id"
     }
     
+    
     required convenience init?(map: Map) {
         self.init()
     }
+   
     
+    /// maps given Map to the object data
+    ///
+    /// - Parameter map: object data to map
     override func mapping(map: Map) {
         if id == "" {
             id <- map["key"]
@@ -42,6 +53,10 @@ class Article: MapableObject {
         data <- map["data"]
     }
     
+    
+    /// returns object attributes as a JSON dictionart
+    ///
+    /// - Returns: JSON dictionary
     func getAsJSON() -> [String: Any] {
         var json = [String: Any]()
         json["key"] = self.id

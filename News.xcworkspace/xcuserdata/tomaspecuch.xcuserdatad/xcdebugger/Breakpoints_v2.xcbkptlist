@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "News/Global/CreditsDataSource.swift"
-            timestampString = "565884856.742058"
+            timestampString = "565991055.42168"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
             landmarkName = "getBoughtArticles(completition:)"
             landmarkType = "7">
          </BreakpointContent>

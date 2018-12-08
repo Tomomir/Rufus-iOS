@@ -3,7 +3,7 @@
 //  News
 //
 //  Created by Tomas Pecuch on 09/11/2018.
-//  Copyright © 2018 Touch Art. All rights reserved.
+//  Copyright © 2018 Tomas Pecuch. All rights reserved.
 //
 
 import Foundation
@@ -17,7 +17,7 @@ struct CategoryData {
 
 class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-    //singleton
+    // singleton
     static var shared = CategoryDataSource()
 
     private var indexOfCellBeforeDragging = 0
@@ -51,11 +51,13 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
         // if selecting selected cell do nothing
         if indexPath.row == selectedCellIndex { return }
         
+        // deselect the previous cell
         let cellToSelect = collectionView.cellForItem(at: indexPath) as! CategoryCollectionCell
         if let cellToDeselect = collectionView.cellForItem(at: IndexPath(row: selectedCellIndex, section: 0)) as? CategoryCollectionCell {
             cellToDeselect.setChosen(chosen: false, animated: true)
 
         }
+        
         cellToSelect.setChosen(chosen: true, animated: true)
         
         mainVC?.selectCategoryAtIndex(newIndex: indexPath.row, oldIndex: selectedCellIndex)
@@ -69,6 +71,10 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
     
     // MARK: - Other
     
+    
+    /// selects category with the given key
+    ///
+    /// - Parameter categoryKey: key of the category to select
     func selectCategory(categoryKey: String) {
         for (index,category) in categories.enumerated() {
             if category.key == categoryKey {
@@ -77,6 +83,10 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
         }
     }
     
+    
+    /// selects the cell at the given index
+    ///
+    /// - Parameter index: index of the cell to select
     func selectCategoryAtIndex(index: Int) {
         // if selecting selected cell do nothing
         if index == selectedCellIndex { return }
@@ -106,7 +116,7 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
     }
     
     
-    /// Sorts categories
+    /// sorts categories
     ///
     /// - Parameter keysArray: array of key according to which it sorts categories
     func sortCategories(keysArray: [String]) {
@@ -125,6 +135,10 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
 //        mainVC?.setCategoryPages(categories: sortedCategories)
     }
     
+    
+    /// sorts categories
+    ///
+    /// - Parameter keysDict: dictionary of key according to which it sorts categories
     func sortCategories(keysDict: [Int: Any]) {
         
         var sortedCategories = [CategoryData]()

@@ -3,7 +3,7 @@
 //  News
 //
 //  Created by Tomas Pecuch on 27/11/2018.
-//  Copyright © 2018 Touch Art. All rights reserved.
+//  Copyright © 2018 Tomas Pecuch. All rights reserved.
 //
 
 import UIKit
@@ -28,6 +28,8 @@ enum IAPHandlerAlertType{
 
 
 class IAPHandler: NSObject {
+    
+    //singleton
     static let shared = IAPHandler()
     
     let CONSUMABLE_PURCHASE_PRODUCT_ID = "rufus.10.credits"

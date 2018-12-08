@@ -3,7 +3,7 @@
 //  News
 //
 //  Created by Tomas Pecuch on 06/12/2018.
-//  Copyright © 2018 Touch Art. All rights reserved.
+//  Copyright © 2018 Tomas Pecuch. All rights reserved.
 //
 
 import UIKit
@@ -35,24 +35,16 @@ class SavedArticlesVC: UIViewController {
         pageContainerView.addSubview(vc.view)
         addChild(vc)
         vc.didMove(toParent: self)
-        // Do any additional setup after loading the view.
     }
     
     // MARK: - Actions
     
+    
+    /// Return to previous screen when back is pressed
+    ///
+    /// - Parameter sender: pressed button 
     @IBAction func backAction(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

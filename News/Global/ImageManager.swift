@@ -3,7 +3,7 @@
 //  News
 //
 //  Created by Tomas Pecuch on 05/12/2018.
-//  Copyright © 2018 Touch Art. All rights reserved.
+//  Copyright © 2018 Tomas Pecuch. All rights reserved.
 //
 
 import Foundation
@@ -11,6 +11,7 @@ import UIKit
 
 class ImageManager {
     
+    // singleton
     static var shared = ImageManager()
 
     func saveImageToDocumentsUnderKey(image: UIImage?, key: String) -> Bool {

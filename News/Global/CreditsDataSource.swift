@@ -3,15 +3,17 @@
 //  News
 //
 //  Created by Tomas Pecuch on 03/12/2018.
-//  Copyright © 2018 Touch Art. All rights reserved.
+//  Copyright © 2018 Tomas Pecuch. All rights reserved.
 //
 
 import Foundation
 
 class CreditsDataSource {
     
+    // singleton
     static var shared = CreditsDataSource()
     
+    // current number of credits
     var numberOfCredits: Int = 0 {
         didSet {
             let nc = NotificationCenter.default
@@ -23,10 +25,12 @@ class CreditsDataSource {
     var boughtArticleKeys = [String]()
     var isOffline: Bool = false
     
-    func creditsBought() {
-        
-    }
     
+    /// substracts number of credits and saves article key to the firebase as bought
+    ///
+    /// - Parameters:
+    ///   - articleKey: key of the article
+    ///   - completition: completition block after the operations are performed
     func articleBought(articleKey: String, completition: ((Bool) -> Void)?) {
         API.shared.saveBuoghtArticle(articleKey: articleKey) { (success) in
             if success {
@@ -44,6 +48,10 @@ class CreditsDataSource {
         }
     }
     
+    
+    /// loads array of bought articles
+    ///
+    /// - Parameter completition: completion block
     func getBoughtArticles(completition: (() -> Void)?) {
         API.shared.getBoughtArticles { [weak self] (result) in
             switch result {

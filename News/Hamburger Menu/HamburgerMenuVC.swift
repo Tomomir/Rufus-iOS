@@ -3,12 +3,13 @@
 //  News
 //
 //  Created by Tomas Pecuch on 08/11/2018.
-//  Copyright © 2018 Touch Art. All rights reserved.
+//  Copyright © 2018 Tomas Pecuch. All rights reserved.
 //
 
 import UIKit
 import NavigationDrawer
 import Firebase
+
 
 enum HamburgerTableViewCellType: Int {
     case allArticles
@@ -44,7 +45,10 @@ class HamburgerMenuVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         self.setSelectedCellIndex()
     }
     
-    //Handle Gesture
+    
+    /// called when pan gesture is received
+    ///
+    /// - Parameter sender: gesture recognizer which chatch the gesture
     @IBAction func handleGesture(_ sender: UIPanGestureRecognizer) {
         let translation = sender.translation(in: view)
         
@@ -58,6 +62,10 @@ class HamburgerMenuVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         }
     }
     
+    
+    /// called when close button is pressed
+    ///
+    /// - Parameter sender: button which was pressed
     @IBAction func closeBtnPressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
@@ -71,6 +79,7 @@ class HamburgerMenuVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HamburgerCell", for: indexPath) as! HamburgerCell
 
+        // setup hamburger menu cell's icon and title
         switch indexPath.row {
         case HamburgerTableViewCellType.allArticles.rawValue:
             cell.cellTextLabel.text = "All"
@@ -103,6 +112,7 @@ class HamburgerMenuVC: UIViewController, UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // show the cell is selected and deselect previous cell
         if let cell = tableView.cellForRow(at: indexPath) as? HamburgerCell {
             cell.markSelected(selected: true)
         }
@@ -113,7 +123,7 @@ class HamburgerMenuVC: UIViewController, UITableViewDelegate, UITableViewDataSou
             selectedCellIndex = indexPath.row
         }
         
-        
+        // handle selection
         switch indexPath.row {
         case HamburgerTableViewCellType.allArticles.rawValue:
             self.dismiss(animated: true) {
@@ -159,6 +169,8 @@ class HamburgerMenuVC: UIViewController, UITableViewDelegate, UITableViewDataSou
         emailLabel.font = UIFont().configFontOfSize(size: emailLabel.font.pointSize)
     }
     
+    
+    /// sets attribute to remember which cell was selected
     func setSelectedCellIndex() {
         if let mainController = mainVC {
             switch mainController.mode {

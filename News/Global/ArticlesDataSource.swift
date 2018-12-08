@@ -3,7 +3,7 @@
 //  News
 //
 //  Created by Tomas Pecuch on 10/11/2018.
-//  Copyright © 2018 Touch Art. All rights reserved.
+//  Copyright © 2018 Tomas Pecuch. All rights reserved.
 //
 
 import Foundation
@@ -87,6 +87,7 @@ struct ArticleDataStruct: Hashable {
 
 class ArticlesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
     
+    // singleton
     static var shared = ArticlesDataSource()
     
     var tableView: UITableView? = nil
@@ -100,6 +101,8 @@ class ArticlesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
     
     override init() {
         super.init()
+        
+        // set observer for notification when articles are loaded
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(setInitialArticles(notification:)), name: Notification.Name("articles_inital_loaded"), object: nil)
         nc.addObserver(self, selector: #selector(updateArticles(notification:)), name: Notification.Name("articles_updated"), object: nil)
@@ -107,9 +110,14 @@ class ArticlesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
     }
     
     deinit {
+        // removes the notification observer
         NotificationCenter.default.removeObserver(self)
     }
     
+    
+    /// sets articles array after initial load
+    ///
+    /// - Parameter notification: notification containing articles to show
     @objc func setInitialArticles(notification: NSNotification) {
         var dict = notification.object as! [String : Any]
         if let articles = dict["articles"] as? [ArticleDataStruct] {
@@ -125,6 +133,10 @@ class ArticlesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    
+    /// updates articles array
+    ///
+    /// - Parameter notification: notification containing articles to show
     @objc func updateArticles(notification: NSNotification) {
         var dict = notification.object as! [String : Any]
         if let articles = dict["articles"] as? [ArticleDataStruct] {
@@ -148,6 +160,7 @@ class ArticlesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        // init and setup article cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "ArticleCell", for: indexPath) as! ArticleCell
         if mode == .saved {
             cell.setData(articleData: articlesToShow[indexPath.row], isOfflineMode: true)
@@ -162,6 +175,7 @@ class ArticlesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - Other
     
+    // filter articles to just given category
     func setCategory(categoryKey: String, reloadData: Bool) {
         selectedCategoryKey = categoryKey
         let oldArticles = articlesToShow
@@ -187,6 +201,7 @@ class ArticlesDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    // set displaying mode for the tableView
     func setMode(mode: ArticleDataMode) {
         self.mode = mode
         switch mode {
