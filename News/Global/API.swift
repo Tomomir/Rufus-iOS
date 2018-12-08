@@ -35,9 +35,14 @@ class API {
         ref = Database.database().reference()
     }
     
+    
+    /// loads all essentials needet at app start
+    ///
+    /// - Parameter completion: completion block after esstentials are loaded
     func loadAllEssentails(completion: ((_ success: Bool) -> Void)?) {
         let group = DispatchGroup()
 
+        // loads categories
         group.enter()
         self.getCategories { (result) in
             switch result {
@@ -50,6 +55,7 @@ class API {
             group.leave()
         }
         
+        // loads sorted array of category keys
         group.enter()
         self.getCategoryKeys { (result) in
             switch result {
@@ -62,11 +68,13 @@ class API {
             group.leave()
         }
         
+        // loads credits
         group.enter()
         self.getCredits() {
             group.leave()
         }
         
+        // loads bought articles
         group.enter()
         CreditsDataSource.shared.getBoughtArticles {
             group.leave()
@@ -78,19 +86,12 @@ class API {
         })
     }
     
-//    func getNews() {
-//        let categories = ref.child("postContents").observeSingleEvent(of: .value, with: { (snapshot) in
-//            // Get user value
-//            let value = snapshot.value as? NSDictionary
-//            let values = value?.allValues
-//            let dict = self.convertToDictionary(text: values?.first as! String)
-//
-//        }) { (error) in
-//            print(error.localizedDescription)
-//
-//        }
-//    }
     
+    /// loads articles which are published
+    ///
+    /// - Parameters:
+    ///   - isInitialLoad: boolean wheter it is first load
+    ///   - completion: completion block after the load is completed
     func getArticles(isInitialLoad: Bool = true, completion: ((Bool) -> Void)?) {
         
         ref.child("posts").queryOrdered(byChild: "status").queryEqual(toValue: "published").observeSingleEvent(of: .value, with: { (snapshot) in
@@ -117,29 +118,35 @@ class API {
         }
     }
     
-    func getArticles(categoryKey: String, batchSize: UInt, completion: (() -> Void)?) {
-        
-        let ref1 = ref.child("posts").queryLimited(toLast: 1000)
-        let query = ref1.queryOrdered(byChild: "category").queryEqual(toValue: categoryKey)
-        query.observe(.value, with: { (snapshot) in
-            
-            //.queryEqual(toValue: "published", childKey: "status").observeSingleEvent(of: .value, with: { (snapshot) in
-            // Get user value
-            if let value = snapshot.value as? NSDictionary {
-                var parsedArray = [ArticleDataStruct]()
-                
-                for key in value.allKeys {
-                    parsedArray.append(ArticleDataStruct(dict: value[key] as! [String : Any], key: key as! String))
-                }
-                //ArticlesDataSource.shared.setInitialArticles(articles: parsedArray)
-                completion?()
-            }
-        }) { (error) in
-            print(error.localizedDescription)
-            
-        }
-    }
+//    func getArticles(categoryKey: String, batchSize: UInt, completion: (() -> Void)?) {
+//
+//        let ref1 = ref.child("posts").queryLimited(toLast: 1000)
+//        let query = ref1.queryOrdered(byChild: "category").queryEqual(toValue: categoryKey)
+//        query.observe(.value, with: { (snapshot) in
+//
+//            //.queryEqual(toValue: "published", childKey: "status").observeSingleEvent(of: .value, with: { (snapshot) in
+//            // Get user value
+//            if let value = snapshot.value as? NSDictionary {
+//                var parsedArray = [ArticleDataStruct]()
+//
+//                for key in value.allKeys {
+//                    parsedArray.append(ArticleDataStruct(dict: value[key] as! [String : Any], key: key as! String))
+//                }
+//                //ArticlesDataSource.shared.setInitialArticles(articles: parsedArray)
+//                completion?()
+//            }
+//        }) { (error) in
+//            print(error.localizedDescription)
+//
+//        }
+//    }
     
+    
+    /// loads HTML content of the article
+    ///
+    /// - Parameters:
+    ///   - articleKey: key of the wanted article
+    ///   - completion: completion block after the load is completed
     func getArticleContent(articleKey: String, completion: ((String) -> Void)?) {
         ref.child("postContentsHTML/\(articleKey)").observeSingleEvent(of: .value, with: { (snapshot) in
             // Get user value
@@ -153,17 +160,10 @@ class API {
         }
     }
     
-    func convertToDictionary(text: String) -> [String: Any]? {
-        if let data = text.data(using: .utf8) {
-            do {
-                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-        return nil
-    }
     
+    /// check wheter user is logged in
+    ///
+    /// - Returns: boolean value, true if logged in
     func isLoggedIn() -> Bool {
         if Auth.auth().currentUser != nil {
             // User is signed in.
@@ -174,6 +174,10 @@ class API {
         }
     }
     
+    
+    /// loads sorted array of category keys
+    ///
+    /// - Parameter completion: completion block ater the load is completed
     func getCategoryKeys(completion: ((Result<[String]>) -> Void)?) {
         _ = ref.child("categoryKeys").observeSingleEvent(of: .value, with: { (snapshot) in
             if let value = snapshot.value as? [String] {
@@ -187,6 +191,10 @@ class API {
         }
     }
     
+    
+    /// loads categories, keys and names, unsorted
+    ///
+    /// - Parameter completion: completion block ater the load is completed
     func getCategories(completion: ((Result<[String : Any]>) -> Void)?) {
         
         
@@ -202,6 +210,10 @@ class API {
         }
     }
 
+    
+    /// loads static pages keys, titles and subtitles
+    ///
+    /// - Parameter completion: completion block ater the load is completed
     func getStaticPageDict(completion: ((Result<[String : Any]>) -> Void)?) {
         _ = ref.child("pages").observeSingleEvent(of: .value, with: { (snapshot) in
             if let value = snapshot.value as? [String : Any] {
@@ -215,6 +227,10 @@ class API {
         }
     }
     
+    
+    /// loads static page HTML content
+    ///
+    /// - Parameter completion: completion block ater the load is completed
     func getStaticPageText(completion: ((Result<[String : Any]>) -> Void)?) {
         _ = ref.child("pageContentsHTML").observeSingleEvent(of: .value, with: { (snapshot) in
             if let value = snapshot.value as? [String : Any] {
@@ -227,6 +243,10 @@ class API {
         }
     }
     
+    
+    /// loads and parse static pages
+    ///
+    /// - Parameter completion: completion block ater the load is completed
     func getFullStaticPageDict(completion: ((Result<[StaticPageData]>) -> Void)?) {
         self.getStaticPageDict { (result) in
             switch result {

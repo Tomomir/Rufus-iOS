@@ -67,6 +67,11 @@ class CreditsDataSource {
         }
     }
     
+    
+    /// tells whether article is bought
+    ///
+    /// - Parameter articleKey: key of the article
+    /// - Returns: boolean value true if bought
     func isArticleBought(articleKey: String) -> Bool {
         if isOffline {
             return true
