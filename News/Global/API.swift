@@ -268,28 +268,28 @@ class API {
         FBSDKAccessToken.setCurrent(nil)
     }
     
-    func observeUserLogin(completition: (() -> Void)?) {
+    func observeUserLogin(completion: (() -> Void)?) {
         Auth.auth().addStateDidChangeListener { (auth, user) in
-            completition?()
+            completion?()
         }
     }
 
-    func didUserAcceptStaticPage(completition: ((Bool) -> Void)?) {
+    func didUserAcceptStaticPage(completion: ((Bool) -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
-            completition?(false)
+            completion?(false)
             return
             // TODO: handle error
         }
         ref.child("user/\(userID)/staticPage/").observeSingleEvent(of: .value, with: { (snapshot) in
             if let value = snapshot.value as? Bool {
-                completition?(value)
+                completion?(value)
             } else {
                 //TODO: handle error
-                completition?(false)
+                completion?(false)
             }
         }) { (error) in
             print(error.localizedDescription)
-            completition?(false)
+            completion?(false)
         }
     }
     
@@ -304,25 +304,25 @@ class API {
     
     // MARK: - Saved article management
     
-    func isSavedArticle(articleKey: String, completition: ((Bool) -> Void)?) {
+    func isSavedArticle(articleKey: String, completion: ((Bool) -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
-            completition?(false)
+            completion?(false)
             return
             // TODO: handle error
         }
         ref.child("user/\(userID)/savedArticles/\(articleKey)/").observeSingleEvent(of: .value, with: { (snapshot) in
             if let _ = snapshot.value as? Double {
-                completition?(true)
+                completion?(true)
             } else {
-                completition?(false)
+                completion?(false)
             }
         }) { (error) in
             print(error.localizedDescription)
-            //completition?(false)
+            //completion?(false)
         }
     }
     
-    func saveArticle(articleKey: String, completition: ((Bool) -> Void)?) {
+    func saveArticle(articleKey: String, completion: ((Bool) -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
             // TODO: handle error
@@ -331,14 +331,14 @@ class API {
         ref.child("user/\(userID)/savedArticles/\(articleKey)").setValue(Date().timeIntervalSince1970) { (error, ref) in
             if let errorValue = error {
                 print(errorValue)
-                completition?(false)
+                completion?(false)
             } else {
-                completition?(true)
+                completion?(true)
             }
         }
     }
     
-    func deleteSavedArticle(articleKey: String, completition: ((Bool) -> Void)?) {
+    func deleteSavedArticle(articleKey: String, completion: ((Bool) -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
             // TODO: handle error
@@ -347,54 +347,54 @@ class API {
         ref.child("user/\(userID)/savedArticles/\(articleKey)").removeValue() { (error, ref) in
             if let errorValue = error {
                 print(errorValue)
-                completition?(false)
+                completion?(false)
             } else {
-                completition?(true)
+                completion?(true)
             }
         }
     }
     
-    func getReadArticles(completition: ((Result<[String : Any]>) -> Void)?) {
+    func getReadArticles(completion: ((Result<[String : Any]>) -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             let error = NSError(domain:"No user logged in.", code:401, userInfo:nil)
-            completition?(.failure(error))
+            completion?(.failure(error))
             return
         }
         
         ref.child("user/\(userID)/readArticles/").observeSingleEvent(of: .value, with: { (snapshot) in
             if let articles = snapshot.value as? [String: Any] {
-                completition?(.success(articles))
+                completion?(.success(articles))
             } else {
-                completition?(.success([:]))
+                completion?(.success([:]))
             }
         }) { (error) in
             print(error.localizedDescription)
-            completition?(.failure(error))
+            completion?(.failure(error))
         }
     }
     
-    func getBoughtArticles(completition: ((Result<[String : Any]>) -> Void)?) {
+    func getBoughtArticles(completion: ((Result<[String : Any]>) -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             let error = NSError(domain:"No user logged in.", code:401, userInfo:nil)
-            completition?(.failure(error))
+            completion?(.failure(error))
             return
         }
         
         ref.child("user/\(userID)/boughtArticles/").observeSingleEvent(of: .value, with: { (snapshot) in
             if let articles = snapshot.value as? [String: Any] {
-                completition?(.success(articles))
+                completion?(.success(articles))
                 let nc = NotificationCenter.default
                 nc.post(name: Notification.Name("bought_articles_loaded"), object: nil)
             } else {
-                completition?(.success([:]))
+                completion?(.success([:]))
             }
         }) { (error) in
             print(error.localizedDescription)
-            completition?(.failure(error))
+            completion?(.failure(error))
         }
     }
     
-    func saveBuoghtArticle(articleKey: String, completition: ((Bool) -> Void)?) {
+    func saveBuoghtArticle(articleKey: String, completion: ((Bool) -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
             // TODO: handle error
@@ -403,45 +403,45 @@ class API {
         ref.child("user/\(userID)/boughtArticles/\(articleKey)").setValue(Date().timeIntervalSince1970) { (error, ref) in
             if let errorValue = error {
                 print(errorValue)
-                completition?(false)
+                completion?(false)
             } else {
-                completition?(true)
+                completion?(true)
             }
         }
     }
     
-    func isOnline(completition: ((Bool) -> Void)?) {
+    func isOnline(completion: ((Bool) -> Void)?) {
         ref.child(".info/connected").observe(.value, with: { snapshot in
             if let connected = snapshot.value as? Bool {
-                completition?(connected)
+                completion?(connected)
             } else {
-                completition?(false)
+                completion?(false)
             }
         })
 
     }
     
-    func observeOnline(completition: ((Bool) -> Void)?) {
+    func observeOnline(completion: ((Bool) -> Void)?) {
         
     }
     
-    func getAuthorName(authorID: String, completition: ((String) -> Void)?) {
+    func getAuthorName(authorID: String, completion: ((String) -> Void)?) {
 
         ref.child("team/\(authorID)/name/").observeSingleEvent(of: .value, with: { snapshot in
             if let name = snapshot.value as? String {
                 
-                completition?(name)
+                completion?(name)
             } else {
                 // TODO: handle error
-                completition?("")
+                completion?("")
             }
         }) { (error) in
             print(error.localizedDescription)
-            completition?("")
+            completion?("")
         }
     }
     
-    func getCredits(completition: (() -> Void)?) {
+    func getCredits(completion: (() -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
             // TODO: handle error
@@ -450,19 +450,19 @@ class API {
             if let credits = snapshot.value as? Int {
                 CreditsDataSource.shared.numberOfCredits = credits
                 CreditsDataSource.shared.creditsAreLoaded = true
-                completition?()
+                completion?()
             } else {
-                self?.setInitialCredits(completition: {
-                    completition?()
+                self?.setInitialCredits(completion: {
+                    completion?()
                 })
             }
         }) { (error) in
             print(error.localizedDescription)
-            //completition?(false)
+            //completion?(false)
         }
     }
     
-    func substractCredit(completition: ((Bool) -> Void)?) {
+    func substractCredit(completion: ((Bool) -> Void)?) {
         if CreditsDataSource.shared.creditsAreLoaded == false { return }
         guard let userID = Auth.auth().currentUser?.uid else {
             return
@@ -473,15 +473,15 @@ class API {
         ref.child("user/\(userID)/credits/").setValue((newCreditsCount)) { (error, ref) in
             if let errorValue = error {
                 print(errorValue)
-                completition?(false)
+                completion?(false)
             } else {
                 CreditsDataSource.shared.numberOfCredits = newCreditsCount
-                completition?(true)
+                completion?(true)
             }
         }
     }
     
-    func setInitialCredits(completition: (() -> Void)?) {
+    func setInitialCredits(completion: (() -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
             // TODO: handle error
@@ -490,16 +490,16 @@ class API {
         ref.child("user/\(userID)/credits/").setValue(Int(initialCredits)) { (error, ref) in
             if let errorValue = error {
                 print(errorValue)
-                completition?()
+                completion?()
             } else {
                 CreditsDataSource.shared.numberOfCredits = Int(initialCredits)
                 CreditsDataSource.shared.creditsAreLoaded = true
-                completition?()
+                completion?()
             }
         }
     }
     
-    func addCredits(completition: ((Bool) -> Void)?) {
+    func addCredits(completion: ((Bool) -> Void)?) {
         if CreditsDataSource.shared.creditsAreLoaded == false { return }
         guard let userID = Auth.auth().currentUser?.uid else {
             return
@@ -509,9 +509,9 @@ class API {
         ref.child("user/\(userID)/credits/").setValue(newCreditsValue) { (error, ref) in
             if let errorValue = error {
                 print(errorValue)
-                completition?(false)
+                completion?(false)
             } else {
-                completition?(true)
+                completion?(true)
                 CreditsDataSource.shared.numberOfCredits = newCreditsValue
             }
         }

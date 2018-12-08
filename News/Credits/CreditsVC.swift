@@ -28,7 +28,7 @@ class CreditsVC: UIViewController {
         IAPHandler.shared.purchaseStatusBlock = { [weak self] (type) in
             self?.hideLoading()
             if type == .purchased {
-                API.shared.addCredits(completition: { (success) in
+                API.shared.addCredits(completion: { (success) in
                     switch success {
                     case true:
                         print("credits added")

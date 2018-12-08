@@ -51,7 +51,7 @@ class ImageManager {
         }
     }
     
-    func imageDownloaded(from url: URL, completition: ((UIImage?) -> Void)?) {
+    func imageDownloaded(from url: URL, completion: ((UIImage?) -> Void)?) {
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard
                 let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
@@ -59,21 +59,21 @@ class ImageManager {
                 let data = data, error == nil,
                 let image = UIImage(data: data)
                 else {
-                    completition?(nil)
+                    completion?(nil)
                     return
                 }
             DispatchQueue.main.async() {
-                completition?(image)
+                completion?(image)
             }
             }.resume()
     }
     
-    func imageDownloaded(from link: String, completition: ((UIImage?) -> Void)?) {
+    func imageDownloaded(from link: String, completion: ((UIImage?) -> Void)?) {
         guard let url = URL(string: link)
         else {
-            completition?(nil)
+            completion?(nil)
             return
         }
-        imageDownloaded(from: url, completition: completition)
+        imageDownloaded(from: url, completion: completion)
     }
 }

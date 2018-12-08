@@ -30,20 +30,20 @@ class CreditsDataSource {
     ///
     /// - Parameters:
     ///   - articleKey: key of the article
-    ///   - completition: completition block after the operations are performed
-    func articleBought(articleKey: String, completition: ((Bool) -> Void)?) {
+    ///   - completion: completion block after the operations are performed
+    func articleBought(articleKey: String, completion: ((Bool) -> Void)?) {
         API.shared.saveBuoghtArticle(articleKey: articleKey) { (success) in
             if success {
                 self.boughtArticleKeys.append(articleKey)
-                API.shared.substractCredit(completition: { (success) in
+                API.shared.substractCredit(completion: { (success) in
                     if success {
-                        completition?(true)
+                        completion?(true)
                     } else {
-                        completition?(false)
+                        completion?(false)
                     }
                 })
             } else {
-                completition?(false)
+                completion?(false)
             }
         }
     }
@@ -51,18 +51,18 @@ class CreditsDataSource {
     
     /// loads array of bought articles
     ///
-    /// - Parameter completition: completion block
-    func getBoughtArticles(completition: (() -> Void)?) {
+    /// - Parameter completion: completion block
+    func getBoughtArticles(completion: (() -> Void)?) {
         API.shared.getBoughtArticles { [weak self] (result) in
             switch result {
             case .failure(let error):
                 AlertManager.shared.showBasicAlert(title: "Could not load bought Articles", text: error.localizedDescription)
-                completition?()
+                completion?()
             case .success(let articles):
                 for articleKey in articles.keys {
                     self?.boughtArticleKeys.append(articleKey)
                 }
-                completition?()
+                completion?()
             }
         }
     }

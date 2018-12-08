@@ -127,7 +127,7 @@ class ArticleDetailVC: UIViewController, WKUIDelegate, WKNavigationDelegate, UIS
                 if var articleJSON = self?.articleData?.getAsDict() {
                     articleJSON["data"] = content
                     if let imageURL = self?.articleData?.imageURL {
-                        ImageManager.shared.imageDownloaded(from: imageURL, completition: { (image) in
+                        ImageManager.shared.imageDownloaded(from: imageURL, completion: { (image) in
                             _ = ImageManager.shared.saveImageToDocumentsUnderKey(image: image, key: articleKey)
                             DatabaseManager.shared.addSingle(type: Article.self, json: articleJSON)
                             self?.isSaved = true
