@@ -268,7 +268,7 @@ class API {
     }
     
     func observeUserLogin(completition: (() -> Void)?) {
-        let handle = Auth.auth().addStateDidChangeListener { (auth, user) in
+        Auth.auth().addStateDidChangeListener { (auth, user) in
             completition?()
         }
     }

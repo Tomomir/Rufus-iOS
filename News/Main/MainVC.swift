@@ -129,22 +129,7 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
 
 
     }
-    
-    
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        for vc in previousViewControllers {
-            let index = pages.firstIndex(of: vc)
-            //print("\((vc as! CategoryPageVC).categoryName), index:\(index), realCategory: \(categoryDataSource?.categories[index ?? -1])")
-        }
-        if let firstVC = previousViewControllers[0] as? CategoryPageVC {
-            if let firstVCIndex = pages.firstIndex(of: firstVC) {
-                //print("\(firstVC.categoryName) completed: \(completed), index:\(firstVCIndex)")
-                //CategoryDataSource.shared.selectCategoryAtIndex(index: firstVCIndex)
-            }
-        }
-    }
 
-    
     // MARK: - Other
     
     func showIsOfflineWarning() {
