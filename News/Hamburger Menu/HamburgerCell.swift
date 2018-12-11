@@ -15,7 +15,7 @@ class HamburgerCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        self.configurate()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -34,5 +34,9 @@ class HamburgerCell: UITableViewCell {
             cellTextLabel.textColor = UIColor.black
             iconImageView.tintColor = UIColor.black
         }
+    }
+    
+    func configurate() {
+        cellTextLabel.font = UIFont().configFontOfSize(size: cellTextLabel.font.pointSize)
     }
 }

@@ -86,6 +86,8 @@ class StaticPageVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         }
         errorLabel.font = UIFont().configFontOfSize(size: errorLabel.font.pointSize)
         errorLabel.textColor = Environment().configuration(.warningTextColor).hexStringToUIColor()
+
+        logoImageView.image = UIImage(named: Environment().configuration(.logoImageName))
     }
     
     /// loads text of all static pages from Firebase 

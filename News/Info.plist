@@ -95,6 +95,8 @@
 	<string>$(WARNING_TEXT_COLOR)</string>
 	<key>credits_for_purchase</key>
 	<string>$(CREDITS_FOR_PURCHASE)</string>
+	<key>logo_image_name</key>
+	<string>$(LOGO_IMAGE_NAME)</string>
 	<key>text_font</key>
 	<string>$(TEXT_FONT)</string>
 </dict>

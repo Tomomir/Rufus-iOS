@@ -12,6 +12,8 @@ import JGProgressHUD
 class CreditsVC: UIViewController {
 
     @IBOutlet weak var navigationView: UIView!
+    @IBOutlet weak var navigationBlurView: UIVisualEffectView!
+    @IBOutlet weak var navigationBlurColorView: UIView!
     @IBOutlet weak var navigationLogoImageView: UIImageView!
     @IBOutlet weak var navigationBackButton: UIButton!
     @IBOutlet weak var purchaseButton: UIButton!
@@ -75,6 +77,23 @@ class CreditsVC: UIViewController {
     func configurate() {
         let buttonColor = Environment().configuration(.buttonColor).hexStringToUIColor()
         purchaseButton.backgroundColor = buttonColor
+        
+        navigationLogoImageView.image = UIImage(named: Environment().configuration(.logoImageName))
+
+        if let alpha = Environment().configuration(.navigationBarBlurAlpha).CGFloatValue() {
+            self.navigationBlurColorView.alpha = alpha
+        }
+        let color = Environment().configuration(.navigationBarColor).hexStringToUIColor()
+        self.navigationBlurColorView.backgroundColor = color
+        
+        if let useBlur = Environment().configuration(.navigationBarUseBlur).BoolValue() {
+            self.navigationBlurView.isHidden = !useBlur
+        }
+        topLabel.font = UIFont().configFontOfSize(size: topLabel.font.pointSize)
+        descriptionLabel.font = UIFont().configFontOfSize(size: descriptionLabel.font.pointSize)
+        purchaseButton.titleLabel?.font = UIFont().configFontOfSize(size: (purchaseButton.titleLabel?.font.pointSize)!)
+
+        
     }
     
     /// sets current credit count

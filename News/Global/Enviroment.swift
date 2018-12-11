@@ -10,6 +10,7 @@ import Foundation
 
 /// used for loading values from config file
 public enum PlistKey {
+    case logoImageName
     case backgroundColor
     case navigationBarBlurAlpha
     case navigationBarColor
@@ -29,6 +30,8 @@ public enum PlistKey {
     
     func value() -> String {
         switch self {
+        case .logoImageName:
+            return "logo_image_name"
         case .backgroundColor:
             return "background_color"
         case .navigationBarBlurAlpha:
@@ -79,6 +82,8 @@ public struct Environment {
     }
     public func configuration(_ key: PlistKey) -> String {
         switch key {
+        case .logoImageName:
+            return infoDict[PlistKey.logoImageName.value()] as! String
         case .backgroundColor:
             return infoDict[PlistKey.backgroundColor.value()] as! String
         case .navigationBarBlurAlpha:

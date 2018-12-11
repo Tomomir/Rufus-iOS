@@ -947,6 +947,10 @@ Please, check your network conneciton</string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hG4-BL-HOH">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="94"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lEF-ZL-PGr">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="94"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="gUd-d8-HSF">
@@ -1040,6 +1044,7 @@ Please, check your network conneciton</string>
                             <constraint firstItem="lEF-ZL-PGr" firstAttribute="trailing" secondItem="wMo-vx-iIh" secondAttribute="trailing" id="4Yh-1I-N7t"/>
                             <constraint firstItem="lEF-ZL-PGr" firstAttribute="top" secondItem="ki7-Fh-J5A" secondAttribute="top" id="7W4-c5-k18"/>
                             <constraint firstItem="wMo-vx-iIh" firstAttribute="bottom" secondItem="apG-4k-jzn" secondAttribute="bottom" constant="120" id="9z0-JR-PXD"/>
+                            <constraint firstItem="hG4-BL-HOH" firstAttribute="trailing" secondItem="wMo-vx-iIh" secondAttribute="trailing" id="A35-kG-m3h"/>
                             <constraint firstItem="lpP-yw-Kga" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wMo-vx-iIh" secondAttribute="leading" constant="30" id="AVn-zw-mYW"/>
                             <constraint firstItem="wMo-vx-iIh" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="I04-Jw-AGj" secondAttribute="trailing" constant="30" id="AWT-Ee-bZE"/>
                             <constraint firstItem="I04-Jw-AGj" firstAttribute="centerX" secondItem="wMo-vx-iIh" secondAttribute="centerX" id="BU8-YA-j2B"/>
@@ -1048,7 +1053,9 @@ Please, check your network conneciton</string>
                             <constraint firstItem="I04-Jw-AGj" firstAttribute="centerY" secondItem="wMo-vx-iIh" secondAttribute="centerY" multiplier="0.7" id="NgQ-T9-igV"/>
                             <constraint firstItem="hTA-ad-lKq" firstAttribute="centerY" secondItem="f9A-3X-O11" secondAttribute="centerY" id="O4e-19-H9o"/>
                             <constraint firstItem="mU0-di-Zvr" firstAttribute="leading" secondItem="wMo-vx-iIh" secondAttribute="leading" id="PdO-yx-0c4"/>
+                            <constraint firstItem="hG4-BL-HOH" firstAttribute="bottom" secondItem="mU0-di-Zvr" secondAttribute="bottom" id="XQR-uA-GFu"/>
                             <constraint firstItem="lpP-yw-Kga" firstAttribute="top" secondItem="mU0-di-Zvr" secondAttribute="bottom" constant="37" id="Yxk-Gc-RBd"/>
+                            <constraint firstItem="hG4-BL-HOH" firstAttribute="leading" secondItem="wMo-vx-iIh" secondAttribute="leading" id="bgP-QH-yPE"/>
                             <constraint firstItem="lEF-ZL-PGr" firstAttribute="bottom" secondItem="mU0-di-Zvr" secondAttribute="bottom" id="brw-2l-nlz"/>
                             <constraint firstItem="mU0-di-Zvr" firstAttribute="top" secondItem="wMo-vx-iIh" secondAttribute="top" id="kLA-Mw-c2T"/>
                             <constraint firstItem="f9A-3X-O11" firstAttribute="top" secondItem="lpP-yw-Kga" secondAttribute="bottom" constant="20" id="lbg-Ao-rm1"/>
@@ -1059,6 +1066,7 @@ Please, check your network conneciton</string>
                             <constraint firstItem="mU0-di-Zvr" firstAttribute="trailing" secondItem="wMo-vx-iIh" secondAttribute="trailing" id="sjR-Ln-o0B"/>
                             <constraint firstItem="wMo-vx-iIh" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="f9A-3X-O11" secondAttribute="trailing" constant="30" id="tQJ-ix-QYC"/>
                             <constraint firstItem="lEF-ZL-PGr" firstAttribute="leading" secondItem="wMo-vx-iIh" secondAttribute="leading" id="tpg-iJ-8OH"/>
+                            <constraint firstItem="hG4-BL-HOH" firstAttribute="top" secondItem="ki7-Fh-J5A" secondAttribute="top" id="yDS-x0-uc0"/>
                             <constraint firstItem="wMo-vx-iIh" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lpP-yw-Kga" secondAttribute="trailing" constant="30" id="zDr-9W-UEk"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="wMo-vx-iIh"/>
@@ -1068,6 +1076,8 @@ Please, check your network conneciton</string>
                         <outlet property="creditsLabel" destination="f9A-3X-O11" id="IDN-tL-a3k"/>
                         <outlet property="descriptionLabel" destination="I04-Jw-AGj" id="Qrt-fg-JLk"/>
                         <outlet property="navigationBackButton" destination="PaP-UE-iaH" id="p82-ca-NbX"/>
+                        <outlet property="navigationBlurColorView" destination="hG4-BL-HOH" id="5i1-7r-gjw"/>
+                        <outlet property="navigationBlurView" destination="lEF-ZL-PGr" id="ZoQ-DQ-57x"/>
                         <outlet property="navigationLogoImageView" destination="lR9-7j-Rve" id="Xam-Nw-T7U"/>
                         <outlet property="navigationView" destination="mU0-di-Zvr" id="MuF-ZL-s0i"/>
                         <outlet property="purchaseButton" destination="apG-4k-jzn" id="Mxw-1k-Jew"/>

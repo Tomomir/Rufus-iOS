@@ -218,18 +218,11 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
         if let useBlur = Environment().configuration(.navigationBarUseBlur).BoolValue() {
            self.navigationBlurView.isHidden = !useBlur
         }
-        
-        let titleColor = Environment().configuration(.titleColor).hexStringToUIColor()
-        if let myImage = UIImage(named: "menu-512") {
-            let tintableImage = myImage.withRenderingMode(.alwaysTemplate)
-            navigationHamburgerButton.tintColor = titleColor
-            navigationHamburgerButton.setImage(tintableImage, for: .normal)
-        }
-        
-        self.navigationCreditsLabel.textColor = titleColor
-        
+                
         noDataLabel.font = UIFont().configFontOfSize(size: noDataLabel.font.pointSize)
         noDataLabel.textColor = Environment().configuration(.warningTextColor).hexStringToUIColor()
+        navigationLogoImageView.image = UIImage(named: Environment().configuration(.logoImageName))
+
     }
     
     

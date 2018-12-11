@@ -23,6 +23,7 @@ class SavedArticlesVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.configurate()
         let vc = storyboard?.instantiateViewController(withIdentifier: "CategoryPageVC") as! CategoryPageVC
         vc.articleDataSource.selectedCategoryKey = "All"
         vc.categoryName = "All"
@@ -39,12 +40,27 @@ class SavedArticlesVC: UIViewController {
     
     // MARK: - Actions
     
-    
     /// Return to previous screen when back is pressed
     ///
     /// - Parameter sender: pressed button 
     @IBAction func backAction(_ sender: Any) {
         navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: - Other
+    
+    func configurate() {
+        navigationLogoImageView.image = UIImage(named: Environment().configuration(.logoImageName))
+        
+        if let alpha = Environment().configuration(.navigationBarBlurAlpha).CGFloatValue() {
+            self.navigationBlurColorView.alpha = alpha
+        }
+        let color = Environment().configuration(.navigationBarColor).hexStringToUIColor()
+        self.navigationBlurColorView.backgroundColor = color
+        
+        if let useBlur = Environment().configuration(.navigationBarUseBlur).BoolValue() {
+            self.navigationBlurView.isHidden = !useBlur
+        }
     }
 
 }

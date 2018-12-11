@@ -33,9 +33,7 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let appName = Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String
-        titleLabel.text = "Welcome to \(appName)"
+        self.configurate()
         
         if let auth = authUI {
             auth.delegate = self
@@ -166,6 +164,19 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
     /// called when logging out from the facebook
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         print("did logout facebook")
+    }
+    
+    // MARK: - Other
+    
+    func configurate() {
+        logoImageView.image = UIImage(named: Environment().configuration(.logoImageName))
+        
+        let appName = Bundle.main.infoDictionary![kCFBundleNameKey as String] as! String
+        
+        staticPagesButton.titleLabel!.font = UIFont().configFontOfSize(size: staticPagesButton.titleLabel!.font.pointSize)
+        
+        titleLabel.font = UIFont().configFontOfSize(size: titleLabel.font.pointSize)
+        titleLabel.text = "Welcome to \(appName)"
     }
     
 }

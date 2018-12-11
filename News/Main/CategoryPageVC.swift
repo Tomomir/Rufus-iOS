@@ -20,7 +20,8 @@ class CategoryPageVC: UIViewController, UITableViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.configurate()
+        
         articleDataSource.tableView = tableView
         tableView.dataSource = articleDataSource
         tableView.delegate = self
@@ -82,14 +83,11 @@ class CategoryPageVC: UIViewController, UITableViewDelegate {
     }
 
 
-    /*
-    // MARK: - Navigation
+    // MARK: - Other
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func configurate() {
+        noArticlesLabel.font = UIFont().configFontOfSize(size: noArticlesLabel.font.pointSize)
+        noArticlesLabel.textColor = Environment().configuration(.warningTextColor).hexStringToUIColor()
     }
-    */
 
 }
