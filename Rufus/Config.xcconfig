@@ -1,0 +1,43 @@
+//
+//  Config.xcconfig
+//  News
+//
+//  Created by Tomas Pecuch on 16/10/2018.
+//  Copyright © 2018 Tomas Pecuch. All rights reserved.
+//
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include "Pods/Target Support Files/Pods-News/Pods-News.debug.xcconfig"
+
+// name of the image used as a logo inside the app
+LOGO_IMAGE_NAME              = logo
+// determines the usage of blur effect on navigation bar
+NAVIGATION_BAR_USE_BLUR      = true
+// 0 means max blur 1 is minimum blur
+NAVIGATION_BAR_BLUR_ALPHA    = 0
+// color of the navigation bar
+NAVIGATION_BAR_COLOR         = #FFFFFF
+// color of the top part of the hamburger menu
+HAMBURGER_MENU_COLOR         = #46B2F7
+// color of the title and subtitle in articles preview page,
+// static page (terms of usage etc.) and navigation bar categories
+TITLE_COLOR                  = #000000
+// color of the buttons
+BUTTON_COLOR                 = #C5C5CA
+// color of the image placeholders
+PLACEHOLDER_COLOR            = #C5C5CA
+// font of almost all text inside the app, system font is used if left empty
+// static page text font and article text font can be set inside Style.css
+TEXT_FONT                    =
+// font size of the title in article preview page and static page
+TITLE_FONT_SIZE              = 17
+// font size of the subtitle in article preview page and static page
+SUBTITLE_FONT_SIZE           = 15
+// color of the warning texts
+WARNING_TEXT_COLOR           = #C5C5CA
+// number of credits aquired by the purchase
+CREDITS_FOR_PURCHASE         = 10
+// free credits given to user at his first login
+// can be used for testing if no in-app purchase is set up
+STARTING_CREDITS    = 5

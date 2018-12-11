@@ -1,0 +1,8 @@
+<head>
+<meta name="viewport" content="width=\(deviceWidthString),initial-scale=1, maximum-scale=1, user-scalable=no">
+<style>
+body {font-family: -apple-system; font-size: 80%; color: #000000; height: 100%; margin: 0; padding: 0; }
+figure { display: block; max-width: (\(deviceWidthString) - 30)px; margin-top: 0px; margin-bottom: 0px; margin-left: auto; margin-right: auto;}
+img { display: block; max-width: 100%; margin-left: auto; margin-right: auto;} iframe {display: block; margin-left: auto; margin-right: auto;}
+</style>
+</head>
