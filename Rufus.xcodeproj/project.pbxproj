@@ -67,7 +67,7 @@
 		8460B8F92195DBEC00B0A71F /* CategoryCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionCell.swift; sourceTree = "<group>"; };
 		8467C160217A54F200F43001 /* ArticleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCell.swift; sourceTree = "<group>"; };
 		84839A262197194E00CFD868 /* ArticlesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesDataSource.swift; sourceTree = "<group>"; };
-		848538B62176460B0048C8D3 /* News.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = News.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		848538B62176460B0048C8D3 /* Rufus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rufus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		848538B92176460B0048C8D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		848538BE2176460B0048C8D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		848538C02176460E0048C8D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -201,7 +201,7 @@
 		848538AD2176460A0048C8D3 = {
 			isa = PBXGroup;
 			children = (
-				848538B82176460B0048C8D3 /* News */,
+				848538B82176460B0048C8D3 /* Rufus */,
 				848538B72176460B0048C8D3 /* Products */,
 				33EDAFF23598A535D28FB3F3 /* Pods */,
 				A4F6D9ACE3FF03A83D8EEEAE /* Frameworks */,
@@ -211,12 +211,12 @@
 		848538B72176460B0048C8D3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				848538B62176460B0048C8D3 /* News.app */,
+				848538B62176460B0048C8D3 /* Rufus.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		848538B82176460B0048C8D3 /* News */ = {
+		848538B82176460B0048C8D3 /* Rufus */ = {
 			isa = PBXGroup;
 			children = (
 				8452656521B9914800B7BF66 /* SavedArticlesVC */,
@@ -239,7 +239,7 @@
 				848538D3217657370048C8D3 /* Config.xcconfig */,
 				8425A5DB21A1FE6B00F073F2 /* Style.css */,
 			);
-			path = News;
+			path = Rufus;
 			sourceTree = "<group>";
 		};
 		84A8398D21B021DE00B3CCF1 /* Model Classes */ = {
@@ -287,9 +287,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		848538B52176460B0048C8D3 /* News */ = {
+		848538B52176460B0048C8D3 /* Rufus */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 848538C82176460E0048C8D3 /* Build configuration list for PBXNativeTarget "News" */;
+			buildConfigurationList = 848538C82176460E0048C8D3 /* Build configuration list for PBXNativeTarget "Rufus" */;
 			buildPhases = (
 				BA19A8AF22DF3DE4522E2C48 /* [CP] Check Pods Manifest.lock */,
 				848538B22176460B0048C8D3 /* Sources */,
@@ -302,9 +302,9 @@
 			);
 			dependencies = (
 			);
-			name = News;
+			name = Rufus;
 			productName = News;
-			productReference = 848538B62176460B0048C8D3 /* News.app */;
+			productReference = 848538B62176460B0048C8D3 /* Rufus.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -322,7 +322,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 848538B12176460A0048C8D3 /* Build configuration list for PBXProject "News" */;
+			buildConfigurationList = 848538B12176460A0048C8D3 /* Build configuration list for PBXProject "Rufus" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -335,7 +335,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				848538B52176460B0048C8D3 /* News */,
+				848538B52176460B0048C8D3 /* Rufus */,
 			);
 		};
 /* End PBXProject section */
@@ -655,7 +655,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P36MPV2ZKM;
-				INFOPLIST_FILE = News/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Rufus/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -675,7 +675,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P36MPV2ZKM;
-				INFOPLIST_FILE = News/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Rufus/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -691,7 +691,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		848538B12176460A0048C8D3 /* Build configuration list for PBXProject "News" */ = {
+		848538B12176460A0048C8D3 /* Build configuration list for PBXProject "Rufus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				848538C62176460E0048C8D3 /* Debug */,
@@ -700,7 +700,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		848538C82176460E0048C8D3 /* Build configuration list for PBXNativeTarget "News" */ = {
+		848538C82176460E0048C8D3 /* Build configuration list for PBXNativeTarget "Rufus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				848538C92176460E0048C8D3 /* Debug */,
