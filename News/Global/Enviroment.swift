@@ -11,16 +11,13 @@ import Foundation
 /// used for loading values from config file
 public enum PlistKey {
     case logoImageName
-    case backgroundColor
     case navigationBarBlurAlpha
     case navigationBarColor
     case navigationBarUseBlur
     case titleColor
-    case textColor
     case hamburgerMenuColor
     case buttonColor
     case placeholderColor
-    case textFontSize
     case titleFontSize
     case subtitleFontSize
     case warningTextColor
@@ -32,8 +29,6 @@ public enum PlistKey {
         switch self {
         case .logoImageName:
             return "logo_image_name"
-        case .backgroundColor:
-            return "background_color"
         case .navigationBarBlurAlpha:
             return "navigation_bar_blur_alpha"
         case .navigationBarColor:
@@ -42,16 +37,12 @@ public enum PlistKey {
             return "navigation_bar_use_blur"
         case .titleColor:
             return "title_color"
-        case .textColor:
-            return "text_color"
         case .hamburgerMenuColor:
             return "hamburger_menu_color"
         case .buttonColor:
             return "button_color"
         case .placeholderColor:
             return "placeholder_color"
-        case .textFontSize:
-            return "text_font_size"
         case .titleFontSize:
             return "title_font_size"
         case .subtitleFontSize:
@@ -84,8 +75,6 @@ public struct Environment {
         switch key {
         case .logoImageName:
             return infoDict[PlistKey.logoImageName.value()] as! String
-        case .backgroundColor:
-            return infoDict[PlistKey.backgroundColor.value()] as! String
         case .navigationBarBlurAlpha:
             return infoDict[PlistKey.navigationBarBlurAlpha.value()] as! String
         case .navigationBarColor:
@@ -94,16 +83,12 @@ public struct Environment {
             return infoDict[PlistKey.navigationBarUseBlur.value()] as! String
         case .titleColor:
             return infoDict[PlistKey.titleColor.value()] as! String
-        case .textColor:
-            return infoDict[PlistKey.textColor.value()] as! String
         case .hamburgerMenuColor:
             return infoDict[PlistKey.hamburgerMenuColor.value()] as! String
         case .buttonColor:
             return infoDict[PlistKey.buttonColor.value()] as! String
         case .placeholderColor:
             return infoDict[PlistKey.placeholderColor.value()] as! String
-        case .textFontSize:
-            return infoDict[PlistKey.textFontSize.value()] as! String
         case .titleFontSize:
             return infoDict[PlistKey.titleFontSize.value()] as! String
         case .subtitleFontSize:

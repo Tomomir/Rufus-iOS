@@ -39,16 +39,12 @@ class StaticPageCell: UITableViewCell {
         if let subtitleFontSize = Environment().configuration(.subtitleFontSize).CGFloatValue() {
             subtitleLabel.font = subtitleLabel.font.withSize(subtitleFontSize)
         }
-        if let textFontSize = Environment().configuration(.textFontSize).CGFloatValue() {
-            contentTextLabel.font = contentTextLabel.font.withSize(textFontSize)
-        }
+
         titleLabel.font = UIFont().configFontOfSize(size: titleLabel.font.pointSize)
         subtitleLabel.font = UIFont().configFontOfSize(size: subtitleLabel.font.pointSize)
-        contentTextLabel.font = UIFont().configFontOfSize(size: contentTextLabel.font.pointSize)
         
         titleLabel.textColor = Environment().configuration(.titleColor).hexStringToUIColor()
         subtitleLabel.textColor = Environment().configuration(.titleColor).hexStringToUIColor()
-        contentTextLabel.textColor = Environment().configuration(.textColor).hexStringToUIColor()
     }
     
     /// setup cell using static page data
