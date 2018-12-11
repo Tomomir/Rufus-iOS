@@ -24,7 +24,6 @@ extension UIViewController {
         p.addChild(child)
         
         pView.addSubview(child.view)
-        //child.view.autoPinEdgesToSuperviewEdges()
         
         child.didMove(toParent: p)
     }
@@ -218,7 +217,6 @@ extension UILabel {
 /// extension that allows to download image from url and set it to the imageview
 extension UIImageView {
     func downloaded(from url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFill) {
-        //contentMode = mode
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard
                 let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,

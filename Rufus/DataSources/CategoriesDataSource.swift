@@ -132,7 +132,6 @@ class CategoryDataSource: NSObject, UICollectionViewDataSource, UICollectionView
         }
         categories = sortedCategories
         self.collectionView?.reloadData()
-//        mainVC?.setCategoryPages(categories: sortedCategories)
     }
     
     

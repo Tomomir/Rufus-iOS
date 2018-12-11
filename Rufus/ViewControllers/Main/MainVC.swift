@@ -26,7 +26,7 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
     @IBOutlet weak var categoryCollectionView: UICollectionView!
     @IBOutlet weak var noDataLabel: UILabel!
     
-    var categoryDataSource: CategoryDataSource? = nil //CategoryDataSource.shared
+    var categoryDataSource: CategoryDataSource? = nil
     let interactor = Interactor()
     
     let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -198,11 +198,6 @@ class MainVC: UIViewController, UITableViewDelegate, UIPageViewControllerDataSou
         categoryDataSource?.mainVC = self
         categoryCollectionView.dataSource = categoryDataSource
         categoryCollectionView.delegate = categoryDataSource
-//        if let flowLayout = categoryCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-//            flowLayout.estimatedItemSize = CGSize(width: 80, height: 35)
-//        }
-        
-        //self.setCategoryPages(categories: categoryDataSource?.categories)
     }
     
     

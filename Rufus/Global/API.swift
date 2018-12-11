@@ -118,30 +118,6 @@ class API {
         }
     }
     
-//    func getArticles(categoryKey: String, batchSize: UInt, completion: (() -> Void)?) {
-//
-//        let ref1 = ref.child("posts").queryLimited(toLast: 1000)
-//        let query = ref1.queryOrdered(byChild: "category").queryEqual(toValue: categoryKey)
-//        query.observe(.value, with: { (snapshot) in
-//
-//            //.queryEqual(toValue: "published", childKey: "status").observeSingleEvent(of: .value, with: { (snapshot) in
-//            // Get user value
-//            if let value = snapshot.value as? NSDictionary {
-//                var parsedArray = [ArticleDataStruct]()
-//
-//                for key in value.allKeys {
-//                    parsedArray.append(ArticleDataStruct(dict: value[key] as! [String : Any], key: key as! String))
-//                }
-//                //ArticlesDataSource.shared.setInitialArticles(articles: parsedArray)
-//                completion?()
-//            }
-//        }) { (error) in
-//            print(error.localizedDescription)
-//
-//        }
-//    }
-    
-    
     /// loads HTML content of the article
     ///
     /// - Parameters:
@@ -174,7 +150,6 @@ class API {
         }
     }
     
-    
     /// loads sorted array of category keys
     ///
     /// - Parameter completion: completion block ater the load is completed
@@ -182,15 +157,12 @@ class API {
         _ = ref.child("categoryKeys").observeSingleEvent(of: .value, with: { (snapshot) in
             if let value = snapshot.value as? [String] {
                 completion?(.success(value))
-            } else {
-                //TODO: handle error
             }
         }) { (error) in
             print(error.localizedDescription)
             
         }
     }
-    
     
     /// loads categories, keys and names, unsorted
     ///
@@ -201,8 +173,6 @@ class API {
         _ = ref.child("categories").observeSingleEvent(of: .value, with: { (snapshot) in
             if let value = snapshot.value as? [String : Any] {
                 completion?(.success(value))
-            } else {
-                //TODO: handle error
             }
         }) { (error) in
             print(error.localizedDescription)
@@ -210,7 +180,6 @@ class API {
         }
     }
 
-    
     /// loads static pages keys, titles and subtitles
     ///
     /// - Parameter completion: completion block ater the load is completed
@@ -218,15 +187,12 @@ class API {
         _ = ref.child("pages").observeSingleEvent(of: .value, with: { (snapshot) in
             if let value = snapshot.value as? [String : Any] {
                 completion?(.success(value))
-            } else {
-                //TODO: handle error
             }
         }) { (error) in
             print(error.localizedDescription)
             
         }
     }
-    
     
     /// loads static page HTML content
     ///
@@ -235,14 +201,11 @@ class API {
         _ = ref.child("pageContentsHTML").observeSingleEvent(of: .value, with: { (snapshot) in
             if let value = snapshot.value as? [String : Any] {
                 completion?(.success(value))
-            } else {
-                //TODO: handle error
             }
         }) { (error) in
             print(error.localizedDescription)
         }
     }
-    
     
     /// loads and parse static pages
     ///
@@ -263,8 +226,6 @@ class API {
                     case .success(let dictFullText):
                         var pagesArray = [StaticPageData]()
                         for key in dictFullText.keys {
-                            //(finaldict as! [String: [String: Any]])[key]!["text"] = dictFullText[key] as! String
-                            //(finaldict[key] as! [String : Any])["text"] = dictFullText[key] as! String
                             pagesArray.append(StaticPageData(key: key,
                                                            title: (dict[key] as! [String : Any])["title"] as! String,
                                                            subTitle: (dict[key] as! [String : Any])["subtitle"] as! String,
@@ -293,7 +254,6 @@ class API {
     func markArticleAsRead(articleKey: String) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
-            // TODO: handle error
         }
         
         ref.child("user/\(userID)/readArticles/\(articleKey)").setValue(Date().timeIntervalSince1970)
@@ -356,7 +316,6 @@ class API {
     func saveBuoghtArticle(articleKey: String, completion: ((Bool) -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
-            // TODO: handle error
         }
         
         ref.child("user/\(userID)/boughtArticles/\(articleKey)").setValue(Date().timeIntervalSince1970) { (error, ref) in
@@ -397,7 +356,6 @@ class API {
                 
                 completion?(name)
             } else {
-                // TODO: handle error
                 completion?("")
             }
         }) { (error) in
@@ -413,7 +371,6 @@ class API {
     func getCredits(completion: (() -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
-            // TODO: handle error
         }
         ref.child("user/\(userID)/credits/").observeSingleEvent(of: .value, with: { [weak self] (snapshot) in
             if let credits = snapshot.value as? Int {
@@ -427,7 +384,6 @@ class API {
             }
         }) { (error) in
             print(error.localizedDescription)
-            //completion?(false)
         }
     }
     
@@ -439,7 +395,6 @@ class API {
         if CreditsDataSource.shared.creditsAreLoaded == false { return }
         guard let userID = Auth.auth().currentUser?.uid else {
             return
-            // TODO: handle error
         }
         
         let newCreditsCount = CreditsDataSource.shared.numberOfCredits - 1
@@ -461,7 +416,6 @@ class API {
     func setInitialCredits(completion: (() -> Void)?) {
         guard let userID = Auth.auth().currentUser?.uid else {
             return
-            // TODO: handle error
         }
         let initialCredits = Environment().configuration(.startingCredits).UIntValue()
         ref.child("user/\(userID)/credits/").setValue(Int(initialCredits)) { (error, ref) in
@@ -484,7 +438,6 @@ class API {
         if CreditsDataSource.shared.creditsAreLoaded == false { return }
         guard let userID = Auth.auth().currentUser?.uid else {
             return
-            // TODO: handle error
         }
         let newCreditsValue = CreditsDataSource.shared.numberOfCredits.advanced(by: Int(Environment().configuration(.creditsForPurchase).UIntValue()))
         ref.child("user/\(userID)/credits/").setValue(newCreditsValue) { (error, ref) in

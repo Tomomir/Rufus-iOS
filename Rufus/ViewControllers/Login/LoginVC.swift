@@ -101,7 +101,7 @@ class LoginVC: UIViewController, FUIAuthDelegate, GIDSignInDelegate, GIDSignInUI
     
     // called when sign in to Firebase finished
     func authUI(_ authUI: FUIAuth, didSignInWith user: User?, error: Error?) {
-        // handle user and error as necessary
+
     }
 
     /// called when sign in with google occured

@@ -282,8 +282,6 @@ class ArticleDetailVC: UIViewController, WKUIDelegate, WKNavigationDelegate, UIS
                 self.webView.loadHTMLString(finalHTML, baseURL: nil)
             }
             
-        } else {
-            // TODO: Handle error
         }
     }
     
@@ -327,8 +325,6 @@ class ArticleDetailVC: UIViewController, WKUIDelegate, WKNavigationDelegate, UIS
                 
             }
             
-        } else {
-            // TODO: Handle error
         }
     }
 }
