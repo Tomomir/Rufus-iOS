@@ -8,7 +8,7 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "Pods/Target Support Files/Pods-News/Pods-News.debug.xcconfig"
+#include "Pods/Target Support Files/Pods-Rufus/Pods-Rufus.debug.xcconfig"
 
 // name of the image used as a logo inside the app
 LOGO_IMAGE_NAME              = logo

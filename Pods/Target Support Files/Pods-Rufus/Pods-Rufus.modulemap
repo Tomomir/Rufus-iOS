@@ -1,0 +1,6 @@
+framework module Pods_Rufus {
+  umbrella header "Pods-Rufus-umbrella.h"
+
+  export *
+  module * { export * }
+}

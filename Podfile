@@ -1,11 +1,11 @@
 # Defines a global platform for your project
 platform :ios, '11.0'
 
-target 'News' do
+target 'Rufus' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for News
+  # Pods for Rufus
   pod 'Firebase/Core'
   pod 'FirebaseUI'
   pod 'Firebase/Database'
